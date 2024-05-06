@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <meta
+    http-equiv="content-type"
+    content="text/html;charset=utf-8"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="author" content="mironcoder" />
+    <meta name="email" content="mironcoder@gmail.com" />
+    <meta name="profile" content="https://themeforest.net/user/mironcoder" />
+    <meta name="template" content="greeny" />
+    <meta name="title" content="greeny - Ecommerce Food Store HTML Template" />
+    <meta
+      name="keywords"
+      content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online"/>
+      
+    <title>Website bán sách - Greeny Shop</title>
+    <link rel="icon" href="images/favicon.png" />
+    <link rel="stylesheet" href="fonts/flaticon/flaticon.css" />
+    <link rel="stylesheet" href="fonts/icofont/icofont.min.css" />
+    <link rel="stylesheet" href="fonts/fontawesome/fontawesome.min.css" />
+    <link rel="stylesheet" href="vendor/venobox/venobox.min.css" />
+    <link rel="stylesheet" href="vendor/slickslider/slick.min.css" />
+    <link rel="stylesheet" href="vendor/niceselect/nice-select.min.css" />
+    <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/about.css" />
+  </head>
+  <body>
+    
+    <!--************************************
+				Header Start
+		*************************************-->
+		<header th:replace="~{/web/fragments/header :: header}"></header>
+		<!--************************************
+				Header End
+		*************************************-->
+
+    <section
+      class="inner-section single-banner"
+      style="background: url(images/book-11.png) no-repeat center" >
+      <div class="container">
+        <h2>Giới thiệu</h2>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+          
+        </ol>
+      </div>
+    </section>
+    
+    <section class="about-choose">
+      <div class="container">
+        <div class="row">
+          <div class="col-11 col-md-9 col-lg-7 col-xl-6 mx-auto">
+            <div class="section-heading">
+              <h2>Mọi người tìm đến Greeny-Shop để:</h2>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="choose-card">
+              <div class="choose-icon"><i class="icofont-fruits"></i></div>
+              <div class="choose-text">
+                <h4>100% sách chính hãng - NÓI KHÔNG VỚI HÀNG GIẢ</h4>
+                <p>
+                    Trong một thị trường đầy sự phát triển và đa dạng như ngày nay, việc đảm bảo 100% sách chính hãng
+                    và tuyên bố không chấp nhận hàng giả là một thông điệp vô cùng quan trọng.
+                    Sách chính hãng không chỉ đơn thuần là sản phẩm, mà còn là nguồn thông tin quý báu đối với mọi người.
+                    Từ việc học hỏi cho đến việc giải trí, sách đóng góp vào sự phát triển cá nhân và cộng đồng.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="choose-card">
+              <div class="choose-icon">
+                <i class="icofont-vehicle-delivery-van"></i>
+              </div>
+              <div class="choose-text">
+                <h4>Chính sách hoàn trả và Giao hàng nhanh chóng</h4>
+                <p>
+                    Chính sách hoàn trả linh hoạt đóng vai trò quan trọng trong việc tạo điều kiện thuận lợi cho khách hàng thử nghiệm sản phẩm mà không phải lo lắng về việc mất tiền mua sắm không đáng.
+                    Giao hàng nhanh chóng là một trong những dịch vụ quan trọng để đảm bảo sự hài lòng của khách hàng.
+                    Trong thế giới hiện đại, sự tận tâm trong việc đáp ứng nhu cầu giao hàng nhanh chóng đang trở thành một yếu tố cạnh tranh quan trọng.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="choose-card">
+              <div class="choose-icon"><i class="icofont-loop"></i></div>
+              <div class="choose-text">
+                <h4>Giá tốt nhất thị trường</h4>
+                <p>
+                    Người tiêu dùng cũng cần phải là người thông thái khi đối mặt với quảng cáo "Giá Tốt Nhất Thị Trường".
+                    Việc so sánh, tìm hiểu và đánh giá là cách giúp họ tìm ra sản phẩm hoặc dịch vụ thực sự phản ánh giá trị mà họ muốn nhận được.
+                    Đôi khi, một giá thấp có thể đi kèm với việc giảm bớt chất lượng hoặc dịch vụ kém.
+                    Do đó, việc chọn lựa cẩn thận vẫn là yếu tố quan trọng trong quá trình mua sắm.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="choose-card">
+              <div class="choose-icon"><i class="icofont-support"></i></div>
+              <div class="choose-text">
+                <h4>Nhóm hỗ trợ tức thì</h4>
+                <p>
+                    Nhóm hỗ trợ tức thì có khả năng cung cấp sự giúp đỡ ngay lập tức mà không cần chờ đợi.
+                    Điều này đặc biệt quan trọng trong các tình huống khẩn cấp hoặc khi người dùng cần sự hỗ trợ để giải quyết vấn đề ngay lập tức.
+                    Có thể đó là một nhóm chuyên về hỗ trợ kỹ thuật, tư vấn khách hàng, quản lý tài khoản, hoặc bất kỳ lĩnh vực nào liên quan đến người dùng hoặc khách hàng.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="news-part"
+             style="background: url(images/book-5.jpg) no-repeat center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-5 col-lg-6 col-xl-7">
+                    <div class="news-text">
+                        <h2>Nhận Chiết Khấu 20% Cho Người Đăng Ký</h2>
+                        <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được ưu đãi chiết khấu lên đến 20%, mà còn mở ra cơ hội trải nghiệm sản phẩm chất lượng vượt trội với mức giá hấp dẫn.
+                            Hãy khám phá sự kết hợp hoàn hảo giữa tiết kiệm và trải nghiệm tuyệt vời tại địa điểm của chúng tôi!"</p>
+                    </div>
+                </div>
+                <div class="col-md-7 col-lg-6 col-xl-5">
+                    <form class="news-form">
+                        <input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn" />
+                        <button>
+                            <span><i class="icofont-email"></i>Gửi</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="intro-part">
+        <div class="container">
+            <div class="row intro-content">
+                <div class="col-sm-6 col-lg-3">
+                    <div class="intro-wrap">
+                        <div class="intro-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="intro-content">
+                            <h5>Giao Hàng Tận Nhà Miễn Phí</h5>
+                            <p>Tiện lợi tới tận nhà - Giao hàng miễn phí, trải nghiệm dễ dàng!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="intro-wrap">
+                        <div class="intro-icon">
+                            <i class="fas fa-sync-alt"></i>
+                        </div>
+                        <div class="intro-content">
+                            <h5>Chính Sách Hoàn Trả</h5>
+                            <p>Tự tin mua sắm - Chính sách hoàn trả linh hoạt, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="intro-wrap">
+                        <div class="intro-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <div class="intro-content">
+                            <h5>Hệ Thống Hỗ Trợ</h5>
+                            <p>Liên kết tin cậy - Hệ thống hỗ trợ 24/7, sẵn sàng đồng hành cùng bạn mọi lúc mọi nơi!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-3">
+                    <div class="intro-wrap">
+                        <div class="intro-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="intro-content">
+                            <h5>Cách Thanh Toán An Toàn</h5>
+                            <p>Thanh toán an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+	
+   <!--************************************
+				Footer Start
+		*************************************-->
+		<footer th:replace="~{/web/fragments/footer :: footer}"></footer>
+				
+		<!--************************************
+				Footer End
+		*************************************-->
+   
+   
+    <script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
+    <script src="vendor/bootstrap/popper.min.js"></script>
+    <script src="vendor/bootstrap/bootstrap.min.js"></script>
+    <script src="vendor/countdown/countdown.min.js"></script>
+    <script src="vendor/niceselect/nice-select.min.js"></script>
+    <script src="vendor/slickslider/slick.min.js"></script>
+    <script src="vendor/venobox/venobox.min.js"></script>
+    <script src="js/nice-select.js"></script>
+    <script src="js/countdown.js"></script>
+    <script src="js/accordion.js"></script>
+    <script src="js/venobox.js"></script>
+    <script src="js/slick.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
