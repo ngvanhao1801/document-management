@@ -1,9 +1,7 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.ChartDTO;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,7 +32,8 @@ import java.io.Serializable;
 				"group by c.category_id "
 )
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

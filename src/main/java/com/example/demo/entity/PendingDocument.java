@@ -6,27 +6,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "folder")
-public class Folder implements Serializable {
+@Table(name = "pending_document")
+public class PendingDocument {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long folderId;
-
-	private String folderName;
-
-	@Column(name = "description", columnDefinition = "TEXT")
-	private String description;
+	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "categoryId")
-	private Category category;
+	@JoinColumn(name = "documentId")
+	private Document document;
+
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
+
+	@Temporal(TemporalType.DATE)
+	private Date uploadDate;
+
+	private int status;
 
 }

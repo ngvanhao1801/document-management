@@ -32,14 +32,11 @@ public class ProductController{
 	@Value("${upload.path}")
 	private String pathUploadImage;
 
-	@Autowired
-	ProductRepository productRepository;
+	private final ProductRepository productRepository;
 
-	@Autowired
-	CategoryRepository categoryRepository;
+	private final CategoryRepository categoryRepository;
 	
-	@Autowired
-	UserRepository userRepository;
+	private final UserRepository userRepository;
 	
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
@@ -54,9 +51,10 @@ public class ProductController{
 	}
 
 	public ProductController(CategoryRepository categoryRepository,
-			ProductRepository productRepository) {
+	                         ProductRepository productRepository, UserRepository userRepository) {
 		this.productRepository = productRepository;
 		this.categoryRepository = categoryRepository;
+		this.userRepository = userRepository;
 	}
 
 	// show list product - table list

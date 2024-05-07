@@ -74,7 +74,7 @@ public class RegisterController {
 			dto.setRegisterDate(new Date());
 			dto.setStatus(true);
 			dto.setAvatar("user.png");
-			dto.setRoles(Arrays.asList(new Role("ROLE_USER")));
+			dto.setRoles(Arrays.asList(new Role("ROLE_ADMIN")));
 			userRepository.save(dto);
 
 			session.removeAttribute("otp");

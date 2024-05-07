@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -13,11 +14,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "document_status")
-public class DocumentStatus {
+public class DocumentStatus implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+  private Long statusId;
 
   private String statusName;
 
