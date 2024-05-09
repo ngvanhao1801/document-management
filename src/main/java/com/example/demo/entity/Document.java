@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.http.MediaType;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.rmi.MarshalException;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +45,10 @@ public class Document implements Serializable {
   private DocumentStatus documentStatus;
 
   private String documentImage;
+
+  private String documentFile;
+
+  private String mediaType;
 
   @OneToMany(mappedBy = "document")
   private List<Version> versions;

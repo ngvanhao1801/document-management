@@ -24,6 +24,7 @@
 	<link rel="stylesheet" href="/assets/css/atlantis.min.css">
 	<!-- CSS Just for demo purpose, don't include it in your project -->
 	<link rel="stylesheet" href="/assets/css/demo.css">
+	<link href="path/to/pdf_viewer.css" rel="stylesheet">
 </head>
 <body>
 	<div class="wrapper">
@@ -148,6 +149,12 @@
 																<input type="file" id="documentImage" name="file" class="form-control">
 															</div>
 														</div>
+														<div class="col-md-9 pr-0">
+															<div class="form-group form-group-default">
+																<label>File <span style="color: red">*</span></label>
+																<input type="file" id="documentFile" name="file" accept="application/pdf">
+															</div>
+														</div>
 														<div class="col-sm-12">
 															<div class="form-group form-group-default" style="height: 150px;">
 																<label>Mô tả tài liệu <span style="color: red">*</span></label>
@@ -171,6 +178,7 @@
 											<tr>
 												<th>Mã tài liệu</th>
 												<th>Ảnh</th>
+												<th>File</th>
 												<th>Tên tài liệu</th>
 												<th>Người đăng tải</th>
 												<th>Tên thư mục</th>
@@ -184,6 +192,7 @@
 											<tr>
 												<th>Mã tài liệu</th>
 												<th>Ảnh</th>
+												<th>File</th>
 												<th>Tên tài liệu</th>
 												<th>Người đăng tải</th>
 												<th>Tên thư mục</th>
@@ -197,7 +206,12 @@
 											<tr th:each="item : ${documents}">
 												<td>[[${item.id}]]</td>
 												<td>
-													<img th:src="@{'/loadImage?imageName='+${item.documentImage}}" width="80px" alt="product" />
+													<img th:src="@{'/loadImage?imageName='+${item.documentImage}}" width="80px" alt="images" />
+												</td>
+												<td>
+													<object th:data="@{'/loadFile?fileName='+${item.documentFile}}" type="application/pdf" width="100%" height="600px">
+														<p>Trình duyệt của bạn không hỗ trợ xem tệp PDF. Bạn có thể <a th:href="@{'/loadFile?fileName=' + ${item.documentFile}}">tải xuống tệp</a> thay vì xem trực tiếp.</p>
+													</object>
 												</td>
 												<td>[[${item.documentName}]]</td>
 												<td>[[${item.user.name}]]</td>
@@ -225,7 +239,7 @@
 									<script>
 									function showConfigModalDialog(id, name) {
 										$('#name').text(name);
-										$('#yesOption').attr('href', '/admin/deleteProduct/'+id);
+										$('#yesOption').attr('href', '/admin/deleteDocument/'+id);
 										$('#configmationId').modal('show');
 									}
 									</script>
