@@ -106,6 +106,13 @@
             <artifactId>rest-api-sdk</artifactId>
             <version>1.4.2</version>
         </dependency>
+
+        <!-- Apache Tika -->
+        <dependency>
+            <groupId>org.apache.tika</groupId>
+            <artifactId>tika-core</artifactId>
+            <version>1.27</version> <!-- Bạn có thể thay đổi phiên bản tùy thích -->
+        </dependency>
     </dependencies>
 
     <build>

@@ -99,12 +99,24 @@ public class DocumentController {
       try {
         String nameFile = file.getOriginalFilename();
         String filePath = null;
-        if (file.getContentType().startsWith("image")) {
-          filePath = pathUploadImage + "/" + nameFile;
+        switch (file.getContentType()) {
+          case "image/jpeg":
+          case "image/png":
+          case "image/gif":
+          case "image/bmp":
+            filePath = pathUploadImage + "/" + nameFile;
+            break;
+          case "application/pdf":
+          case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+          case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+          case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+            filePath = pathUploadFile + "/" + nameFile;
+            break;
+          default:
+            // Xử lý loại tệp không được hỗ trợ ở đây
+            break;
         }
-        if (file.getContentType().equals("application/pdf")) {
-          filePath = pathUploadFile + "/" + nameFile;
-        }
+
         if (filePath != null) {
           File convFile = new File(filePath);
           FileOutputStream fos = new FileOutputStream(convFile);
@@ -119,7 +131,10 @@ public class DocumentController {
         if (file.getContentType().startsWith("image")) {
           document.setDocumentImage(nameFile);
         }
-        if (file.getContentType().equals("application/pdf")) {
+        if (file.getContentType().equals("application/pdf")
+            || file.getContentType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+            || file.getContentType().equals("application/vnd.openxmlformats-officedocument.presentationml.presentation")
+            || file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
           document.setDocumentFile(nameFile);
         }
       } catch (IOException e) {

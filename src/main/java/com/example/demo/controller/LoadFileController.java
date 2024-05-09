@@ -24,11 +24,26 @@ public class LoadFileController {
     try {
       File file = new File(pathUploadFile + File.separator + fileName);
       if (file.exists()) {
-        response.setContentType(MediaType.APPLICATION_PDF_VALUE); // Đặt loại nội dung của phản hồi là PDF
-        response.setHeader("Content-Disposition", "inline; filename=" + fileName); // Hiển thị nội dung trên trình duyệt thay vì tải xuống
-        try (InputStream inputStream = Files.newInputStream(file.toPath())) {
-          IOUtils.copy(inputStream, response.getOutputStream()); // Sao chép dữ liệu từ file đến phản hồi
-          response.flushBuffer();
+        String contentType = null;
+        // Kiểm tra loại tệp dựa trên phần mở rộng của tệp
+        if (fileName.endsWith(".pdf")) {
+          contentType = MediaType.APPLICATION_PDF_VALUE;
+        } else if (fileName.endsWith(".docx")) {
+          contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+        } else if (fileName.endsWith(".pptx")) {
+          contentType = "application/vnd.openxmlformats-officedocument.presentationml.presentation";
+        } else if (fileName.endsWith(".xlsx")) {
+          contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+        }
+        if (contentType != null) {
+          response.setContentType(contentType);
+          response.setHeader("Content-Disposition", "inline; filename=" + fileName);
+          try (InputStream inputStream = Files.newInputStream(file.toPath())) {
+            IOUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+          }
+        } else {
+          response.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE);
         }
       } else {
         response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -38,4 +53,5 @@ public class LoadFileController {
       response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
     }
   }
+
 }
