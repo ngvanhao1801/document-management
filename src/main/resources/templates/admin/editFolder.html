@@ -74,17 +74,17 @@
 							<div class="card-header">
 								<section class="row">
 						           <div class="col-6 offset-3 mt-4">
-						             <form th:action="@{/admin/addCategory}" th:object="${category}" method="post">
+						             <form th:action="@{/admin/addFolder}" th:object="${folder}" method="post">
 							             <div class="card">
 							                 <div class="card-body">
 							                     <div class="form-group">
-							                       <label for="categoryId">ID <a style="color: red"><strong>*</strong></a></label>
+							                       <label for="folderId">ID <a style="color: red"><strong>*</strong></a></label>
 							                       <input type="hidden">
-							                       <input type="text" th:field="*{categoryId}" class="form-control" name="categoryId" id="categoryId" aria-describedby="categoryhelpId" placeholder="Mã thể loại ?" readonly="readonly">
+							                       <input type="text" th:field="*{folderId}" class="form-control" name="folderId" id="folderId" aria-describedby="folderhelpId" placeholder="Mã thư mục... " readonly="readonly">
 							                     </div>
 							                     <div class="form-group">
-							                       <label for="name">Tên thể loại <a style="color: red"><strong>*</strong></a></label>
-							                       <input type="text" th:field="*{categoryName}" class="form-control" id="categoryName" aria-describedby="namhelpId" placeholder="Tên thể loại ?">
+							                       <label for="folderName">Tên thư mục <a style="color: red"><strong>*</strong></a></label>
+							                       <input type="text" th:field="*{folderName}" class="form-control" id="folderName" aria-describedby="foldernamehelpId" placeholder="Tên thư mục...">
 							                     </div>
 							                 </div>
 							                 <div class="card-footer text-muted">
@@ -103,7 +103,6 @@
 					</div>
 				</div>
 			</div>
-		
 		<footer class="footer">
 			<div class="container-fluid">
 				<nav class="pull-left">
