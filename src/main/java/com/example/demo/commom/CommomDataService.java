@@ -3,7 +3,9 @@ package com.example.demo.commom;
 import com.example.demo.entity.CartItem;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.User;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
+import com.example.demo.repository.FolderRepository;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +35,23 @@ public class CommomDataService {
 	@Autowired
 	ProductRepository productRepository;
 
+	private final DocumentRepository documentRepository;
+
+	private final FolderRepository folderRepository;
+
 	@Autowired
 	public JavaMailSender emailSender;
 	
 	@Autowired
 	TemplateEngine templateEngine;
 
+	public CommomDataService(DocumentRepository documentRepository, FolderRepository folderRepository) {
+		this.documentRepository = documentRepository;
+		this.folderRepository = folderRepository;
+	}
+
 	public void commonData(Model model, User user) {
-		listCategoryByProductName(model);
+		listFolderByDocumentName(model);
 		Integer totalSave = 0;
 		// get count yêu thích
 		if (user != null) {
@@ -59,10 +70,10 @@ public class CommomDataService {
 	}
 	
 	// count product by category
-	public void listCategoryByProductName(Model model) {
+	public void listFolderByDocumentName(Model model) {
 
-		List<Object[]> coutnProductByCategory = productRepository.listCategoryByProductName();
-		model.addAttribute("coutnProductByCategory", coutnProductByCategory);
+		List<Object[]> countDocumentByFolder = documentRepository.listFolderByDocumentName();
+		model.addAttribute("countDocumentByFolder", countDocumentByFolder);
 	}
 	
 	//sendEmail by order success

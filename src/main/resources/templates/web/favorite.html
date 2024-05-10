@@ -43,7 +43,7 @@
     
     <section
       class="inner-section single-banner"
-      style="background: url(images/book-11.png) no-repeat center">
+      style="background: url(images/hethongQuanLy.png) no-repeat center">
       <div class="container">
         <h2>Danh sách yêu thích</h2>
         <ol class="breadcrumb">
@@ -57,9 +57,9 @@
           <div class="col-lg-12">
             <div class="table-scroll">
             	<div th:unless="${totalSave!=0}" class="text-center">
-					<h3 style="color: #119744" class="mt-5">Hiện tại bạn chưa có sản phẩm yêu thích nào!</h3>
-					<h4 style="color: #119744">Hãy mua sắm đi nào!</h4>
-					<a th:href="@{/products}" style="text-decoration: underline;">Click tại đây!</a>
+					<h3 style="color: #119744" class="mt-5">Hiện tại bạn chưa có tài liệu yêu thích nào!</h3>
+					<h4 style="color: #119744">Hãy tham khảo các tài liệu nào!</h4>
+					<a th:href="@{/documents}" style="text-decoration: underline;">Click tại đây!</a>
 				</div>
               <table class="table-list" th:if="${totalSave!=0}">
                 <thead>
@@ -77,9 +77,9 @@
                   <tr th:each="item,iState : ${favorites}">
                     <td class="table-serial"><h6>[[${iState.index + 1}]]</h6></td>
                     <td class="table-image">
-                      <img th:src="@{'/loadImage?imageName='+${item.product.productImage}}" alt="product" />
+                      <img th:src="@{'/loadImage?imageName='+${item.document.documentImage}}" alt="document" />
                     </td>
-                    <td class="table-name"><h6>[[${item.product.productName}]]</h6></td>
+                    <td class="table-name"><h6>[[${item.document.documentName}]]</h6></td>
                     <td class="table-price">
                       <h6>[[${#numbers.formatDecimal(item.product.price - (item.product.price * item.product.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]</h6>
                     </td>
@@ -122,9 +122,10 @@
             <div class="row align-items-center">
                 <div class="col-md-5 col-lg-6 col-xl-7">
                     <div class="news-text">
-                        <h2>Nhận Chiết Khấu 20% Cho Người Đăng Ký</h2>
-                        <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được ưu đãi chiết khấu lên đến 20%, mà còn mở ra cơ hội trải nghiệm sản phẩm chất lượng vượt trội với mức giá hấp dẫn.
-                            Hãy khám phá sự kết hợp hoàn hảo giữa tiết kiệm và trải nghiệm tuyệt vời tại địa điểm của chúng tôi!"</p>
+                        <h2>Đăng ký ngay hôm nay và tận hưởng ưu đãi miễn phí!</h2>
+                        <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được sự hướng dẫn nhiệt tình, mà còn mở ra cơ hội trải nghiệm sản phẩm chất lượng vượt trội.
+                            Với sự kết hợp hoàn hảo chúng tôi cam kết mang đến cho bạn trải nghiệm tuyệt vời nhất mà không tốn một xu.
+                            Hãy khám phá ngay!"</p>
                     </div>
                 </div>
                 <div class="col-md-7 col-lg-6 col-xl-5">
@@ -144,11 +145,11 @@
                 <div class="col-sm-6 col-lg-3">
                     <div class="intro-wrap">
                         <div class="intro-icon">
-                            <i class="fas fa-truck"></i>
+                            <i class="fas fa-handshake"></i>
                         </div>
                         <div class="intro-content">
-                            <h5>Giao Hàng Tận Nhà Miễn Phí</h5>
-                            <p>Tiện lợi tới tận nhà - Giao hàng miễn phí, trải nghiệm dễ dàng!</p>
+                            <h5>Quản Lý Tài Liệu Miễn Phí</h5>
+                            <p>Quản lý tài liệu hoàn toàn miễn phí, trải nghiệm dễ dàng!</p>
                         </div>
                     </div>
                 </div>
@@ -158,8 +159,8 @@
                             <i class="fas fa-sync-alt"></i>
                         </div>
                         <div class="intro-content">
-                            <h5>Chính Sách Hoàn Trả</h5>
-                            <p>Tự tin mua sắm - Chính sách hoàn trả linh hoạt, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
+                            <h5>Chính Sách Bảo Mật</h5>
+                            <p>Tự tin sử dụng - Chính sách bảo mật an toàn, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
                         </div>
                     </div>
                 </div>
@@ -180,8 +181,8 @@
                             <i class="fas fa-lock"></i>
                         </div>
                         <div class="intro-content">
-                            <h5>Cách Thanh Toán An Toàn</h5>
-                            <p>Thanh toán an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
+                            <h5>Bảo Mật Hệ Thống</h5>
+                            <p>Đăng tải và sử dụng tài liêu an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
                         </div>
                     </div>
                 </div>

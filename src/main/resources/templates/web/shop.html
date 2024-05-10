@@ -19,7 +19,7 @@
       name="keywords"
       content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online"
     />
-    <title>Website bán sách - Greeny Shop</title>
+    <title>Website Document Management</title>
     <link rel="icon" href="images/favicon.png" />
     <link rel="stylesheet" href="fonts/flaticon/flaticon.css" />
     <link rel="stylesheet" href="fonts/icofont/icofont.min.css" />
@@ -42,7 +42,7 @@
 
     <section
       class="inner-section single-banner"
-      style="background: url(images/book-11.png) no-repeat center">
+      style="background: url(images/hethongQuanLy.png) no-repeat center">
       <div class="container">
         <h2>Sản phẩm</h2>
         <ol class="breadcrumb">
@@ -57,15 +57,15 @@
         <div class="row content-reverse">
           <div class="col-lg-3">
             <div class="shop-widget-promo">
-              <a href="#"><img src="images/book-9.jpg" alt="promo" /></a>
+              <a href="#"><img src="images/hethong.png" alt="promo" /></a>
             </div>
             <div class="shop-widget">
-              <h6 class="shop-widget-title">Theo thể loại</h6>
+              <h6 class="shop-widget-title">Theo thư mục</h6>
               
                 <ul class="shop-widget-list shop-widget-scroll">
-                  <li th:each="item : ${coutnProductByCategory}">
+                  <li th:each="item : ${countDocumentByFolder}">
 	                    <div class="shop-widget-content">
-	                    	<a href="javascript:void(0);" th:href="@{/productByCategory(id=${item[0]})}">
+	                    	<a href="javascript:void(0);" th:href="@{/documentByFolder(id=${item[0]})}">
 	                      		<label for="cate1" style="color: #119744">[[${item[1]}]]</label>
 	                       </a>
 	                    </div>
@@ -87,12 +87,11 @@
             
             <!-- item product -->
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" style="margin-top: -30px;">
-              <div class="col" th:each="item : ${products}">
+              <div class="col" th:each="item : ${documents}">
                 <div class="product-card">
                   <div class="product-media">
                     <div class="product-label">
 						<label class="label-text new">Hot</label>
-                      	<label class="label-text sale">Sale [[${item.discount + '%'}]]</label>
                     </div>
                    
                    		<th:block th:if="${user.email != null}">
@@ -113,7 +112,7 @@
 	                    </th:block>
                    
                         <a class="product-image" href="javascript:void(0);">
-                            <img th:src="@{'/loadImage?imageName='+${item.productImage}}" alt="product"/>
+                            <img th:src="@{'/loadImage?imageName='+${item.documentImage}}" alt="product"/>
                         </a>
                     <div class="product-widget">
                     
@@ -128,13 +127,13 @@
                         <th:block th:if="${user.email != null}">
 	                      <a th:if="${item.favorite} == false"
 	                        title="Yêu thích"
-	                        th:href="@{/doFavorite(id=${item.productId})}"
+	                        th:href="@{/doFavorite(id=${item.id})}"
 	                        class="fas fa-heart">
 	                        </a>
                         
 	                      <a th:if="${item.favorite} == true"
 	                        title="Xóa Yêu thích"
-	                        th:href="@{/doUnFavorite(id=${item.productId})}"
+	                        th:href="@{/doUnFavorite(id=${item.id})}"
 	                        style="background-color: #fd7e14"
 	                        class="fas fa-heart">
 	                        </a>
@@ -212,9 +211,10 @@
 		  <div class="row align-items-center">
 			  <div class="col-md-5 col-lg-6 col-xl-7">
 				  <div class="news-text">
-					  <h2>Nhận Chiết Khấu 20% Cho Người Đăng Ký</h2>
-					  <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được ưu đãi chiết khấu lên đến 20%, mà còn mở ra cơ hội trải nghiệm sản phẩm chất lượng vượt trội với mức giá hấp dẫn.
-						  Hãy khám phá sự kết hợp hoàn hảo giữa tiết kiệm và trải nghiệm tuyệt vời tại địa điểm của chúng tôi!"</p>
+					  <h2>Đăng ký ngay hôm nay và tận hưởng ưu đãi miễn phí!</h2>
+					  <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được sự hướng dẫn nhiệt tình, mà còn mở ra cơ hội trải nghiệm sản phẩm chất lượng vượt trội.
+						  Với sự kết hợp hoàn hảo chúng tôi cam kết mang đến cho bạn trải nghiệm tuyệt vời nhất mà không tốn một xu.
+						  Hãy khám phá ngay!"</p>
 				  </div>
 			  </div>
 			  <div class="col-md-7 col-lg-6 col-xl-5">
@@ -234,11 +234,11 @@
 			  <div class="col-sm-6 col-lg-3">
 				  <div class="intro-wrap">
 					  <div class="intro-icon">
-						  <i class="fas fa-truck"></i>
+						  <i class="fas fa-handshake"></i>
 					  </div>
 					  <div class="intro-content">
-						  <h5>Giao Hàng Tận Nhà Miễn Phí</h5>
-						  <p>Tiện lợi tới tận nhà - Giao hàng miễn phí, trải nghiệm dễ dàng!</p>
+						  <h5>Quản Lý Tài Liệu Miễn Phí</h5>
+						  <p>Quản lý tài liệu hoàn toàn miễn phí, trải nghiệm dễ dàng!</p>
 					  </div>
 				  </div>
 			  </div>
@@ -248,8 +248,8 @@
 						  <i class="fas fa-sync-alt"></i>
 					  </div>
 					  <div class="intro-content">
-						  <h5>Chính Sách Hoàn Trả</h5>
-						  <p>Tự tin mua sắm - Chính sách hoàn trả linh hoạt, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
+						  <h5>Chính Sách Bảo Mật</h5>
+						  <p>Tự tin sử dụng - Chính sách bảo mật an toàn, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
 					  </div>
 				  </div>
 			  </div>
@@ -270,8 +270,8 @@
 						  <i class="fas fa-lock"></i>
 					  </div>
 					  <div class="intro-content">
-						  <h5>Cách Thanh Toán An Toàn</h5>
-						  <p>Thanh toán an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
+						  <h5>Bảo Mật Hệ Thống</h5>
+						  <p>Đăng tải và sử dụng tài liêu an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
 					  </div>
 				  </div>
 			  </div>

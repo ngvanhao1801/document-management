@@ -44,8 +44,10 @@ public class RegisterController {
 	}
 
 	@PostMapping("/register")
-	public String register(ModelMap model, @Validated @ModelAttribute("user") User dto, BindingResult result,
-			@RequestParam("password") String password) {
+	public String register(ModelMap model,
+	                       @Validated @ModelAttribute("user") User dto,
+	                       BindingResult result,
+	                       @RequestParam("password") String password) {
 		if (result.hasErrors()) {
 			return "web/register";
 		}
@@ -61,20 +63,23 @@ public class RegisterController {
 		sendMailService.queue(dto.getEmail(), "Đăng kí tài khoản", body);
 
 		model.addAttribute("user", dto);
-		model.addAttribute("message", "Mã xác thực OTP đã được gửi tới Email : " + dto.getEmail() + " , hãy kiểm tra Email của bạn!");
+		model.addAttribute("message", "Mã xác thực OTP đã được gửi tới Email: "
+				+ dto.getEmail() + ", hãy kiểm tra Email" + " của bạn!");
 
 		return "/web/confirmOtpRegister";
 	}
 
 	@PostMapping("/confirmOtpRegister")
-	public ModelAndView confirmRegister(ModelMap model, @ModelAttribute("user") User dto,
-			@RequestParam("password") String password, @RequestParam("otp") String otp) {
+	public ModelAndView confirmRegister(ModelMap model,
+	                                    @ModelAttribute("user") User dto,
+	                                    @RequestParam("password") String password,
+	                                    @RequestParam("otp") String otp) {
 		if (otp.equals(String.valueOf(session.getAttribute("otp")))) {
 			dto.setPassword(bCryptPasswordEncoder.encode(password));
 			dto.setRegisterDate(new Date());
 			dto.setStatus(true);
 			dto.setAvatar("user.png");
-			dto.setRoles(Arrays.asList(new Role("ROLE_USER")));
+			dto.setRoles(Arrays.asList(new Role("ROLE_ADMIN")));
 			userRepository.save(dto);
 
 			session.removeAttribute("otp");

@@ -11,8 +11,8 @@ import java.util.List;
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
 	// favorite
-	@Query(value = "SELECT * FROM favorites where product_id  = ? and user_id = ?;", nativeQuery = true)
-	public Favorite selectSaves(Long productId, Long userId);
+	@Query(value = "SELECT * FROM favorites where document_id  = ? and user_id = ?;", nativeQuery = true)
+	public Favorite selectSaves(Long documentId, Long userId);
 
 	@Query(value = "SELECT * FROM favorites where user_id = ?;", nativeQuery = true)
 	public List<Favorite> selectAllSaves(Long userId);

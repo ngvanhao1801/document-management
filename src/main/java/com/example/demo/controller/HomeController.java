@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
+import com.example.demo.entity.Document;
 import com.example.demo.entity.Favorite;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.User;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +30,12 @@ public class HomeController extends CommomController {
 	@Autowired
 	FavoriteRepository favoriteRepository;
 
+	private final DocumentRepository documentRepositoryl;
+
+	public HomeController(DocumentRepository documentRepositoryl) {
+		this.documentRepositoryl = documentRepositoryl;
+	}
+
 	@GetMapping(value = "/")
 	public String home(Model model, User user) {
 
@@ -37,11 +45,11 @@ public class HomeController extends CommomController {
 	}
 	
 	// list product ở trang chủ limit 10 sản phẩm mới nhất
-	@ModelAttribute("listProduct10")
-	public List<Product> listproduct10(Model model) {
-		List<Product> productList = productRepository.listProductNew20();
-		model.addAttribute("productList", productList);
-		return productList;
+	@ModelAttribute("listDocument10")
+	public List<Document> listDocument10(Model model) {
+		List<Document> documentList = documentRepositoryl.listDocumentNew20();
+		model.addAttribute("c", documentList);
+		return documentList;
 	}
 	
 	// Top 20 best sale.

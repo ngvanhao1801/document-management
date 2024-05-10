@@ -50,6 +50,8 @@ public class Document implements Serializable {
 
   private String mediaType;
 
+  public boolean favorite;
+
   @OneToMany(mappedBy = "document")
   private List<Version> versions;
 

@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
+import com.example.demo.entity.Document;
 import com.example.demo.entity.Favorite;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.User;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import java.util.List;
 @Controller
 public class FavoriteController extends CommomController {
 
+	private final DocumentRepository documentRepository;
+
 	@Autowired
 	FavoriteRepository favoriteRepository;
 
@@ -25,6 +29,10 @@ public class FavoriteController extends CommomController {
 
 	@Autowired
 	CommomDataService commomDataService;
+
+	public FavoriteController(DocumentRepository documentRepository) {
+		this.documentRepository = documentRepository;
+	}
 
 	@GetMapping(value = "/favorite")
 	public String favorite(Model model, User user) {
@@ -36,22 +44,24 @@ public class FavoriteController extends CommomController {
 
 	@GetMapping(value = "/doFavorite")
 	public String doFavorite(Model model, Favorite favorite, User user, @RequestParam("id") Long id) {
-		Product product = productRepository.findById(id).orElse(null);
-		favorite.setProduct(product);
+		Document document = documentRepository.findById(id).orElse(null);
+		favorite.setDocument(document);
 		favorite.setUser(user);
-		product.setFavorite(true);
+		assert document != null;
+		document.setFavorite(true);
 		favoriteRepository.save(favorite);
 		commomDataService.commonData(model, user);
-		return "redirect:/products";
+		return "redirect:/documents";
 	}
 
 	@GetMapping(value = "/doUnFavorite")
-	public String doUnFavorite(Model model, Product product, User user, @RequestParam("id") Long id) {
+	public String doUnFavorite(Model model, Document document, User user, @RequestParam("id") Long id) {
 		Favorite favorite = favoriteRepository.selectSaves(id, user.getUserId());
-		product = productRepository.findById(id).orElse(null);
-		product.setFavorite(false);
+		document = documentRepository.findById(id).orElse(null);
+		assert document != null;
+		document.setFavorite(false);
 		favoriteRepository.delete(favorite);
 		commomDataService.commonData(model, user);
-		return "redirect:/products";
+		return "redirect:/documents";
 	}
 }

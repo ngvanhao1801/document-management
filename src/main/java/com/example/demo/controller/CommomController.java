@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Category;
+import com.example.demo.entity.Folder;
 import com.example.demo.entity.User;
 import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.FolderRepository;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ import java.util.List;
 
 @Controller
 public class CommomController {
+
+	@Autowired
+	FolderRepository folderRepository;
 
 	@Autowired
 	CategoryRepository categoryRepository;
@@ -43,6 +48,14 @@ public class CommomController {
 		model.addAttribute("categoryList", categoryList);
 
 		return categoryList;
+	}
+
+	@ModelAttribute("folderList")
+	public List<Folder> showFolder(Model model) {
+		List<Folder> folderList = folderRepository.findAll();
+		model.addAttribute("folderList", folderList);
+
+		return folderList;
 	}
 
 }

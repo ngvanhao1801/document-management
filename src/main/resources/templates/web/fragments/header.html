@@ -24,7 +24,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 							<div class="header-select" style="margin-left: 988px;">
 								<i class="icofont-world"></i><select class="select">
 									<option value="vietnam" selected>Việt Nam </option>
-									<option value="english" selected>English </option>
 								</select>
 							</div>
 							&emsp;
@@ -79,8 +78,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 						<a th:href="@{/favorite}" class="header-widget" title="Yêu thích">
 							<i class="fas fa-heart"></i><sup th:text="${totalSave}" id="totalSave">0</sup>
 						</a>
-						<button class="header-widget header-cart" title="Giỏ hàng">
-							<i class="fas fa-shopping-basket"></i> <sup th:text="${totalCartItems}" id="totalCartItems">0</sup>
+						<button class="header-widget header-cart" title="Thêm tài liệu mới">
+							<i class="fas fa-cloud-upload-alt"></i> <sup th:text="${totalCartItems}" id="totalCartItems">0</sup>
 						</button>
 					</div>
 				</div>
@@ -104,16 +103,16 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 									</ul>
 								</li>
 								<li class="navbar-item dropdown">
-									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Sản phẩm</a>
+									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Tài liệu</a>
 									<ul class="dropdown-position-list">
-										<li><a th:href="@{/products}">Tất cả sản phẩm</a></li>
+										<li><a th:href="@{/documents}">Tất cả tài liệu</a></li>
 									</ul>
 								</li>
 								<li class="navbar-item dropdown">
-									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Thể loại</a>
+									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Thư mục</a>
 									<ul class="dropdown-position-list" style="width: 305px;">
-										<li th:each="item : ${categoryList}">
-											<a th:href="@{/productByCategory(id=${item.categoryId})}" >[[${item.categoryName}]]</a>
+										<li th:each="item : ${folderList}">
+											<a th:href="@{/documentByFolder(folderId=${item.folderId})}" >[[${item.folderName}]]</a>
 										</li>
 									</ul>
 								</li>
@@ -143,13 +142,13 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 								<div class="navbar-info">
 									<i class="icofont-ui-touch-phone"></i>
 									<p>
-										<small>Số điện thoại</small><span>0961.394.928</span>
+										<small>Số điện thoại</small><span>0934.406.830</span>
 									</p>
 								</div>
 								<div class="navbar-info">
 									<i class="icofont-ui-email"></i>
 									<p>
-										<small>email</small><span>minhtuantran1621@gmail.com</span>
+										<small>email</small><span>ngohao1801@gmail.com</span>
 									</p>
 								</div>
 							</div>
@@ -174,7 +173,7 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 			<div th:unless="${totalCartItems!=0}" class="text-center">
 				<h4 style="color: #119744" class="mt-5">Hiện tại bạn chưa có sản phẩm nào trong giỏ hàng!</h4>
 				<h5 style="color: #119744">Hãy mua sắm đi nào!</h5>
-				<a th:href="@{/products}" style="text-decoration: underline;">Click tại đây!</a>
+				<a th:href="@{/documents}" style="text-decoration: underline;">Click tại đây!</a>
 			</div>
 			
 			<th:block th:if="${totalCartItems!=0}">

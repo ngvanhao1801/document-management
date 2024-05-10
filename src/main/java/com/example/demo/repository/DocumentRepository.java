@@ -15,19 +15,26 @@ import java.util.List;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	@Query(value = "SELECT * FROM document WHERE folder_id = ?", nativeQuery = true)
-	public List<Product> listDocumentByFolder(Long folderId);
+	public List<Document> listDocumentByFolder(Long folderId);
 
 	// Top 10 product by category
 	@Query(value = "SELECT * FROM document AS b WHERE b.folder_id = ?;", nativeQuery = true)
-	List<Product> listDocumentByFolder10(Long folderId);
+	List<Document> listDocumentByFolder10(Long folderId);
 
 	// List product new
 	@Query(value = "SELECT * FROM document ORDER BY upload_date DESC limit 20;", nativeQuery = true)
-	public List<Product> listDocumentNew20();
+	public List<Document> listDocumentNew20();
 
 	// Search Product
 	@Query(value = "SELECT * FROM document WHERE documentName LIKE %?1%", nativeQuery = true)
-	public List<Product> searchDocument(String documentName);
+	public List<Document> searchDocument(String documentName);
+
+	@Query(value = "SELECT f.folder_id, f.folder_name,\r\n"
+			+ "COUNT(*) AS SoLuong\r\n"
+			+ "FROM document d\r\n"
+			+ "JOIN folder f ON d.folder_id = f.folder_id\r\n"
+			+ "GROUP BY f.folder_name;" , nativeQuery = true)
+	List<Object[]> listFolderByDocumentName();
 
 	// count quantity by product
 	@Query(value = "SELECT f.folder_id,f.folder_name,\r\n"
@@ -44,7 +51,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			+ "JOIN products c ON p.product_id = c.product_id\r\n"
 			+ "GROUP BY p.product_id\r\n"
 			+ "ORDER by SoLuong DESC limit 20;", nativeQuery = true)
-	public List<Object[]> bestSaleProduct20();
+	public List<Object[]> bestSaleDocument20();
 
 	@Query(value = "select * from products o where product_id in :ids", nativeQuery = true)
 	List<Product> findByInventoryIds(@Param("ids") List<Integer> listProductId);

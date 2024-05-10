@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
-import com.example.demo.entity.Favorite;
-import com.example.demo.entity.Product;
-import com.example.demo.entity.User;
+import com.example.demo.entity.*;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
+import com.example.demo.repository.FolderRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -27,6 +28,10 @@ import java.util.stream.IntStream;
 @Controller
 public class ShopController extends CommomController {
 
+	private final DocumentRepository documentRepository;
+
+	private final FolderRepository folderRepository;
+
 	@Autowired
 	ProductRepository productRepository;
 	
@@ -36,14 +41,19 @@ public class ShopController extends CommomController {
 	@Autowired
 	CommomDataService commomDataService;
 
-	@GetMapping(value = "/products")
+	public ShopController(DocumentRepository documentRepository, FolderRepository folderRepository) {
+		this.documentRepository = documentRepository;
+		this.folderRepository = folderRepository;
+	}
+
+	@GetMapping(value = "/documents")
 	public String shop(Model model, Pageable pageable, @RequestParam("page") Optional<Integer> page,
 			@RequestParam("size") Optional<Integer> size, User user) {
 
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(12);
 
-		Page<Product> productPage = findPaginated(PageRequest.of(currentPage - 1, pageSize));
+		Page<Document> productPage = findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
 		int totalPages = productPage.getTotalPages();
 		if (totalPages > 0) {
@@ -52,19 +62,19 @@ public class ShopController extends CommomController {
 		}
 
 		commomDataService.commonData(model, user);
-		model.addAttribute("products", productPage);
+		model.addAttribute("documents", productPage);
 
 		return "web/shop";
 	}
 
-	public Page<Product> findPaginated(Pageable pageable) {
+	public Page<Document> findPaginated(Pageable pageable) {
 
-		List<Product> productPage = productRepository.findAll();
+		List<Document> productPage = documentRepository.findAll();
 
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
-		List<Product> list;
+		List<Document> list;
 
 		if (productPage.size() < startItem) {
 			list = Collections.emptyList();
@@ -73,9 +83,7 @@ public class ShopController extends CommomController {
 			list = productPage.subList(startItem, toIndex);
 		}
 
-		Page<Product> productPages = new PageImpl<Product>(list, PageRequest.of(currentPage, pageSize),productPage.size());
-
-		return productPages;
+		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize),productPage.size());
 	}
 	
 	// search product
@@ -117,36 +125,34 @@ public class ShopController extends CommomController {
 			list = productPage.subList(startItem, toIndex);
 		}
 
-		Page<Product> productPages = new PageImpl<Product>(list, PageRequest.of(currentPage, pageSize),productPage.size());
-
-		return productPages;
+		return new PageImpl<Product>(list, PageRequest.of(currentPage, pageSize),productPage.size());
 	}
 	
 	// list books by category
-	@GetMapping(value = "/productByCategory")
-	public String listProductbyid(Model model, @RequestParam("id") Long id, User user) {
-		List<Product> products = productRepository.listProductByCategory(id);
+	@GetMapping(value = "/documentByFolder")
+	public String listDocumentId(Model model, @RequestParam("folderId") Long folderId, User user) {
+		List<Document> documents = documentRepository.listDocumentByFolder(folderId);
 
-		List<Product> listProductNew = new ArrayList<>();
+		List<Document> listDocumentNew = new ArrayList<>();
 
-		for (Product product : products) {
+		for (Document document : documents) {
 
-			Product productEntity = new Product();
+			Document documentEntity = new Document();
 
-			BeanUtils.copyProperties(product, productEntity);
+			BeanUtils.copyProperties(document, documentEntity);
 
-			Favorite save = favoriteRepository.selectSaves(productEntity.getProductId(), user.getUserId());
+			Favorite save = favoriteRepository.selectSaves(documentEntity.getId(), user.getUserId());
 
 			if (save != null) {
-				productEntity.favorite = true;
+				documentEntity.favorite = true;
 			} else {
-				productEntity.favorite = false;
+				documentEntity.favorite = false;
 			}
-			listProductNew.add(productEntity);
+			listDocumentNew.add(documentEntity);
 
 		}
 
-		model.addAttribute("products", listProductNew);
+		model.addAttribute("documents", listDocumentNew);
 		commomDataService.commonData(model, user);
 		return "web/shop";
 	}

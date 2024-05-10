@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
+import com.example.demo.entity.Document;
 import com.example.demo.entity.Product;
 import com.example.demo.entity.User;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,25 +19,28 @@ public class ProductDetailController extends CommomController{
 	
 	@Autowired
 	ProductRepository productRepository;
+
+	@Autowired
+	DocumentRepository documentRepository;
 	
 	@Autowired
 	CommomDataService commomDataService;
 
-	@GetMapping(value = "productDetail")
-	public String productDetail(@RequestParam("id") Long id, Model model, User user) {
+	@GetMapping(value = "documentDetail")
+	public String documentDetail(@RequestParam("id") Long id, Model model, User user) {
 
-		Product product = productRepository.findById(id).orElse(null);
-		model.addAttribute("product", product);
+		Document document = documentRepository.findById(id).orElse(null);
+		model.addAttribute("document", document);
 
 		commomDataService.commonData(model, user);
-		listProductByCategory10(model, product.getCategory().getCategoryId());
+		listDocumentByFolder10(model, document.getFolder().getFolderId());
 
 		return "web/productDetail";
 	}
 	
 	// Gợi ý top 10 sản phẩm cùng loại
-	public void listProductByCategory10(Model model, Long categoryId) {
-		List<Product> products = productRepository.listProductByCategory10(categoryId);
-		model.addAttribute("productByCategory", products);
+	public void listDocumentByFolder10(Model model, Long folderId) {
+		List<Document> documents = documentRepository.listDocumentByFolder10(folderId);
+		model.addAttribute("countDocumentByFolder", documents);
 	}
 }
