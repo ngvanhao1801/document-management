@@ -1,18 +1,25 @@
 package com.example.demo.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class CartItem {
 
 	private Long id;
+
 	private String name;
+
 	private double unitPrice;
+
 	private int quantity;
+
 	private double totalPrice;
+
 	private Product product;
 }

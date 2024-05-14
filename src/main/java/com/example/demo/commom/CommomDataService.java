@@ -2,6 +2,7 @@ package com.example.demo.commom;
 
 import com.example.demo.entity.CartItem;
 import com.example.demo.entity.Order;
+import com.example.demo.entity.PendingDocument;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
@@ -58,11 +59,11 @@ public class CommomDataService {
 			totalSave = favoriteRepository.selectCountSave(user.getUserId());
 		}
 
-		Integer totalCartItems = shoppingCartService.getCount();
+		Integer totalPendindDocuments = shoppingCartService.getCount();
 
 		model.addAttribute("totalSave", totalSave);
 
-		model.addAttribute("totalCartItems", totalCartItems);
+		model.addAttribute("totalPendindDocuments", totalPendindDocuments);
 
 		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
 		model.addAttribute("cartItems", cartItems);

@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.CartItem;
+import com.example.demo.entity.Document;
+import com.example.demo.entity.PendingDocument;
 import com.example.demo.entity.Product;
 import org.springframework.stereotype.Service;
 

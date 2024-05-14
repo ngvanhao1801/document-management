@@ -62,65 +62,65 @@ public class CartController extends CommomController {
 	public static final String URL_PAYPAL_CANCEL = "pay/cancel";
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	@GetMapping(value = "/shoppingCart_checkout")
-	public String shoppingCart(Model model) {
-
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-		model.addAttribute("cartItems", cartItems);
-		model.addAttribute("total", shoppingCartService.getAmount());
-		double totalPrice = 0;
-		for (CartItem cartItem : cartItems) {
-			double price = cartItem.getQuantity() * cartItem.getProduct().getPrice();
-			totalPrice += price - (price * cartItem.getProduct().getDiscount() / 100);
-		}
-
-		model.addAttribute("totalPrice", totalPrice);
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
-
-		return "shoppingCart-checkout";
-	}
+//	@GetMapping(value = "/shoppingCart_checkout")
+//	public String shoppingCart(Model model) {
+//
+//		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+//		model.addAttribute("cartItems", cartItems);
+//		model.addAttribute("total", shoppingCartService.getAmount());
+//		double totalPrice = 0;
+//		for (CartItem cartItem : cartItems) {
+//			double price = cartItem.getQuantity() * cartItem.getProduct().getPrice();
+//			totalPrice += price - (price * cartItem.getProduct().getDiscount() / 100);
+//		}
+//
+//		model.addAttribute("totalPrice", totalPrice);
+//		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+//
+//		return "shoppingCart-checkout";
+//	}
 
 	// add cartItem
-	@GetMapping(value = "/addToCart")
-	public String add(@RequestParam("productId") Long productId, HttpServletRequest request, Model model) {
+//	@GetMapping(value = "/addToCart")
+//	public String add(@RequestParam("productId") Long productId, HttpServletRequest request, Model model) {
+//
+//		Product product = productRepository.findById(productId).orElse(null);
+//
+//		session = request.getSession();
+//		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+//		if (product != null) {
+//			CartItem item = new CartItem();
+//			BeanUtils.copyProperties(product, item);
+//			item.setQuantity(1);
+//			item.setProduct(product);
+//			item.setId(productId);
+//			shoppingCartService.add(item);
+//		}
+//		session.setAttribute("cartItems", cartItems);
+//		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+//
+//		return "redirect:/documents";
+//	}
 
-		Product product = productRepository.findById(productId).orElse(null);
-
-		session = request.getSession();
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-		if (product != null) {
-			CartItem item = new CartItem();
-			BeanUtils.copyProperties(product, item);
-			item.setQuantity(1);
-			item.setProduct(product);
-			item.setId(productId);
-			shoppingCartService.add(item);
-		}
-		session.setAttribute("cartItems", cartItems);
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
-
-		return "redirect:/products";
-	}
-
-	// delete cartItem
-	@SuppressWarnings("unlikely-arg-type")
-	@GetMapping(value = "/remove/{id}")
-	public String remove(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
-		Product product = productRepository.findById(id).orElse(null);
-
-		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
-		session = request.getSession();
-		if (product != null) {
-			CartItem item = new CartItem();
-			BeanUtils.copyProperties(product, item);
-			item.setProduct(product);
-			item.setId(id);
-			cartItems.remove(session);
-			shoppingCartService.remove(item);
-		}
-		model.addAttribute("totalCartItems", shoppingCartService.getCount());
-		return "redirect:/checkout";
-	}
+//	// delete cartItem
+//	@SuppressWarnings("unlikely-arg-type")
+//	@GetMapping(value = "/remove/{id}")
+//	public String remove(@PathVariable("id") Long id, HttpServletRequest request, Model model) {
+//		Product product = productRepository.findById(id).orElse(null);
+//
+//		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
+//		session = request.getSession();
+//		if (product != null) {
+//			CartItem item = new CartItem();
+//			BeanUtils.copyProperties(product, item);
+//			item.setProduct(product);
+//			item.setId(id);
+//			cartItems.remove(session);
+//			shoppingCartService.remove(item);
+//		}
+//		model.addAttribute("totalCartItems", shoppingCartService.getCount());
+//		return "redirect:/checkout";
+//	}
 
 	// show check out
 	@GetMapping(value = "/checkout")
