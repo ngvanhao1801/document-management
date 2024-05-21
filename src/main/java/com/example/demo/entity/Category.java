@@ -24,12 +24,11 @@ import java.io.Serializable;
 @NamedNativeQuery(
 		name = "getProductOrderCategories",
 		resultSetMapping = "chartCategoryDTO",
-		query = "select c.category_name as label, count(od.quantity) as value from categories c " +
-				"inner join products p on p.category_id = c.category_id " +
-				"inner join order_details od on od.product_id = p.product_id " +
-				"inner join orders o on od.order_id = o.order_id " +
-				"where o.status = 2 " +
-				"group by c.category_id "
+		query = "select c.category_name as label, count(d.id) as value from categories c\n" +
+				"inner join folder f on f.category_id = c.category_id \n" +
+				"inner join document d on d.folder_id = f.folder_id\n" +
+				"where d.status_id = 1\n" +
+				"group by c.category_id;"
 )
 
 @Getter

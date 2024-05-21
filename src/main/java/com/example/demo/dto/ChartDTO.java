@@ -1,15 +1,15 @@
 package com.example.demo.dto;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ChartDTO {
-    private String label;
-    private int value;
 
-    public ChartDTO(String label, int value) {
-        this.label = label;
-        this.value = value;
-    }
+  private String label;
+
+  private int value;
 
 }

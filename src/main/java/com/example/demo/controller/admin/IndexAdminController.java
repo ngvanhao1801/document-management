@@ -2,10 +2,7 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.dto.ChartDTO;
 import com.example.demo.entity.User;
-import com.example.demo.repository.CategoryRepository;
-import com.example.demo.repository.OrderRepository;
-import com.example.demo.repository.ProductRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,6 +31,9 @@ public class IndexAdminController{
 
 	@Autowired
 	ProductRepository productRepository;
+
+	@Autowired
+	DocumentRepository documentRepository;
 
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
@@ -76,8 +76,8 @@ public class IndexAdminController{
 	// dem so luong sp
 	@GetMapping("/api/admin/count/products")
 	public ResponseEntity<Object> getCountProduct(){
-		long countProducts = productRepository.count();
-		return ResponseEntity.ok(countProducts);
+		long countDocuments = documentRepository.count();
+		return ResponseEntity.ok(countDocuments);
 	}
 
 //	@GetMapping("/api/admin/statistics")
@@ -99,10 +99,8 @@ public class IndexAdminController{
 	}
 
 	@GetMapping("/api/admin/product-order")
-	public ResponseEntity<Object> getProductOrder(){
-		Pageable pageable = PageRequest.of(0,10);
-		Date date = new Date();
-		List<ChartDTO> chartDTOS = productRepository.getProductOrders(pageable, date.getMonth() +1, date.getYear() + 1900);
+	public ResponseEntity<Object> getDocumentFavourite(){
+		List<ChartDTO> chartDTOS = documentRepository.getDocumentByFavorite();
 		return ResponseEntity.ok(chartDTOS);
 	}
 }

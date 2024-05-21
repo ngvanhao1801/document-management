@@ -56,7 +56,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	@Query(value = "select * from products o where product_id in :ids", nativeQuery = true)
 	List<Product> findByInventoryIds(@Param("ids") List<Integer> listProductId);
 
-	@Query(name = "getProductOrders", nativeQuery = true)
-	List<ChartDTO> getProductOrders(Pageable pageable, Integer moth, Integer year);
+	@Query(name = "getDocumentFavourite", nativeQuery = true)
+	List<ChartDTO> getDocumentByFavorite();
 
 }

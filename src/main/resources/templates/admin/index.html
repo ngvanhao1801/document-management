@@ -393,13 +393,13 @@
 								</div>
 								<div class="widget-summary-col">
 									<div class="summary">
-										<h4 class="title">Tổng số sản phẩm</h4>
+										<h4 class="title">Tổng số tài liệu</h4>
 										<div class="info">
 											<strong class="amount" id="product-count"></strong>
 										</div>
 									</div>
 									<div class="summary-footer">
-										<a class="text-muted text-uppercase" href="/admin/products">(Xem chi tiết)</a>
+										<a class="text-muted text-uppercase" href="/admin/documents">(Xem chi tiết)</a>
 									</div>
 								</div>
 							</div>
@@ -419,7 +419,7 @@
 								</div>
 								<div class="widget-summary-col">
 									<div class="summary">
-										<h4 class="title">Tổng số đơn hàng</h4>
+										<h4 class="title">Tổng số tài liệu chờ kiểm duyệt</h4>
 										<div class="info">
 											<strong class="amount" id="order-count"></strong>
 										</div>
@@ -467,7 +467,7 @@
 						<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 						<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
 					</div>
-					<h2 class="card-title">Số lượng Sản phẩm được mua theo danh mục</h2>
+					<h2 class="card-title">Số lượng Tài liệu theo Danh mục</h2>
 				</header>
 				<div class="card-body">
 					<canvas id="barChart"></canvas>
@@ -481,7 +481,7 @@
 						<a href="#" class="card-action card-action-toggle" data-card-toggle></a>
 						<a href="#" class="card-action card-action-dismiss" data-card-dismiss></a>
 					</div>
-					<h2 class="card-title">10 Sản phẩm bán chạy nhất trong tháng</h2>
+					<h2 class="card-title">10 Tài liệu được xem nhiều nhất</h2>
 				</header>
 				<div class="card-body">
 					<canvas id="myChartProduct"></canvas>
@@ -638,7 +638,7 @@
 		let dataProduct = {
 			labels: labelChartProductOrdered,
 			datasets: [{
-				label: 'Số lượng sản phẩm',
+				label: 'Số lượng tài liệu',
 				data: dataChartProductOrdered,
 				backgroundColor: [
 					'rgb(255, 99, 132)',

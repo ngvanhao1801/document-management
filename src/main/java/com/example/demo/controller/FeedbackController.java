@@ -23,32 +23,32 @@ public class FeedbackController {
 		this.feedbackRepository = feedbackRepository;
 	}
 
-	@GetMapping(value = "/feedbacks")
-	public List<?> getListComment(@RequestParam("id") Long id,
-	                              Model model) {
+//	@GetMapping(value = "/feedbacks")
+//	public List<?> getListComment(@RequestParam("id") Long id,
+//	                              Model model) {
+//
+//		List<Feedback> listComment = feedbackRepository.listCommentByDocument(id);
+//		model.addAttribute("comments", listComment);
+//
+//		return listComment;
+//	}
 
-		List<Feedback> listComment = feedbackRepository.listCommentByDocument(id);
-		model.addAttribute("comments", listComment);
-
-		return listComment;
-	}
-
-	@PostMapping(value = "/addFeedback")
-	public String addFeedback(@Validated @ModelAttribute("feedback") Feedback feedback,
-	                          ModelMap model,
-	                          BindingResult bindingResult) {
-
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("error", "failure");
-
-			return "web/shop";
-		}
-
-		feedbackRepository.save(feedback);
-		model.addAttribute("message", "successful!");
-
-		return "redirect:/feedbacks";
-
-	}
+//	@PostMapping(value = "/addFeedback")
+//	public String addFeedback(@Validated @ModelAttribute("feedback") Feedback feedback,
+//	                          ModelMap model,
+//	                          BindingResult bindingResult) {
+//
+//		if (bindingResult.hasErrors()) {
+//			model.addAttribute("error", "failure");
+//
+//			return "web/shop";
+//		}
+//
+//		feedbackRepository.save(feedback);
+//		model.addAttribute("message", "successful!");
+//
+//		return "redirect:/feedbacks";
+//
+//	}
 
 }
