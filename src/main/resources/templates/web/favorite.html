@@ -52,68 +52,76 @@
       </div>
     </section>
     <section class="inner-section wishlist-part">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="table-scroll">
-            	<div th:unless="${totalSave!=0}" class="text-center">
-					<h3 style="color: #119744" class="mt-5">Hiện tại bạn chưa có tài liệu yêu thích nào!</h3>
-					<h4 style="color: #119744">Hãy tham khảo các tài liệu nào!</h4>
-					<a th:href="@{/documents}" style="text-decoration: underline;">Click tại đây!</a>
-				</div>
-              <table class="table-list" th:if="${totalSave!=0}">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Sản phẩm</th>
-                    <th scope="col">Tên</th>
-                    <th scope="col">Đơn giá</th>
-                    <th scope="col">Trạng thái</th>
-                    <th scope="col">Thêm giỏ hàng</th>
-                    <th scope="col">Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr th:each="item,iState : ${favorites}">
-                    <td class="table-serial"><h6>[[${iState.index + 1}]]</h6></td>
-                    <td class="table-image">
-                      <img th:src="@{'/loadImage?imageName='+${item.document.documentImage}}" alt="document" />
-                    </td>
-                    <td class="table-name"><h6>[[${item.document.documentName}]]</h6></td>
-                    <td class="table-price">
-                      <h6>[[${#numbers.formatDecimal(item.product.price - (item.product.price * item.product.discount/100), 1, 'DEFAULT', 0, 'DEFAULT')}+' đ']]</h6>
-                    </td>
-                    <td class="table-status">
-                      <h6 class="stock-out" style="color: #119744">[[${item.product.quantity>0}?'Sản phẩm đang còn' : 'Đã hết hàng']]</h6>
-                    </td>
-                    <td class="table-shop">
-                      <a class="product-add1" title="Thêm giỏ hàng" th:href="@{/addToCart(productId=${item.product.productId})}">
-                        Thêm giỏ hàng
-                      </a>
-                      
-                    </td>
-                    <td class="table-action">
-                      <a
-                        class="view"
-                        th:href="@{/productDetail(id=${item.product.productId})}"
-                        title="Chi tiết sản phẩm">
-	                    <i class="fas fa-eye"></i>
-                      </a>
-                        
-                      <a class="trash" 
-                      	 th:href="@{/doUnFavorite(id=${item.product.productId})}"
-                      	 title="Xóa yêu thích">
-                        <i class="icofont-trash"></i>
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12 d-flex justify-content-center">
+                    <div class="table-scroll">
+                        <div th:unless="${totalSave!=0}" class="text-center">
+                            <h3 style="color: #119744" class="mt-5">Hiện tại bạn chưa có tài liệu yêu thích nào!</h3>
+                            <h4 style="color: #119744">Hãy tham khảo các tài liệu nào!</h4>
+                            <a th:href="@{/documents}" style="text-decoration: underline;">Click tại đây!</a>
+                        </div>
+                        <table class="table-list" th:if="${totalSave!=0}">
+                            <thead>
+                            <tr>
+                                <th scope="col">Mã tài liệu</th>
+                                <th scope="col">Ảnh</th>
+                                <th scope="col">File</th>
+                                <th scope="col">Tên tài liệu</th>
+                                <th scope="col">Người đăng tải</th>
+                                <th scope="col">Tên thư mục</th>
+                                <th scope="col">Ngày thêm</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Mô tả tài liệu</th>
+                                <th scope="col" style="width: 10%">Hành động</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="item,iState : ${favorites}">
+                                <td class="table-serial"><h6>[[${iState.index + 1}]]</h6></td>
+                                <td class="table-image">
+                                    <img th:src="@{'/loadImage?imageName='+${item.document.documentImage}}" alt="document" />
+                                </td>
+                                <td>
+                                    <object th:data="@{'/loadFile?fileName='+${item.document.documentFile}}"
+                                            type="application/pdf,
+                                                            application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                                            application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                                                            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                                            width="100%" height="600px">
+                                        <p>Bấm <a th:href="@{'/loadFile?fileName=' + ${item.document.documentFile}}"> vào đây </a> để xem trực tiếp.</p>
+                                    </object>
+                                </td>
+                                <td class="table-name"><h6>[[${item.document.documentName}]]</h6></td>
+                                <td class="table-price"><h6>[[${item.document.user.name}]]</h6></td>
+                                <td class="table-folder"><h6>[[${item.document.folder.folderName}]]</h6></td>
+                                <td class="table-uploadDate"><h6>[[${item.document.uploadDate}]]</h6></td>
+                                <td class="table-status">
+                                    <h6>[[${item.document.documentStatus.statusName}]]</h6>
+                                </td>
+                                <td class="table-description">
+                                    <h6>[[${item.document.description}]]</h6>
+                                </td>
+                                <td class="table-action">
+                                    <a
+                                            class="view"
+                                            th:href="@{/documentDetails(id=${item.document.id})}"
+                                            title="Chi tiết tài liệu">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a class="trash"
+                                       th:href="@{/doUnFavorite(id=${item.document.id})}"
+                                       title="Xóa yêu thích">
+                                        <i class="icofont-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-        
-      </div>
     </section>
 
     <section class="news-part"

@@ -26,12 +26,6 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 									<option value="vietnam" selected>Việt Nam </option>
 								</select>
 							</div>
-							&emsp;
-							<div class="header-select">
-								<i class="icofont-money"></i><select class="select">
-									<option value="vnd" selected>vnđ</option>
-								</select>
-							</div>
 						</div>
 					</div>
 				</div>
@@ -58,11 +52,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 					<th:block th:if="${#request.remoteUser}">
 						<a href="javascript:void(0);" class="header-widget" title="Tên của bạn">
 							<img src="/images/user.png" alt="user" />
-							<span>Hi!<strong><em>  [[${user.name}]]</em></strong></span>
+							<span>Hi!<strong><em> [[${user.name}]]</em></strong></span>
 						</a>
 					</th:block>
 					
-					<form th:action="@{/searchProduct}" class="header-form">
+					<form th:action="@{/searchDocument}" class="header-form">
 						<input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm kiếm..." autocomplete="off" />
 						<button>
 							<i class="fas fa-search"></i>

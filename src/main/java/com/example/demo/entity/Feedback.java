@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,7 +21,9 @@ public class Feedback implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
-  private int documentId;
+  @ManyToOne
+  @JoinColumn(name = "documentId")
+  private Document document;
 
   @ManyToOne
   @JoinColumn(name = "userId")
@@ -29,5 +32,8 @@ public class Feedback implements Serializable {
   private String comment;
 
   private String rate;
+
+  @Temporal(TemporalType.DATE)
+  private Date createdAt;
 
 }

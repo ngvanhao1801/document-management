@@ -26,7 +26,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	public List<Document> listDocumentNew20();
 
 	// Search Product
-	@Query(value = "SELECT * FROM document WHERE documentName LIKE %?1%", nativeQuery = true)
+	@Query(value = "SELECT * FROM document WHERE document_name LIKE %?1%", nativeQuery = true)
 	public List<Document> searchDocument(String documentName);
 
 	@Query(value = "SELECT f.folder_id, f.folder_name,\r\n"

@@ -86,46 +86,50 @@ public class ShopController extends CommomController {
 		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize),productPage.size());
 	}
 	
-	// search product
-	@GetMapping(value = "/searchProduct")
-	public String showsearch(Model model, Pageable pageable, @RequestParam("keyword") String keyword,
-			@RequestParam("size") Optional<Integer> size, @RequestParam("page") Optional<Integer> page,
-			User user) {
+	// search document
+	@GetMapping(value = "/searchDocument")
+	public String showSearch(Model model,
+	                         Pageable pageable,
+	                         @RequestParam("keyword") String keyword,
+	                         @RequestParam("size") Optional<Integer> size,
+	                         @RequestParam("page") Optional<Integer> page,
+	                         User user) {
 	
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(12);
 
-		Page<Product> productPage = findPaginatSearch(PageRequest.of(currentPage - 1, pageSize), keyword);
+		Page<Document> documentPage = findPaginatSearch(PageRequest.of(currentPage - 1, pageSize), keyword);
 
-		int totalPages = productPage.getTotalPages();
+		int totalPages = documentPage.getTotalPages();
 		if (totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
 
 		commomDataService.commonData(model, user);
-		model.addAttribute("products", productPage);
+		model.addAttribute("documents", documentPage);
 		return "web/shop";
 	}
 	
 	// search product
-	public Page<Product> findPaginatSearch(Pageable pageable, @RequestParam("keyword") String keyword) {
+	public Page<Document> findPaginatSearch(Pageable pageable,
+	                                       @RequestParam("keyword") String keyword) {
 
-		List<Product> productPage = productRepository.searchProduct(keyword);
+		List<Document> documentPage = documentRepository.searchDocument(keyword);
 
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
-		List<Product> list;
+		List<Document> list;
 
-		if (productPage.size() < startItem) {
+		if (documentPage.size() < startItem) {
 			list = Collections.emptyList();
 		} else {
-			int toIndex = Math.min(startItem + pageSize, productPage.size());
-			list = productPage.subList(startItem, toIndex);
+			int toIndex = Math.min(startItem + pageSize, documentPage.size());
+			list = documentPage.subList(startItem, toIndex);
 		}
 
-		return new PageImpl<Product>(list, PageRequest.of(currentPage, pageSize),productPage.size());
+		return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize),documentPage.size());
 	}
 	
 	// list books by category

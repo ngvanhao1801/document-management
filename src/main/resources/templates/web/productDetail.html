@@ -3,19 +3,14 @@
 <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 <head>
     <meta charset="UTF-8"/>
-    <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <meta name="author" content="mironcoder"/>
     <meta name="email" content="mironcoder@gmail.com"/>
     <meta name="profile" content="https://themeforest.net/user/mironcoder"/>
     <meta name="template" content="greeny"/>
     <meta name="title" content="greeny - Ecommerce Food Store HTML Template"/>
-    <meta
-            name="keywords"
-            content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online"
-    />
+    <meta name="keywords"
+          content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online"/>
     <title>Document Management System</title>
     <link rel="icon" href="images/favicon.png"/>
     <link rel="stylesheet" href="fonts/flaticon/flaticon.css"/>
@@ -67,31 +62,15 @@
                         <span>[[${document.documentName}]]</span>
                     </h3>
 
-                    <div class="details-rating">
-                        <i class="active icofont-star"></i
-                        ><i class="active icofont-star"></i
-                    ><i class="active icofont-star"></i
-                    ><i class="active icofont-star"></i>
-                        <i class="icofont-star"></i>
-                    </div>
-
                     <div class="details-meta">
                         <p> Người đăng tải: <span>[[${document.user.name}]]</span></p>
                     </div>
                     <div class="details-meta">
-                        <p>
-                            Tên danh mục: &nbsp;&nbsp;&nbsp;&nbsp;<span
-                        >[[${categoryName}]]</span
-                        >
-                        </p>
+                        <p> Tên danh mục: &nbsp;&nbsp;&nbsp;&nbsp;<span>[[${categoryName}]]</span></p>
                     </div>
 
                     <div class="details-meta">
-                        <p>
-                            Tên thư mục: &nbsp;&nbsp;&nbsp;&nbsp;<span
-                        >[[${document.folder.folderName}]]</span
-                        >
-                        </p>
+                        <p>Tên thư mục: &nbsp;&nbsp;&nbsp;&nbsp;<span>[[${document.folder.folderName}]]</span></p>
                     </div>
 
                     <div class="details-meta">
@@ -113,44 +92,27 @@
                         <label class="details-list-title">Share:</label>
                         <ul class="details-share-list">
                             <li>
-                                <a
-                                        href="javascript:void(0);"
-                                        class="icofont-facebook"
-                                        title="Facebook"
-                                ></a>
+                                <a href="javascript:void(0);" class="icofont-facebook" title="Facebook"></a>
                             </li>
                             <li>
-                                <a
-                                        href="javascript:void(0);"
-                                        class="icofont-twitter"
-                                        title="Twitter"
-                                ></a>
+                                <a href="javascript:void(0);" class="icofont-twitter" title="Twitter"></a>
                             </li>
                             <li>
-                                <a
-                                        href="javascript:void(0);"
-                                        class="icofont-linkedin"
-                                        title="Linkedin"
-                                ></a>
+                                <a href="javascript:void(0);" class="icofont-linkedin" title="Linkedin"></a>
                             </li>
                             <li>
-                                <a
-                                        href="javascript:void(0);"
-                                        class="icofont-instagram"
-                                        title="Instagram"
-                                ></a>
+                                <a href="javascript:void(0);" class="icofont-instagram" title="Instagram"></a>
                             </li>
                         </ul>
                     </div>
 
                     <div class="details-action-group">
-                        <th:block href="/login" th:if="${user.email == null}">
+                        <th:block th:if="${user.email == null}">
                             <a
                                     title="Hãy đăng nhập"
                                     th:href="@{/login}"
                                     href="javascript:void(0);"
-                                    class="details-wish">
-
+                                    class="details-wish action-button">
                                 <i class="icofont-heart"></i>
                                 <span>Thêm yêu thích</span>
                             </a>
@@ -159,23 +121,47 @@
                             <a th:if="${document.favorite} == false"
                                title="Yêu thích"
                                th:href="@{/doFavorite(id=${document.id})}"
-                               class="details-wish">
+                               style="background-color: rgba(167,231,209,0.45)"
+                               class="details-wish action-button">
                                 <i class="icofont-heart"></i>
-                                <span>Thêm yêu thích</span>
+                                <span style="color: #0c0303">Thêm yêu thích</span>
                             </a>
-
                             <a th:if="${document.favorite} == true"
                                title="Xóa Yêu thích"
                                th:href="@{/doUnFavorite(id=${document.id})}"
-                               style="background-color: #fd7e14"
-                               class="fas fa-heart">
+                               style="background-color: rgba(167,231,209,0.45)"
+                               class="action-button">
+                                <i class="fas fa-heart"></i>
+                                <span style="color: #0c0303">Xóa Yêu thích</span>
                             </a>
                         </th:block>
+                        <a th:href="@{'/loadFile?fileName=' + ${document.documentFile}}"
+                           class="action-button"
+                           style="background-color: rgba(167,231,209,0.45)">
+                            <i class="fas fa-file"></i>
+                            <span style="color: #0c0303">Xem trực tiếp tài liệu</span>
+                        </a>
+                        <a href="javascript:void(0);"
+                           class="action-button"
+                           style="background-color: rgba(167,231,209,0.45)"
+                           onclick="showCommentPopup()">
+                            <i class="fas fa-comment"></i>
+                            <span style="color: #0c0303">Bình luận</span>
+                        </a>
+                    </div>
+                    <div id="commentPopup" class="popup">
+                        <div class="popup-content">
+                            <span class="close" onclick="closeCommentPopup()">&times;</span>
+                            <h2>Viết bình luận</h2>
+                            <textarea id="commentText" rows="4" cols="50"></textarea>
+                            <div class="popup-buttons">
+                                <button onclick="submitComment()">Thêm</button>
+                                <button onclick="closeCommentPopup()">Hủy</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 </section>
 <section class="section newitem-part">
     <div class="container">
@@ -221,17 +207,17 @@
                                 </h6>
                                 <div class="product-widget">
                                     <th:block href="/login" th:if="${user.email == null}">
-                                        <a title="Hãy đăng nhập" th:href="@{/login}" class="fas fa-heart" ></a>
+                                        <a title="Hãy đăng nhập" th:href="@{/login}" class="fas fa-heart"></a>
                                     </th:block>
                                     <th:block th:if="${user.email != null}">
                                         <a th:if="${document.favorite} == false" title="Yêu thích"
-                                                th:href="@{/doFavorite(id=${item.id})}"
-                                                class="fas fa-heart">
+                                           th:href="@{/doFavorite(id=${item.id})}"
+                                           class="fas fa-heart">
                                         </a>
                                         <a th:if="${document.favorite} == true" title="Xóa Yêu thích"
-                                                th:href="@{/doUnFavorite(id=${item.id})}"
-                                                style="background-color: #fd7e14"
-                                                class="fas fa-heart">
+                                           th:href="@{/doUnFavorite(id=${item.id})}"
+                                           style="background-color: #fd7e14"
+                                           class="fas fa-heart">
                                         </a>
                                     </th:block>
                                     <a title="Chi tiết sản phẩm"
@@ -340,6 +326,21 @@
 <!--************************************
             Footer End
     *************************************-->
+<script>function showCommentPopup() {
+    document.getElementById("commentPopup").style.display = "block";
+}
+
+function closeCommentPopup() {
+    document.getElementById("commentPopup").style.display = "none";
+}
+
+function submitComment() {
+    var commentText = document.getElementById("commentText").value;
+// Here you can handle the comment submission (e.g., send it to the server)
+    console.log("Comment submitted: " + commentText);
+    closeCommentPopup();
+}
+</script>
 
 <script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
 <script src="vendor/bootstrap/popper.min.js"></script>

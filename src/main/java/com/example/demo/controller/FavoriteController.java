@@ -3,11 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.commom.CommomDataService;
 import com.example.demo.entity.Document;
 import com.example.demo.entity.Favorite;
-import com.example.demo.entity.Product;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
-import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,9 +21,6 @@ public class FavoriteController extends CommomController {
 
 	@Autowired
 	FavoriteRepository favoriteRepository;
-
-	@Autowired
-	ProductRepository productRepository;
 
 	@Autowired
 	CommomDataService commomDataService;

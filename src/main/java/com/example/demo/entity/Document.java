@@ -4,11 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.http.MediaType;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.rmi.MarshalException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,7 +51,7 @@ public class Document implements Serializable {
 
   public boolean favorite;
 
-  @OneToMany(mappedBy = "document")
-  private List<Version> versions;
+  @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Feedback> feedbacks = new ArrayList<>();
 
 }
