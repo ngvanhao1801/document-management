@@ -1,10 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
-import com.example.demo.entity.*;
+import com.example.demo.entity.Document;
+import com.example.demo.entity.Favorite;
+import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
-import com.example.demo.repository.FolderRepository;
 import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
@@ -30,25 +30,25 @@ public class ShopController extends CommomController {
 
 	private final DocumentRepository documentRepository;
 
-	private final FolderRepository folderRepository;
-
 	@Autowired
 	ProductRepository productRepository;
-	
+
 	@Autowired
 	FavoriteRepository favoriteRepository;
-	
+
 	@Autowired
 	CommomDataService commomDataService;
 
-	public ShopController(DocumentRepository documentRepository, FolderRepository folderRepository) {
+	public ShopController(DocumentRepository documentRepository) {
 		this.documentRepository = documentRepository;
-		this.folderRepository = folderRepository;
 	}
 
 	@GetMapping(value = "/documents")
-	public String shop(Model model, Pageable pageable, @RequestParam("page") Optional<Integer> page,
-			@RequestParam("size") Optional<Integer> size, User user) {
+	public String shop(Model model,
+	                   Pageable pageable,
+	                   @RequestParam("page") Optional<Integer> page,
+	                   @RequestParam("size") Optional<Integer> size,
+	                   User user) {
 
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(12);
@@ -83,9 +83,9 @@ public class ShopController extends CommomController {
 			list = productPage.subList(startItem, toIndex);
 		}
 
-		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize),productPage.size());
+		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), productPage.size());
 	}
-	
+
 	// search document
 	@GetMapping(value = "/searchDocument")
 	public String showSearch(Model model,
@@ -94,7 +94,7 @@ public class ShopController extends CommomController {
 	                         @RequestParam("size") Optional<Integer> size,
 	                         @RequestParam("page") Optional<Integer> page,
 	                         User user) {
-	
+
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(12);
 
@@ -110,10 +110,10 @@ public class ShopController extends CommomController {
 		model.addAttribute("documents", documentPage);
 		return "web/shop";
 	}
-	
+
 	// search product
 	public Page<Document> findPaginatSearch(Pageable pageable,
-	                                       @RequestParam("keyword") String keyword) {
+	                                        @RequestParam("keyword") String keyword) {
 
 		List<Document> documentPage = documentRepository.searchDocument(keyword);
 
@@ -129,9 +129,9 @@ public class ShopController extends CommomController {
 			list = documentPage.subList(startItem, toIndex);
 		}
 
-		return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize),documentPage.size());
+		return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
 	}
-	
+
 	// list books by category
 	@GetMapping(value = "/documentByFolder")
 	public String listDocumentId(Model model, @RequestParam("folderId") Long folderId, User user) {

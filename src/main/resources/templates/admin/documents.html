@@ -104,7 +104,7 @@
                                                         <div class="form-group form-group-default">
                                                             <label>Tên tài liệu <span
                                                                     style="color: red">*</span></label>
-                                                            <input th:field="*{documentName}" id="productName"
+                                                            <input th:field="*{documentName}" id="documentName"
                                                                    type="text" class="form-control"
                                                                    placeholder="Tên tài liệu...">
                                                         </div>
@@ -244,7 +244,8 @@
                                                             application/vnd.openxmlformats-officedocument.presentationml.presentation,
                                                             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                     width="100%" height="600px">
-                                                <p>Bấm <a th:href="@{'/loadFile?fileName=' + ${item.documentFile}}"> vào đây </a> để xem trực tiếp.</p>
+                                                <a th:href="@{'/loadFile?fileName=' + ${item.documentFile}}"> Xem trực
+                                                    tiếp tài liệu </a>
                                             </object>
                                         </td>
                                         <td>[[${item.documentName}]]</td>
@@ -273,41 +274,41 @@
                                     </tbody>
                                 </table>
 
-<!--                                <script>-->
-<!--                                    function openPdfViewer(pdfUrl) {-->
-<!--                                        window.open(pdfUrl, '_blank');-->
-<!--                                    }-->
-<!--                                </script>-->
+                                <!--                                <script>-->
+                                <!--                                    function openPdfViewer(pdfUrl) {-->
+                                <!--                                        window.open(pdfUrl, '_blank');-->
+                                <!--                                    }-->
+                                <!--                                </script>-->
 
-<!--                                <script>-->
-<!--                                    // Khối JavaScript để hiển thị PDF-->
-<!--                                    // Đường dẫn đến tệp PDF-->
-<!--                                    var pdfViewers = document.querySelectorAll('.pdf-viewer');-->
-<!--                                    pdfViewers.forEach(function (pdfViewer) {-->
-<!--                                        var pdfUrl = pdfViewer.getAttribute('data-pdf-url');-->
+                                <!--                                <script>-->
+                                <!--                                    // Khối JavaScript để hiển thị PDF-->
+                                <!--                                    // Đường dẫn đến tệp PDF-->
+                                <!--                                    var pdfViewers = document.querySelectorAll('.pdf-viewer');-->
+                                <!--                                    pdfViewers.forEach(function (pdfViewer) {-->
+                                <!--                                        var pdfUrl = pdfViewer.getAttribute('data-pdf-url');-->
 
-<!--                                        // Tải tệp PDF và hiển thị nó trong container-->
-<!--                                        PDFJS.getDocument(pdfUrl).promise.then(function (pdf) {-->
-<!--                                            pdf.getPage(1).then(function (page) {-->
-<!--                                                var scale = 1.5;-->
-<!--                                                var viewport = page.getViewport({scale: scale});-->
+                                <!--                                        // Tải tệp PDF và hiển thị nó trong container-->
+                                <!--                                        PDFJS.getDocument(pdfUrl).promise.then(function (pdf) {-->
+                                <!--                                            pdf.getPage(1).then(function (page) {-->
+                                <!--                                                var scale = 1.5;-->
+                                <!--                                                var viewport = page.getViewport({scale: scale});-->
 
-<!--                                                var canvas = document.createElement('canvas');-->
-<!--                                                var context = canvas.getContext('2d');-->
-<!--                                                canvas.height = viewport.height;-->
-<!--                                                canvas.width = viewport.width;-->
+                                <!--                                                var canvas = document.createElement('canvas');-->
+                                <!--                                                var context = canvas.getContext('2d');-->
+                                <!--                                                canvas.height = viewport.height;-->
+                                <!--                                                canvas.width = viewport.width;-->
 
-<!--                                                var renderContext = {-->
-<!--                                                    canvasContext: context,-->
-<!--                                                    viewport: viewport-->
-<!--                                                };-->
+                                <!--                                                var renderContext = {-->
+                                <!--                                                    canvasContext: context,-->
+                                <!--                                                    viewport: viewport-->
+                                <!--                                                };-->
 
-<!--                                                page.render(renderContext);-->
-<!--                                                pdfViewer.appendChild(canvas);-->
-<!--                                            });-->
-<!--                                        });-->
-<!--                                    });-->
-<!--                                </script>-->
+                                <!--                                                page.render(renderContext);-->
+                                <!--                                                pdfViewer.appendChild(canvas);-->
+                                <!--                                            });-->
+                                <!--                                        });-->
+                                <!--                                    });-->
+                                <!--                                </script>-->
 
                                 <script>
                                     function showConfigModalDialog(id, name) {
@@ -368,7 +369,7 @@
                     </ul>
                 </nav>
                 <div class="copyright ml-auto">
-                        2023, made with <i class="fa fa-heart heart text-danger"></i> by <a href="javascript:void(0);">DOCUMENT MANAGEMENT SYSTEM</a>
+                    2024, made with <i class="fa fa-heart heart text-danger"></i> by <a href="javascript:void(0);">DOCUMENT-MANAGEMENT</a>
                 </div>
             </div>
         </footer>

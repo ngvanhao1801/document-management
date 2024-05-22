@@ -149,11 +149,7 @@
                                     </a>
                                     <div class="product-widget">
                                         <th:block href="/login" th:if="${user.email == null}">
-                                            <a
-                                                    title="Hãy đăng nhập"
-                                                    th:href="@{/login}"
-                                                    class="fas fa-heart">
-                                            </a>
+                                            <a title="Hãy đăng nhập" th:href="@{/login}" class="fas fa-heart"></a>
                                         </th:block>
                                         <th:block th:if="${user.email != null}">
                                             <a th:if="${item.favorite} == false"

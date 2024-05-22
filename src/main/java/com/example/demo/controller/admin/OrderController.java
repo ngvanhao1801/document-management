@@ -45,6 +45,12 @@ public class OrderController {
 	@Autowired
 	UserRepository userRepository;
 
+	@Autowired
+	PendingDocumentRepository pendingDocumentRepository;
+	
+	@Autowired
+	DocumentStatusRepository documentStatusRepository;
+
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
 
@@ -59,16 +65,16 @@ public class OrderController {
 
 	// list order
 	@GetMapping(value = "/orders")
-	public String orders(Model model, Principal principal) {
+	public String documentPending(Model model, Principal principal) {
 
-		List<Order> orderDetails = orderRepository.findAll();
-		model.addAttribute("orderDetails", orderDetails);
+		List<PendingDocument> pendingDocuments = pendingDocumentRepository.findAll();
+		model.addAttribute("pendingDocuments", pendingDocuments);
 
 		return "admin/orders";
 	}
 
-	@GetMapping("/order/detail/{order_id}")
-	public ModelAndView detail(ModelMap model, @PathVariable("order_id") Long id) {
+	@GetMapping("/order/detail/{id}")
+	public ModelAndView detail(ModelMap model, @PathVariable("id") Long id) {
 
 		List<OrderDetail> listO = orderDetailRepository.findByOrderId(id);
 
@@ -80,71 +86,115 @@ public class OrderController {
 		return new ModelAndView("admin/editOrder", model);
 	}
 
-	@RequestMapping("/order/cancel/{order_id}")
+	@RequestMapping("/order/cancel/{id}")
 	@Transactional
-	public ModelAndView cancel(ModelAndView model, @PathVariable("order_id") Long id) {
-		Optional<Order> optionalOrder = orderRepository.findById(id);
-		if (optionalOrder == null) {
+	public ModelAndView cancel(ModelAndView model, @PathVariable("id") Long id) {
+//		Optional<Order> optionalOrder = orderRepository.findById(id);
+//		if (optionalOrder == null) {
+//			return new ModelAndView("forward:/admin/orders");
+//		}
+//		Order oReal = optionalOrder.get();
+//		oReal.setStatus((short) 3);
+//		orderRepository.save(oReal);
+//
+//		orderDetailRepository.deleteByOrder(oReal);
+//
+//		return new ModelAndView("forward:/admin/orders");
+		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
+		if (pendingDocumentOptional.isEmpty()) {
 			return new ModelAndView("forward:/admin/orders");
 		}
-		Order oReal = optionalOrder.get();
-		oReal.setStatus((short) 3);
-		orderRepository.save(oReal);
 
-		orderDetailRepository.deleteByOrder(oReal);
+		Long statusId = 3L; // Trạng thái "Hủy xét duyệt"
+		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+		if (documentStatusOptional.isEmpty()) {
+			throw new RuntimeException("Document status not found");
+		}
+		DocumentStatus documentStatus = documentStatusOptional.get();
+
+		PendingDocument pendingDocument = pendingDocumentOptional.get();
+		pendingDocument.setDocumentStatus(documentStatus);
+
+		pendingDocumentRepository.save(pendingDocument);
 
 		return new ModelAndView("forward:/admin/orders");
+
 	}
 
-	@RequestMapping("/order/confirm/{order_id}")
-	public ModelAndView confirm(ModelMap model, @PathVariable("order_id") Long id) {
-		Optional<Order> optionalOrder = orderRepository.findById(id);
-		if (optionalOrder == null) {
+	@RequestMapping("/order/confirm/{id}")
+	public ModelAndView confirm(ModelMap model, @PathVariable("id") Long id) {
+		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
+		if (pendingDocumentOptional.isEmpty()) {
 			return new ModelAndView("forward:/admin/orders", model);
 		}
-		Order oReal = optionalOrder.get();
-		oReal.setStatus((short) 1);
-		orderRepository.save(oReal);
+
+		Long statusId = 2L; // Trạng thái "Chờ xét duyệt"
+		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+		if (documentStatusOptional.isEmpty()) {
+			throw new RuntimeException("Document status not found");
+		}
+		DocumentStatus documentStatus = documentStatusOptional.get();
+
+		PendingDocument pendingDocument = pendingDocumentOptional.get();
+		pendingDocument.setDocumentStatus(documentStatus);
+
+		pendingDocumentRepository.save(pendingDocument);
 
 		return new ModelAndView("forward:/admin/orders", model);
 	}
 
-	@RequestMapping("/order/delivered/{order_id}")
-	public ModelAndView delivered(ModelMap model, @PathVariable("order_id") Long id) {
-		Optional<Order> optionalOrder = orderRepository.findById(id);
-		if (optionalOrder == null) {
+	@RequestMapping("/order/delivered/{id}")
+	public ModelAndView delivered(ModelMap model, @PathVariable("id") Long id) {
+//		Optional<Order> optionalOrder = orderRepository.findById(id);
+//		if (optionalOrder == null) {
+//			return new ModelAndView("forward:/admin/orders", model);
+//		}
+//		Order oReal = optionalOrder.get();
+//		oReal.setStatus((short) 2);
+//		orderRepository.save(oReal);
+//
+//		Product p = null;
+//		List<OrderDetail> listDe = orderDetailRepository.findByOrderId(id);
+//		for (OrderDetail od : listDe) {
+//			p = od.getProduct();
+//			p.setQuantity(p.getQuantity() - od.getQuantity());
+//			productRepository.save(p);
+
+		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
+		if (pendingDocumentOptional.isEmpty()) {
 			return new ModelAndView("forward:/admin/orders", model);
 		}
-		Order oReal = optionalOrder.get();
-		oReal.setStatus((short) 2);
-		orderRepository.save(oReal);
 
-		Product p = null;
-		List<OrderDetail> listDe = orderDetailRepository.findByOrderId(id);
-		for (OrderDetail od : listDe) {
-			p = od.getProduct();
-			p.setQuantity(p.getQuantity() - od.getQuantity());
-			productRepository.save(p);
+		Long statusId = 4L; // Trạng thái "Đã xét duyệt"
+		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+		if (documentStatusOptional.isEmpty()) {
+			throw new RuntimeException("Document status not found");
 		}
+		DocumentStatus documentStatus = documentStatusOptional.get();
+
+		PendingDocument pendingDocument = pendingDocumentOptional.get();
+		pendingDocument.setDocumentStatus(documentStatus);
+
+		pendingDocumentRepository.save(pendingDocument);
 
 		return new ModelAndView("forward:/admin/orders", model);
+		}
+
 	}
 
 	// to excel
-	@GetMapping(value = "/export")
-	public void exportToExcel(HttpServletResponse response) throws IOException {
-
-		response.setContentType("application/octet-stream");
-		String headerKey = "Content-Disposition";
-		String headerValue = "attachement; filename=orders.xlsx";
-
-		response.setHeader(headerKey, headerValue);
-
-		List<Order> lisOrders = orderDetailService.listAll();
-
-		OrderExcelExporter excelExporter = new OrderExcelExporter(lisOrders);
-		excelExporter.export(response);
-
-	}
-
-}
+//	@GetMapping(value = "/export")
+//	public void exportToExcel(HttpServletResponse response) throws IOException {
+//
+//		response.setContentType("application/octet-stream");
+//		String headerKey = "Content-Disposition";
+//		String headerValue = "attachement; filename=orders.xlsx";
+//
+//		response.setHeader(headerKey, headerValue);
+//
+//		List<Order> lisOrders = orderDetailService.listAll();
+//
+//		OrderExcelExporter excelExporter = new OrderExcelExporter(lisOrders);
+//		excelExporter.export(response);
+//
+//	}

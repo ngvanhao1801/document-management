@@ -70,7 +70,7 @@
 								<div class="d-flex align-items-center">
 									<h4 class="card-title" style="text-decoration: underline;">Quản lý Tài liệu đang chờ duyệt</h4>
 									<a th:href="@{/admin/export}" style="padding-left: 20px;">
-										<h4 class="card-title" style="text-decoration: underline; color: green;">Xuất file Excel</h4>
+										<h4 class="card-title" style="text-decoration: underline; color: green;"></h4>
 									</a>
 								</div>
 							</div>
@@ -82,64 +82,63 @@
 									<table id="add-row" class="display table table-striped table-hover" >
 										<thead>
 											<tr>
-												<th>Mã đơn hàng</th>
-												<th>Tên khách hàng</th>
-												<th>Số ĐT</th>
-												<th>Ngày đặt hàng</th>
-												<th>Địa chỉ</th>
-												<th>Tổng tiền</th>
-												<th>Chi tiết đơn hàng</th>
+												<th>Mã tài liệu</th>
+												<th>Thư mục</th>
+												<th>Tên tài liệu</th>
+												<th>File</th>
+												<th>Người đăng tải</th>
+												<th>Ngày đăng tải</th>
+												<th>Trạng thái</th>
 												<th style="width: 10%">Hành động</th>
 											</tr>
 										</thead>
 										<tfoot>
 											<tr>
-												<th>Mã đơn hàng</th>
-												<th>Tên khách hàng</th>
-												<th>Số ĐT</th>
-												<th>Ngày đặt hàng</th>
-												<th>Địa chỉ</th>
-												<th>Tổng tiền</th>
-												<th>Chi tiết đơn hàng</th>
+												<th>Mã tài liệu</th>
+												<th>Thư mục</th>
+												<th>Tên tài liệu</th>
+												<th>File</th>
+												<th>Người đăng tải</th>
+												<th>Ngày đăng tải</th>
+												<th>Trạng thái</th>
 												<th style="width: 10%">Hành động</th>
 											</tr>
 										</tfoot>
 										<tbody>
-											<tr th:each="item : ${orderDetails}">
-												<td>[[${item.orderId}]]</td>
-												<td>[[${item.user.name}]]</td>
-												<td>[[${item.phone}]]</td>
-												<td>[[${item.orderDate}]]</td>
-												<td>[[${item.address}]]</td>
-												<td th:text="${#numbers.formatDecimal(item.amount, 1, 'DEFAULT', 0, 'DEFAULT')}+' đ'"></td>
+											<tr th:each="item : ${pendingDocuments}">
+												<td>[[${item.id}]]</td>
+												<td>[[${item.document.folder.folderName}]]</td>
+												<td>[[${item.document.documentName}]]</td>
 												<td>
-													<a th:href="@{'/admin/order/detail/'+${item.orderId}}">
-														<i class="fa fa-info-circle"> Chi tiết đơn hàng</i>
-													</a>
+													<object th:data="@{'/loadFile?fileName='+${item.document.documentFile}}"
+															type="application/pdf,
+                                                            application/vnd.openxmlformats-officedocument.wordprocessingml.document,
+                                                            application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                                                            application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+															width="100%" height="600px">
+														<p>Bấm <a th:href="@{'/loadFile?fileName=' + ${item.document.documentFile}}"> vào đây </a> để xem trực tiếp.</p>
+													</object>
 												</td>
-												
+												<td>[[${item.user.name}]]</td>
+												<td>[[${item.uploadDate}]]</td>
 												<td class="text-center">
-													<div th:if="${item.status==0}">
-														<a style="cursor: pointer; color: #0e76a8;" th:data-id="${item.orderId}"
+													<div th:if="${item.documentStatus.statusId==1}">
+														<a style="cursor: pointer; color: #0e76a8;" th:data-id="${item.id}"
 															onclick="showConfigConfirmModalDialog(this.getAttribute('data-id'))">
-															<i class="fa fa-check-circle"> Xác nhận</i>
+															<i class="fa fa-check-circle"> Xác duyệt</i>
 														</a>
 														<hr>
-														<a style="cursor: pointer;" th:data-id="${item.orderId}"
+														<a style="cursor: pointer;" th:data-id="${item.id}"
 															onclick="showConfigCancelModalDialog(this.getAttribute('data-id'))">
-															<i class="fas fa-trash-alt text-danger"> Hủy đơn</i>
+															<i class="fas fa-trash-alt text-danger"> Hủy </i>
 														</a>
 													</div>
 													
-													<div th:if="${item.status==1}">
-														<a style="cursor: pointer; color: #ffab10;" th:data-id="${item.orderId}"
+													<div th:if="${item.documentStatus.statusId==4}">
+														<a style="cursor: pointer; color: #ffab10;" th:data-id="${item.id}"
 															onclick="showConfigDeliveredModalDialog(this.getAttribute('data-id'))">
-															<i class="fa fa-check-circle"> Xác nhận đã giao</i>
+															<i class="fa fa-check-circle"> Đã xét duyệt</i>
 														</a>
-													</div>
-													
-													<div th:if="${item.status==2}" style="cursor: pointer; color: #119744;">
-														<i class="fa fa-check-circle"> Đã thanh toán</i>
 													</div>
 													
 													<div th:if="${item.status==3}" style="cursor: pointer; color: #ff3838;">
@@ -282,7 +281,7 @@
 					</ul>
 				</nav>
 				<div class="copyright ml-auto">
-					2023, made with <i class="fa fa-heart heart text-danger"></i> by <a href="javascript:void(0);">DOCUMENT-MANAGEMENT</a>
+					2024, made with <i class="fa fa-heart heart text-danger"></i> by <a href="javascript:void(0);">DOCUMENT-MANAGEMENT</a>
 				</div>				
 			</div>
 		</footer>

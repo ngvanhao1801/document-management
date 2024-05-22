@@ -31,6 +31,8 @@ public class PendingDocument {
 	@Temporal(TemporalType.DATE)
 	private Date uploadDate;
 
-	private int status;
+	@ManyToOne
+	@JoinColumn(name = "statusId")
+	private DocumentStatus documentStatus;
 
 }

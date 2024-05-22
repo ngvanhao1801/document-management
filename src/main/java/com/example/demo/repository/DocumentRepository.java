@@ -3,7 +3,6 @@ package com.example.demo.repository;
 import com.example.demo.dto.ChartDTO;
 import com.example.demo.entity.Document;
 import com.example.demo.entity.Product;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -58,5 +57,11 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	@Query(name = "getDocumentFavourite", nativeQuery = true)
 	List<ChartDTO> getDocumentByFavorite();
+
+	@Query(value = "select * from document d where d.user_id = ?1", nativeQuery = true)
+	List<Document> getListDocumentUpload(Long userId);
+
+	@Query(value = "SELECT COUNT(d.id) FROM document d WHERE d.user_id = ?1", nativeQuery = true)
+	int countDocumentUploadByUser(Long userId);
 
 }
