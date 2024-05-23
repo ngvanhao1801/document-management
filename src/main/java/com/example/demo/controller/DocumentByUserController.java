@@ -1,13 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Document;
-import com.example.demo.entity.DocumentStatus;
-import com.example.demo.entity.PendingDocument;
-import com.example.demo.entity.User;
-import com.example.demo.repository.DocumentRepository;
-import com.example.demo.repository.DocumentStatusRepository;
-import com.example.demo.repository.PendingDocumentRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -36,6 +30,8 @@ public class DocumentByUserController {
 
 	private final PendingDocumentRepository pendingDocumentRepository;
 
+	private final FolderRepository folderRepository;
+
 	private final UserRepository userRepository;
 
 	private final DocumentStatusRepository documentStatusRepository;
@@ -49,10 +45,11 @@ public class DocumentByUserController {
 	private String pathUploadFile;
 
 	public DocumentByUserController(DocumentRepository documentRepository,
-	                                PendingDocumentRepository pendingDocumentRepository, UserRepository userRepository,
+	                                PendingDocumentRepository pendingDocumentRepository, FolderRepository folderRepository, UserRepository userRepository,
 	                                DocumentStatusRepository documentStatusRepository, HttpSession httpSession) {
 		this.documentRepository = documentRepository;
 		this.pendingDocumentRepository = pendingDocumentRepository;
+		this.folderRepository = folderRepository;
 		this.userRepository = userRepository;
 		this.documentStatusRepository = documentStatusRepository;
 		this.httpSession = httpSession;
@@ -179,6 +176,22 @@ public class DocumentByUserController {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		sdf.setLenient(true);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+	}
+
+	@ModelAttribute("folderList")
+	public List<Folder> showFolder(Model model) {
+		List<Folder> folderList = folderRepository.findAll();
+		model.addAttribute("folderList", folderList);
+
+		return folderList;
+	}
+
+	@ModelAttribute("userList")
+	public List<User> showUser(Model model) {
+		List<User> userList = userRepository.findAll();
+		model.addAttribute("userList", userList);
+
+		return userList;
 	}
 
 	@ModelAttribute("statusList")

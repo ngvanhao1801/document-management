@@ -27,7 +27,7 @@ import java.io.Serializable;
 		query = "select c.category_name as label, count(d.id) as value from categories c\n" +
 				"inner join folder f on f.category_id = c.category_id \n" +
 				"inner join document d on d.folder_id = f.folder_id\n" +
-				"where d.status_id = 1\n" +
+				"where d.status_id = 4\n" +
 				"group by c.category_id;"
 )
 

@@ -172,7 +172,7 @@
                                                         <div class="form-group form-group-default">
                                                             <label>File <span style="color: red">*</span></label>
                                                             <input type="file" id="documentFile" name="file"
-                                                                   accept=".pdf, .docx, .pptx, .xlsx">
+                                                                   accept=".pdf, .docx, .pptx, .xlsx" class="form-control">
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-12">
@@ -273,43 +273,6 @@
                                     </tr>
                                     </tbody>
                                 </table>
-
-                                <!--                                <script>-->
-                                <!--                                    function openPdfViewer(pdfUrl) {-->
-                                <!--                                        window.open(pdfUrl, '_blank');-->
-                                <!--                                    }-->
-                                <!--                                </script>-->
-
-                                <!--                                <script>-->
-                                <!--                                    // Khối JavaScript để hiển thị PDF-->
-                                <!--                                    // Đường dẫn đến tệp PDF-->
-                                <!--                                    var pdfViewers = document.querySelectorAll('.pdf-viewer');-->
-                                <!--                                    pdfViewers.forEach(function (pdfViewer) {-->
-                                <!--                                        var pdfUrl = pdfViewer.getAttribute('data-pdf-url');-->
-
-                                <!--                                        // Tải tệp PDF và hiển thị nó trong container-->
-                                <!--                                        PDFJS.getDocument(pdfUrl).promise.then(function (pdf) {-->
-                                <!--                                            pdf.getPage(1).then(function (page) {-->
-                                <!--                                                var scale = 1.5;-->
-                                <!--                                                var viewport = page.getViewport({scale: scale});-->
-
-                                <!--                                                var canvas = document.createElement('canvas');-->
-                                <!--                                                var context = canvas.getContext('2d');-->
-                                <!--                                                canvas.height = viewport.height;-->
-                                <!--                                                canvas.width = viewport.width;-->
-
-                                <!--                                                var renderContext = {-->
-                                <!--                                                    canvasContext: context,-->
-                                <!--                                                    viewport: viewport-->
-                                <!--                                                };-->
-
-                                <!--                                                page.render(renderContext);-->
-                                <!--                                                pdfViewer.appendChild(canvas);-->
-                                <!--                                            });-->
-                                <!--                                        });-->
-                                <!--                                    });-->
-                                <!--                                </script>-->
-
                                 <script>
                                     function showConfigModalDialog(id, name) {
                                         $('#name').text(name);
@@ -317,7 +280,6 @@
                                         $('#configmationId').modal('show');
                                     }
                                 </script>
-
                                 <!-- Modal -->
                                 <div class="modal" tabindex="-1" role="dialog" id="configmationId">
                                     <div class="modal-dialog" role="document">

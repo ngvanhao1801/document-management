@@ -89,17 +89,6 @@ public class OrderController {
 	@RequestMapping("/order/cancel/{id}")
 	@Transactional
 	public ModelAndView cancel(ModelAndView model, @PathVariable("id") Long id) {
-//		Optional<Order> optionalOrder = orderRepository.findById(id);
-//		if (optionalOrder == null) {
-//			return new ModelAndView("forward:/admin/orders");
-//		}
-//		Order oReal = optionalOrder.get();
-//		oReal.setStatus((short) 3);
-//		orderRepository.save(oReal);
-//
-//		orderDetailRepository.deleteByOrder(oReal);
-//
-//		return new ModelAndView("forward:/admin/orders");
 		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
 		if (pendingDocumentOptional.isEmpty()) {
 			return new ModelAndView("forward:/admin/orders");
@@ -145,21 +134,6 @@ public class OrderController {
 
 	@RequestMapping("/order/delivered/{id}")
 	public ModelAndView delivered(ModelMap model, @PathVariable("id") Long id) {
-//		Optional<Order> optionalOrder = orderRepository.findById(id);
-//		if (optionalOrder == null) {
-//			return new ModelAndView("forward:/admin/orders", model);
-//		}
-//		Order oReal = optionalOrder.get();
-//		oReal.setStatus((short) 2);
-//		orderRepository.save(oReal);
-//
-//		Product p = null;
-//		List<OrderDetail> listDe = orderDetailRepository.findByOrderId(id);
-//		for (OrderDetail od : listDe) {
-//			p = od.getProduct();
-//			p.setQuantity(p.getQuantity() - od.getQuantity());
-//			productRepository.save(p);
-
 		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
 		if (pendingDocumentOptional.isEmpty()) {
 			return new ModelAndView("forward:/admin/orders", model);
@@ -181,20 +155,3 @@ public class OrderController {
 		}
 
 	}
-
-	// to excel
-//	@GetMapping(value = "/export")
-//	public void exportToExcel(HttpServletResponse response) throws IOException {
-//
-//		response.setContentType("application/octet-stream");
-//		String headerKey = "Content-Disposition";
-//		String headerValue = "attachement; filename=orders.xlsx";
-//
-//		response.setHeader(headerKey, headerValue);
-//
-//		List<Order> lisOrders = orderDetailService.listAll();
-//
-//		OrderExcelExporter excelExporter = new OrderExcelExporter(lisOrders);
-//		excelExporter.export(response);
-//
-//	}

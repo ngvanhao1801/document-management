@@ -4,6 +4,7 @@
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
+@charset "UTF-8";
 :root {
     --blue: #007bff;
     --indigo: #6610f2;
@@ -40,7 +41,7 @@
 }
 
 html {
-    font-family: sans-serif;
+    font-family: var(--bs-font-sans-serif);
     line-height: 1.15;
     -webkit-text-size-adjust: 100%;
     -ms-text-size-adjust: 100%;
@@ -58,7 +59,7 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: var(--bs-font-sans-serif);
     font-size: 1rem;
     font-weight: 400;
     line-height: 1.5;
@@ -177,7 +178,7 @@ a:not([href]):not([tabindex]):focus {
 }
 
 code, kbd, pre, samp {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: var(--bs-font-sans-serif);
     font-size: 1em
 }
 
@@ -551,15 +552,6 @@ pre code {
     padding-left: 15px;
     margin-right: auto;
     margin-left: auto
-}
-
-.row {
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-    margin-right: -15px;
-    margin-left: -15px
 }
 
 .no-gutters {
@@ -2038,9 +2030,38 @@ textarea.form-control {
     margin-bottom: 1rem
 }
 
+.form-check, .form-group {
+    margin-bottom: 0;
+    padding: 10px
+}
+
 .form-text {
     display: block;
     margin-top: .25rem
+}
+
+.form-group-default {
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, .07);
+    border-radius: 4px;
+    padding-top: 7px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 4px;
+    overflow: hidden;
+    width: 100%;
+    -webkit-transition: background-color .2s ease;
+    transition: background-color .2s ease;
+    margin-bottom: 15px
+}
+
+.row {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px
 }
 
 .form-row {
@@ -2388,13 +2409,13 @@ a.btn.disabled, fieldset:disabled a.btn {
 
 .btn-primary {
     color: #fff;
-    background-color: #007bff;
-    border-color: #007bff
+    background-color: #0F9E5E;
+    border-color: #0F9E5E
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #0069d9;
+    background-color: #0F9E5E;
     border-color: #0062cc
 }
 
@@ -5275,6 +5296,12 @@ input[type=button].btn-block, input[type=reset].btn-block, input[type=submit].bt
     opacity: .5
 }
 
+.alert, .brand, .btn-simple, .h1, .h2, .h3, .h4, .h5, .h6, .navbar, .td-name, a, body, button.close, h1, h2, h3, h4, h5, h6, p, td {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    font-family: var(--bs-font-sans-serif)
+}
+
 .close:not(:disabled):not(.disabled) {
     cursor: pointer
 }
@@ -5361,7 +5388,7 @@ button.close {
     flex-direction: column;
     width: 100%;
     pointer-events: auto;
-    background-color: #fff;
+    background-color: #fff !important;
     background-clip: padding-box;
     border: 1px solid rgba(0, 0, 0, .2);
     border-radius: .3rem;
@@ -5428,6 +5455,23 @@ button.close {
 /*    border-bottom-left-radius: calc(.3rem - 1px)*/
 /*}*/
 
+.no-bd {
+    border: 0 !important
+}
+
+.fw-mediumbold {
+    font-weight: 400 !important
+}
+
+.modal-content {
+    border-radius: .4rem !important;
+    border: 0 !important
+}
+
+.modal-content .form-group {
+    background-color: #fff !important;
+}
+
 .modal-footer {
     display: -ms-flexbox;
     display: flex;
@@ -5480,12 +5524,21 @@ button.close {
     }
 }
 
+.alert .close {
+    background: rgba(255, 255, 255, .8);
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    top: 12px !important;
+    border-radius: 50%
+}
+
 .tooltip {
     position: absolute;
     z-index: 1070;
     display: block;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: var(--bs-font-sans-serif);
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -5598,7 +5651,7 @@ button.close {
     z-index: 1060;
     display: block;
     max-width: 276px;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-family: var(--bs-font-sans-serif);
     font-style: normal;
     font-weight: 400;
     line-height: 1.5;
@@ -7758,8 +7811,8 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
     padding-left: 3rem !important
 }
 
-.m-auto {
-    margin: auto !important
+.btn-round {
+    border-radius: 100px !important
 }
 
 .mt-auto, .my-auto {
@@ -8827,7 +8880,7 @@ a.bg-dark:focus, a.bg-dark:hover, button.bg-dark:focus, button.bg-dark:hover {
 }
 
 .text-monospace {
-    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace
+    font-family: var(--bs-font-monospace) !important
 }
 
 .text-justify {

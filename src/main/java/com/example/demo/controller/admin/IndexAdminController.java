@@ -35,6 +35,9 @@ public class IndexAdminController{
 	@Autowired
 	DocumentRepository documentRepository;
 
+	@Autowired
+	PendingDocumentRepository pendingDocumentRepository;
+
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
 
@@ -69,8 +72,8 @@ public class IndexAdminController{
 	// dem so luong don hang
 	@GetMapping("/api/admin/count/orders")
 	public ResponseEntity<Object> getCountOrders(){
-		long countOrders = orderRepository.count();
-		return ResponseEntity.ok(countOrders);
+		long countDocumentPending = pendingDocumentRepository.count();
+		return ResponseEntity.ok(countDocumentPending);
 	}
 
 	// dem so luong sp
@@ -79,18 +82,6 @@ public class IndexAdminController{
 		long countDocuments = documentRepository.count();
 		return ResponseEntity.ok(countDocuments);
 	}
-
-//	@GetMapping("/api/admin/statistics")
-//	public ResponseEntity<Object> getStatistic30Day(){
-//		List<StatisticDTO> statistics = statisticRepository.getStatistic30Day();
-//		return ResponseEntity.ok(statistics);
-//	}
-//
-//	@PostMapping("/api/admin/statistics")
-//	public ResponseEntity<Object> getStatisticDayByDay(@RequestBody FilterDayByDay filterDayByDay){
-//		List<StatisticDTO> statisticDTOS = statisticRepository.getStatisticDayByDay(filterDayByDay.getToDate(),filterDayByDay.getFromDate());
-//		return ResponseEntity.ok(statisticDTOS);
-//	}
 
 	@GetMapping("/api/admin/product-order-categories")
 	public ResponseEntity<Object> getListProductOrderCategories(){
