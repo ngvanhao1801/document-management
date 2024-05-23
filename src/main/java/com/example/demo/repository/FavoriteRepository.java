@@ -14,7 +14,9 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 	@Query(value = "SELECT * FROM favorites where document_id  = ? and user_id = ?;", nativeQuery = true)
 	public Favorite selectSaves(Long documentId, Long userId);
 
-	@Query(value = "SELECT * FROM favorites where user_id = ?;", nativeQuery = true)
+	@Query(value = "select f.* from favorites f " +
+			"inner join document d on f.document_id = d.id " +
+			"where f.user_id = ? and d.status_id = 3;", nativeQuery = true)
 	public List<Favorite> selectAllSaves(Long userId);
 
 	@Query(value = "SELECT count(favorite_id) FROM favorites where user_id = ?;", nativeQuery = true)

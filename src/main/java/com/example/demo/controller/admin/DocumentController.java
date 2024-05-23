@@ -52,7 +52,8 @@ public class DocumentController {
   public DocumentController(DocumentRepository documentRepository,
                             FolderRepository folderRepository,
                             UserRepository userRepository,
-                            DocumentStatusRepository documentStatusRepository, HttpSession httpSession) {
+                            DocumentStatusRepository documentStatusRepository,
+                            HttpSession httpSession) {
     this.documentRepository = documentRepository;
     this.folderRepository = folderRepository;
     this.userRepository = userRepository;

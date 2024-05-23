@@ -27,131 +27,158 @@ import java.util.Optional;
 @RequestMapping("/admin")
 public class OrderController {
 
-	@Autowired
-	OrderDetailService orderDetailService;
+  @Autowired
+  OrderDetailService orderDetailService;
 
-	@Autowired
-	OrderRepository orderRepository;
+  @Autowired
+  OrderRepository orderRepository;
 
-	@Autowired
-	OrderDetailRepository orderDetailRepository;
+  @Autowired
+  OrderDetailRepository orderDetailRepository;
 
-	@Autowired
-	ProductRepository productRepository;
+  @Autowired
+  ProductRepository productRepository;
 
-	@Autowired
-	SendMailService sendMailService;
+  @Autowired
+  SendMailService sendMailService;
 
-	@Autowired
-	UserRepository userRepository;
+  @Autowired
+  UserRepository userRepository;
 
-	@Autowired
-	PendingDocumentRepository pendingDocumentRepository;
-	
-	@Autowired
-	DocumentStatusRepository documentStatusRepository;
+  @Autowired
+  PendingDocumentRepository pendingDocumentRepository;
 
-	@ModelAttribute(value = "user")
-	public User user(Model model, Principal principal, User user) {
+  @Autowired
+  DocumentStatusRepository documentStatusRepository;
 
-		if (principal != null) {
-			model.addAttribute("user", new User());
-			user = userRepository.findByEmail(principal.getName());
-			model.addAttribute("user", user);
-		}
+  private final DocumentRepository documentRepository;
 
-		return user;
-	}
+  public OrderController(DocumentRepository documentRepository) {
+    this.documentRepository = documentRepository;
+  }
 
-	// list order
-	@GetMapping(value = "/orders")
-	public String documentPending(Model model, Principal principal) {
+  @ModelAttribute(value = "user")
+  public User user(Model model, Principal principal, User user) {
 
-		List<PendingDocument> pendingDocuments = pendingDocumentRepository.findAll();
-		model.addAttribute("pendingDocuments", pendingDocuments);
+    if (principal != null) {
+      model.addAttribute("user", new User());
+      user = userRepository.findByEmail(principal.getName());
+      model.addAttribute("user", user);
+    }
 
-		return "admin/orders";
-	}
+    return user;
+  }
 
-	@GetMapping("/order/detail/{id}")
-	public ModelAndView detail(ModelMap model, @PathVariable("id") Long id) {
+  // list order
+  @GetMapping(value = "/orders")
+  public String documentPending(Model model, Principal principal) {
 
-		List<OrderDetail> listO = orderDetailRepository.findByOrderId(id);
+    List<PendingDocument> pendingDocuments = pendingDocumentRepository.findAllByDocumentStatus();
+    model.addAttribute("pendingDocuments", pendingDocuments);
 
-		model.addAttribute("amount", orderRepository.findById(id).get().getAmount());
-		model.addAttribute("orderDetail", listO);
-		model.addAttribute("orderId", id);
-		// set active front-end
-		model.addAttribute("menuO", "menu");
-		return new ModelAndView("admin/editOrder", model);
-	}
+    return "admin/orders";
+  }
 
-	@RequestMapping("/order/cancel/{id}")
-	@Transactional
-	public ModelAndView cancel(ModelAndView model, @PathVariable("id") Long id) {
-		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
-		if (pendingDocumentOptional.isEmpty()) {
-			return new ModelAndView("forward:/admin/orders");
-		}
+  @GetMapping("/order/detail/{id}")
+  public ModelAndView detail(ModelMap model, @PathVariable("id") Long id) {
 
-		Long statusId = 3L; // Trạng thái "Hủy xét duyệt"
-		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
-		if (documentStatusOptional.isEmpty()) {
-			throw new RuntimeException("Document status not found");
-		}
-		DocumentStatus documentStatus = documentStatusOptional.get();
+    List<OrderDetail> listO = orderDetailRepository.findByOrderId(id);
 
-		PendingDocument pendingDocument = pendingDocumentOptional.get();
-		pendingDocument.setDocumentStatus(documentStatus);
+    model.addAttribute("amount", orderRepository.findById(id).get().getAmount());
+    model.addAttribute("orderDetail", listO);
+    model.addAttribute("orderId", id);
+    // set active front-end
+    model.addAttribute("menuO", "menu");
+    return new ModelAndView("admin/editOrder", model);
+  }
 
-		pendingDocumentRepository.save(pendingDocument);
+  @RequestMapping("/order/cancel/{id}")
+  @Transactional
+  public ModelAndView cancel(ModelAndView model,
+                             @PathVariable("id") Long id) {
+    Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
+    if (pendingDocumentOptional.isEmpty()) {
+      return new ModelAndView("forward:/admin/orders");
+    }
 
-		return new ModelAndView("forward:/admin/orders");
+    PendingDocument pendingDocument = pendingDocumentOptional.get();
 
-	}
+    // Lấy thông tin về Document từ PendingDocument
+    Document document = pendingDocument.getDocument();
 
-	@RequestMapping("/order/confirm/{id}")
-	public ModelAndView confirm(ModelMap model, @PathVariable("id") Long id) {
-		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
-		if (pendingDocumentOptional.isEmpty()) {
-			return new ModelAndView("forward:/admin/orders", model);
-		}
+    // Cập nhật trường statusIs trong Document
+    Long statusId = 2L; // Trạng thái "Hủy xét duyệt"
+    Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+    if (documentStatusOptional.isEmpty()) {
+      throw new RuntimeException("Document status not found");
+    }
+    DocumentStatus documentStatus = documentStatusOptional.get();
+    document.setDocumentStatus(documentStatus);
 
-		Long statusId = 2L; // Trạng thái "Chờ xét duyệt"
-		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
-		if (documentStatusOptional.isEmpty()) {
-			throw new RuntimeException("Document status not found");
-		}
-		DocumentStatus documentStatus = documentStatusOptional.get();
+    // Lưu Document đã được cập nhật
+    documentRepository.save(document);
 
-		PendingDocument pendingDocument = pendingDocumentOptional.get();
-		pendingDocument.setDocumentStatus(documentStatus);
+    // Cập nhật trạng thái trong PendingDocument
+    pendingDocument.setDocumentStatus(documentStatus);
+    pendingDocumentRepository.save(pendingDocument);
 
-		pendingDocumentRepository.save(pendingDocument);
+    return new ModelAndView("forward:/admin/orders");
+  }
 
-		return new ModelAndView("forward:/admin/orders", model);
-	}
+  @RequestMapping("/order/confirm/{id}")
+  public ModelAndView confirm(ModelMap model,
+                              @PathVariable("id") Long id) {
+    Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
+    if (pendingDocumentOptional.isEmpty()) {
+      return new ModelAndView("forward:/admin/orders", model);
+    }
 
-	@RequestMapping("/order/delivered/{id}")
-	public ModelAndView delivered(ModelMap model, @PathVariable("id") Long id) {
-		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
-		if (pendingDocumentOptional.isEmpty()) {
-			return new ModelAndView("forward:/admin/orders", model);
-		}
+    PendingDocument pendingDocument = pendingDocumentOptional.get();
 
-		Long statusId = 4L; // Trạng thái "Đã xét duyệt"
-		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
-		if (documentStatusOptional.isEmpty()) {
-			throw new RuntimeException("Document status not found");
-		}
-		DocumentStatus documentStatus = documentStatusOptional.get();
+    // Lấy thông tin về Document từ PendingDocument
+    Document document = pendingDocument.getDocument();
 
-		PendingDocument pendingDocument = pendingDocumentOptional.get();
-		pendingDocument.setDocumentStatus(documentStatus);
+    Long statusId = 3L; // Trạng thái "Đã xét duyệt"
+    Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+    if (documentStatusOptional.isEmpty()) {
+      throw new RuntimeException("Document status not found");
+    }
+    DocumentStatus documentStatus = documentStatusOptional.get();
+    document.setDocumentStatus(documentStatus);
 
-		pendingDocumentRepository.save(pendingDocument);
+    documentRepository.save(document);
 
-		return new ModelAndView("forward:/admin/orders", model);
-		}
+    pendingDocument.setDocumentStatus(documentStatus);
 
-	}
+    pendingDocumentRepository.save(pendingDocument);
+
+    return new ModelAndView("forward:/admin/orders", model);
+  }
+
+//	@RequestMapping("/order/delivered/{id}")
+//	public ModelAndView delivered(ModelMap model, @PathVariable("id") Long id, Document document) {
+//		Optional<PendingDocument> pendingDocumentOptional = pendingDocumentRepository.findById(id);
+//		if (pendingDocumentOptional.isEmpty()) {
+//			return new ModelAndView("forward:/admin/orders", model);
+//		}
+//
+//		Long statusId = 4L; // Trạng thái "Đã xét duyệt"
+//		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+//		if (documentStatusOptional.isEmpty()) {
+//			throw new RuntimeException("Document status not found");
+//		}
+//		DocumentStatus documentStatus = documentStatusOptional.get();
+//
+//		document.setDocumentStatus(documentStatus);
+//
+//		documentRepository.save(document);
+//
+//		PendingDocument pendingDocument = pendingDocumentOptional.get();
+//		pendingDocument.setDocumentStatus(documentStatus);
+//
+//		pendingDocumentRepository.save(pendingDocument);
+//
+//		return new ModelAndView("forward:/admin/orders", model);
+//		}
+
+}

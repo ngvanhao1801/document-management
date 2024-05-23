@@ -84,40 +84,57 @@
 												<th>Email</th>
 												<th>Ngày đăng ký</th>
 												<th>Trạng thái</th>
+												<th>Loại tài khoản</th>
 												<th>Hành động</th>
 											</tr>
 										</thead>
-										<tfoot>
-											<tr>
-												<th>id</th>
-												<th>Ảnh đại diện</th>
-												<th>Họ và tên</th>
-												<th>Email</th>
-												<th>Ngày đăng ký</th>
-												<th>Trạng thái</th>
-												<th>Hành động</th>
-											</tr>
-										</tfoot>
 										<tbody>
-											<tr th:each="item : ${users}">
-												<td>[[${item.userId}]]</td>
-												<td>
-													<img src="../assets/img/05.png"  alt="..." class="avatar-img rounded-circle" style="width: 60px">
-												</td>
-												<td>[[${item.name}]]</td>
-												<td>[[${item.email}]]</td>
-												<td>[[${item.registerDate}]]</td>
-												<td>[[${item.status?'Đang hoạt động':'Ngừng hoạt động'}]]</td>
-												<td>
-													<div class="form-button-action">
-														<button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Xem">
-															<i class="fa fa-eye"></i>
-														</button>
-													</div>
-												</td>
-											</tr>
+										<tr th:each="item : ${users}">
+											<td>[[${item.userId}]]</td>
+											<td>
+												<img src="../assets/img/05.png" alt="..." class="avatar-img rounded-circle" style="width: 60px">
+											</td>
+											<td>[[${item.name}]]</td>
+											<td>[[${item.email}]]</td>
+											<td>[[${item.registerDate}]]</td>
+											<td>[[${item.status ? 'Đang hoạt động' : 'Ngừng hoạt động'}]]</td>
+											<td>[[${item.roleName}]]</td>
+											<td>
+												<div class="form-button-action">
+													<button type="button" data-toggle="tooltip" title="Xem" class="btn btn-link btn-primary btn-lg">
+														<i class="fa fa-eye"></i>
+													</button>
+													<button th:data-id="${item.userId}" th:data-name="${item.name}"
+															onclick="showConfigModalDialog(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+															type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Xóa">
+														<i class="fa fa-times"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
 										</tbody>
 									</table>
+<!--									<div class="modal" tabindex="-1" role="dialog" id="configmationId">-->
+<!--										<div class="modal-dialog" role="document">-->
+<!--											<div class="modal-content">-->
+<!--												<div class="modal-header">-->
+<!--													<h5 class="modal-title" style="color: black">Xác nhận</h5>-->
+<!--													<button type="button" class="close" data-dismiss="modal"-->
+<!--															aria-label="Close">-->
+<!--														<span aria-hidden="true">&times;</span>-->
+<!--													</button>-->
+<!--												</div>-->
+<!--												<div class="modal-body">-->
+<!--													<p style="color: black">Bạn có muốn xóa người dùng này không?</p>-->
+<!--												</div>-->
+<!--												<div class="modal-footer">-->
+<!--													<a id="yesOption" type="button" class="btn btn-primary">Có</a>-->
+<!--													<button type="button" class="btn btn-danger"-->
+<!--															data-dismiss="modal">Không</button>-->
+<!--												</div>-->
+<!--											</div>-->
+<!--										</div>-->
+<!--									</div>-->
 								</div>
 							</div>
 						</div>
@@ -151,8 +168,16 @@
 			</div>
 		</footer>
 	</div>
-		
 	</div>
+
+<!--	<script>-->
+<!--		function showConfigModalDialog(id, name) {-->
+<!--			$('#name').text(name);-->
+<!--			$('#yesOption').attr('href', '/admin/delete/'+id);-->
+<!--			$('#configmationId').modal('show');-->
+<!--		}-->
+<!--	</script>-->
+
 	<!--   Core JS Files   -->
 	<script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 	<script src="/assets/js/core/popper.min.js"></script>

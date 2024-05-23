@@ -72,7 +72,7 @@ public class IndexAdminController{
 	// dem so luong don hang
 	@GetMapping("/api/admin/count/orders")
 	public ResponseEntity<Object> getCountOrders(){
-		long countDocumentPending = pendingDocumentRepository.count();
+		long countDocumentPending = pendingDocumentRepository.countAllByDocumentStatus();
 		return ResponseEntity.ok(countDocumentPending);
 	}
 

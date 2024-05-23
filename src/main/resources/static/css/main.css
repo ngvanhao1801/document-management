@@ -1124,6 +1124,7 @@ button:focus {
 .table-list {
   width: 100%;
 }
+
 thead tr {
   background: var(--primary);
 }
@@ -1259,21 +1260,25 @@ tbody tr td:last-child {
   color: var(--white);
   background: var(--red);
 }
+
 @media (max-width: 1199px) {
   .table-scroll {
-    overflow-x: scroll;
+    overflow-x: auto;
   }
 }
+
 .modal-dialog {
   max-width: -webkit-max-content;
   max-width: -moz-max-content;
   max-width: max-content;
 }
+
 .modal-content {
   border: none;
   background: none;
   border-radius: 0px;
 }
+
 .modal-close {
   position: absolute;
   top: -15px;
@@ -1295,10 +1300,12 @@ tbody tr td:last-child {
   -ms-transition: all linear 0.3s;
   -o-transition: all linear 0.3s;
 }
+
 .modal-close:hover {
   color: var(--white);
   background: var(--primary);
 }
+
 .modal-form {
   width: 400px;
   padding: 30px;

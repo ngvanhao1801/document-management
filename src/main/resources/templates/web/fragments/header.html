@@ -1,156 +1,156 @@
 <!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title></title>
-<meta charset="utf-8">
+    <title></title>
+    <meta charset="utf-8">
 </head>
 <body>
+<th:block th:fragment="header">
+    <div class="backdrop"></div>
+    <a class="backtop fas fa-arrow-up" href="#"></a>
+    <div class="header-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-5">
+                    <div class="header-top-welcome">
+                        <p>Chào mừng bạn đến với trang web Document Management System !</p>
+                    </div>
+                </div>
+                <div class="col-md-5 col-lg-3">
+                    <div class="header-top-select">
+                        <div class="header-select" style="margin-left: 988px;">
+                            <i class="icofont-world"></i><select class="select">
+                            <option value="vietnam" selected>Việt Nam</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="header-part">
+        <div class="container">
+            <div class="header-content">
+                <div class="header-media-group">
+                    <button class="header-user">
+                        <img src="/images/user.png" alt="user"/>
+                    </button>
+                    <a th:href="@{/}"> <img src="/images/logo_document.png" alt="logo"/>
+                    </a>
+                    <button class="header-src">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
 
-	<th:block th:fragment= "header">
-	
-		<div class="backdrop"></div>
-		<a class="backtop fas fa-arrow-up" href="#"></a>
-		<div class="header-top">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-12 col-lg-5">
-						<div class="header-top-welcome">
-							<p>Chào mừng bạn đến với trang web Document Management System !</p>
-						</div>
-					</div>
-					<div class="col-md-5 col-lg-3" >
-						<div class="header-top-select">
-							<div class="header-select" style="margin-left: 988px;">
-								<i class="icofont-world"></i><select class="select">
-									<option value="vietnam" selected>Việt Nam </option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<header class="header-part">
-			<div class="container">
-				<div class="header-content">
-					<div class="header-media-group">
-						<button class="header-user">
-							<img src="/images/user.png" alt="user" />
-						</button>
-						<a th:href="@{/}"> <img src="/images/logo_document.png" alt="logo" />
-						</a>
-						<button class="header-src">
-							<i class="fas fa-search"></i>
-						</button>
-					</div>
-					
-					<a th:href="@{/}" class="header-logo">
-					<img src="/images/logo_document.png" alt="logo" />
-					</a>
-				
-					<th:block th:if="${#request.remoteUser}">
-						<a href="javascript:void(0);" class="header-widget" title="Tên của bạn">
-							<img src="/images/user.png" alt="user" />
-							<span>Hi!<strong><em> [[${user.name}]]</em></strong></span>
-						</a>
-					</th:block>
-					
-					<form th:action="@{/searchDocument}" class="header-form">
-						<input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm kiếm..." autocomplete="off" />
-						<button>
-							<i class="fas fa-search"></i>
-						</button>
-					</form>
-					
-					<div class="header-widget-group">
-						<th:block th:if="${#request.remoteUser}">
-						<a th:href="@{/profile}" class="header-widget" title="Trang cá nhân">
-							<i class="fas fa-user"></i>
-						</a>
-						</th:block>
-						<a th:href="@{/favorite}" class="header-widget" title="Yêu thích">
-							<i class="fas fa-heart"></i><sup th:text="${totalSave}" id="totalSave">0</sup>
-						</a>
-						<a th:href="@{/list-documents}" class="header-widget header-cart" title="Thêm tài liệu mới">
-							<i class="fas fa-cloud-upload-alt"></i> <sup th:text="${totalDocumentUpload}" id="totalDocumentUpload">0</sup>
-						</a>
-					</div>
-				</div>
-			</div>
-		</header>
-		<nav class="navbar-part">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-12">
-						<div class="navbar-content">
-							<ul class="navbar-list">
-								<li class="navbar-item dropdown"><a
-									class="navbar-link dropdown-arrow" href="javascript:void(0);">Trang chủ</a>
-									<ul class="dropdown-position-list">
-										<li><a href="/">Trang chủ</a></li>
-									</ul></li>
-								<li class="navbar-item dropdown">
-									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Giới thiệu</a>
-									<ul class="dropdown-position-list">
-										<li><a th:href="@{/gioi-thieu}">Giới thiệu</a></li>
-									</ul>
-								</li>
-								<li class="navbar-item dropdown">
-									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Tài liệu</a>
-									<ul class="dropdown-position-list">
-										<li><a th:href="@{/documents}">Tất cả tài liệu</a></li>
-									</ul>
-								</li>
-								<li class="navbar-item dropdown">
-									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Thư mục</a>
-									<ul class="dropdown-position-list" style="width: 305px;">
-										<li th:each="item : ${folderList}">
-											<a th:href="@{/documentByFolder(folderId=${item.folderId})}" >[[${item.folderName}]]</a>
-										</li>
-									</ul>
-								</li>
-								<li class="navbar-item dropdown">
-									<a class="navbar-link dropdown-arrow" href="javascript:void(0);">Liên hệ</a>
-									<ul class="dropdown-position-list">
-										<li><a th:href="@{/lien-he}">Liên hệ</a></li>
-									</ul>
-								</li>
-								<li class="navbar-item dropdown"><a
-									class="navbar-link dropdown-arrow" href="javascript:void(0);">Tài khoản</a>
-									<ul class="dropdown-position-list">
-										<th:block th:unless="${#request.remoteUser}">
-							              	<li><a th:href="@{/login}">Đăng nhập</a></li>
-											<li><a th:href="@{/register}">Đăng ký</a></li>
-											<li><a th:href="@{/forgotPassword}">Quên mật khẩu</a></li>
-							            </th:block>
-							            <th:block th:if="${#request.remoteUser}">
-											<li><a th:href="@{/profile}">Thông tin tài khoản</a></li>
-											<li><a th:href="@{/logout}">Đăng xuất</a></li>
-						              	</th:block>
-										
-									</ul>
-								</li>
-							</ul>
-							<div class="navbar-info-group">
-								<div class="navbar-info">
-									<i class="icofont-ui-touch-phone"></i>
-									<p>
-										<small>Số điện thoại</small><span>0934.406.830</span>
-									</p>
-								</div>
-								<div class="navbar-info">
-									<i class="icofont-ui-email"></i>
-									<p>
-										<small>email</small><span>ngohao1801@gmail.com</span>
-									</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</nav>
-	</th:block>
+                <a th:href="@{/}" class="header-logo">
+                    <img src="/images/logo_document.png" alt="logo"/>
+                </a>
+
+                <th:block th:if="${#request.remoteUser}">
+                    <a href="javascript:void(0);" class="header-widget" title="Tên của bạn">
+                        <img src="/images/user.png" alt="user"/>
+                        <span>Hi!<strong><em> [[${user.name}]]</em></strong></span>
+                    </a>
+                </th:block>
+
+                <form th:action="@{/searchDocument}" class="header-form">
+                    <input type="text" name="keyword" th:value="${keyword}" placeholder="Tìm kiếm..."
+                           autocomplete="off"/>
+                    <button>
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+
+                <div class="header-widget-group">
+                    <th:block th:if="${#request.remoteUser}">
+                        <a th:href="@{/profile}" class="header-widget" title="Trang cá nhân">
+                            <i class="fas fa-user"></i>
+                        </a>
+                    </th:block>
+                    <a th:href="@{/favorite}" class="header-widget" title="Yêu thích">
+                        <i class="fas fa-heart"></i><sup th:text="${totalSave}" id="totalSave">0</sup>
+                    </a>
+                    <a th:href="@{/list-documents}" class="header-widget header-cart" title="Thêm tài liệu mới">
+                        <i class="fas fa-cloud-upload-alt"></i> <sup th:text="${totalDocumentUpload}"
+                                                                     id="totalDocumentUpload">0</sup>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="navbar-part">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="navbar-content">
+                        <ul class="navbar-list">
+                            <li class="navbar-item dropdown"><a
+                                    class="navbar-link dropdown-arrow" href="javascript:void(0);">Trang chủ</a>
+                                <ul class="dropdown-position-list">
+                                    <li><a href="/">Trang chủ</a></li>
+                                </ul>
+                            </li>
+                            <li class="navbar-item dropdown">
+                                <a class="navbar-link dropdown-arrow" href="javascript:void(0);">Giới thiệu</a>
+                                <ul class="dropdown-position-list">
+                                    <li><a th:href="@{/gioi-thieu}">Giới thiệu</a></li>
+                                </ul>
+                            </li>
+                            <li class="navbar-item dropdown">
+                                <a class="navbar-link dropdown-arrow" href="javascript:void(0);">Tài liệu</a>
+                                <ul class="dropdown-position-list">
+                                    <li><a th:href="@{/documents}">Tất cả tài liệu</a></li>
+                                </ul>
+                            </li>
+                            <li class="navbar-item dropdown">
+                                <a class="navbar-link dropdown-arrow" href="javascript:void(0);">Thư mục</a>
+                                <ul class="dropdown-position-list" style="width: 305px;">
+                                    <li th:each="item : ${folderList}">
+                                        <a th:href="@{/documentByFolder(folderId=${item.folderId})}">[[${item.folderName}]]</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="navbar-item dropdown">
+                                <a class="navbar-link dropdown-arrow" href="javascript:void(0);">Liên hệ</a>
+                                <ul class="dropdown-position-list">
+                                    <li><a th:href="@{/lien-he}">Liên hệ</a></li>
+                                </ul>
+                            </li>
+                            <li class="navbar-item dropdown"><a
+                                    class="navbar-link dropdown-arrow" href="javascript:void(0);">Tài khoản</a>
+                                <ul class="dropdown-position-list">
+                                    <th:block th:unless="${#request.remoteUser}">
+                                        <li><a th:href="@{/login}">Đăng nhập</a></li>
+                                        <li><a th:href="@{/register}">Đăng ký</a></li>
+                                        <li><a th:href="@{/forgotPassword}">Quên mật khẩu</a></li>
+                                    </th:block>
+                                    <th:block th:if="${#request.remoteUser}">
+                                        <li><a th:href="@{/profile}">Thông tin tài khoản</a></li>
+                                        <li><a th:href="@{/logout}">Đăng xuất</a></li>
+                                    </th:block>
+
+                                </ul>
+                            </li>
+                        </ul>
+                        <div class="navbar-info-group">
+                            <div class="navbar-info">
+                                <i class="icofont-ui-touch-phone"></i>
+                                <p>
+                                    <small>Số điện thoại</small><span>0934.406.830</span>
+                                </p>
+                            </div>
+                            <div class="navbar-info">
+                                <i class="icofont-ui-email"></i>
+                                <p>
+                                    <small>email</small><span>ngohao1801@gmail.com</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</th:block>
 </body>
 </html>

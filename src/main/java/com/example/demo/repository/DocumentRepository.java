@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
-	@Query(value = "SELECT * FROM document WHERE folder_id = ?", nativeQuery = true)
+	@Query(value = "SELECT * FROM document AS d WHERE d.folder_id = ? AND d.status_id = 3", nativeQuery = true)
 	public List<Document> listDocumentByFolder(Long folderId);
 
 	// Top 10 product by category
@@ -28,11 +28,12 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	@Query(value = "SELECT * FROM document WHERE document_name LIKE %?1%", nativeQuery = true)
 	public List<Document> searchDocument(String documentName);
 
-	@Query(value = "SELECT f.folder_id, f.folder_name,\r\n"
-			+ "COUNT(*) AS SoLuong\r\n"
-			+ "FROM document d\r\n"
-			+ "JOIN folder f ON d.folder_id = f.folder_id\r\n"
-			+ "GROUP BY f.folder_name;" , nativeQuery = true)
+	@Query(value = "SELECT f.folder_id, f.folder_name, " +
+			"COUNT(*) AS SoLuong " +
+			"FROM document d " +
+			"JOIN folder f ON d.folder_id = f.folder_id " +
+			"WHERE d.status_id = 3 " +
+			"GROUP BY f.folder_name;" , nativeQuery = true)
 	List<Object[]> listFolderByDocumentName();
 
 	// count quantity by product
@@ -44,7 +45,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	List<Object[]> listFolderByFolderName();
 
 	// Top 20 product best sale
-	@Query(value = "SELECT p.product_id,\r\n"
+	@Query(value = "SELECT p.product_id,\n"
 			+ "COUNT(*) AS SoLuong\r\n"
 			+ "FROM order_details p\r\n"
 			+ "JOIN products c ON p.product_id = c.product_id\r\n"
@@ -63,5 +64,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	@Query(value = "SELECT COUNT(d.id) FROM document d WHERE d.user_id = ?1", nativeQuery = true)
 	int countDocumentUploadByUser(Long userId);
+
+	@Query(value = "select * from document d where d.status_id = 3;", nativeQuery = true)
+	List<Document> findAllByDocumentStatus();
 
 }

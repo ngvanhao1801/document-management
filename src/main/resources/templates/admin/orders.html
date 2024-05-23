@@ -27,6 +27,26 @@
     <link rel="stylesheet" href="/assets/css/atlantis.min.css">
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link rel="stylesheet" href="/assets/css/demo.css">
+    <style>
+        /* CSS để tinh chỉnh các ô trong bảng */
+        table.display th,
+        table.display td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            text-align: center;
+        }
+
+        /* CSS để tinh chỉnh phần tiêu đề của bảng */
+        table.display th {
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        /* CSS để thay đổi màu nền khi hover vào các dòng của bảng */
+        table.display tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
@@ -92,20 +112,9 @@
                                         <th>File</th>
                                         <th>Người đăng tải</th>
                                         <th>Ngày đăng tải</th>
-                                        <th style="width: 10%">Hành động</th>
+                                        <th style="width: 20%">Hành động</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Mã tài liệu</th>
-                                        <th>Thư mục</th>
-                                        <th>Tên tài liệu</th>
-                                        <th>File</th>
-                                        <th>Người đăng tải</th>
-                                        <th>Ngày đăng tải</th>
-                                        <th style="width: 10%">Hành động</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
                                     <tr th:each="item : ${pendingDocuments}">
                                         <td>[[${item.id}]]</td>
@@ -118,18 +127,16 @@
                                                             application/vnd.openxmlformats-officedocument.presentationml.presentation,
                                                             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                     width="100%" height="600px">
-                                                <p>Bấm <a
-                                                        th:href="@{'/loadFile?fileName=' + ${item.document.documentFile}}">
-                                                    vào đây </a> để xem trực tiếp.</p>
+                                                <a th:href="@{'/loadFile?fileName=' + ${item.document.documentFile}}"> Xem tài liệu</a>
                                             </object>
                                         </td>
                                         <td>[[${item.user.name}]]</td>
                                         <td>[[${item.uploadDate}]]</td>
                                         <td class="text-center">
-                                            <div th:if="${item.document.documentStatus.statusId==1}">
+                                            <div th:if="${item.documentStatus.statusId==1}">
                                                 <a style="cursor: pointer; color: #0e76a8;" th:data-id="${item.id}"
                                                    onclick="showConfigConfirmModalDialog(this.getAttribute('data-id'))">
-                                                    <i class="fa fa-check-circle"> Xác duyệt</i>
+                                                    <i class="fa fa-check-circle"> Xét duyệt</i>
                                                 </a>
                                                 <hr>
                                                 <a style="cursor: pointer;" th:data-id="${item.id}"
@@ -138,14 +145,18 @@
                                                 </a>
                                             </div>
 
-                                            <div th:if="${item.document.documentStatus.statusId==4}">
-                                                <a style="cursor: pointer; color: #ffab10;" th:data-id="${item.id}"
-                                                   onclick="showConfigDeliveredModalDialog(this.getAttribute('data-id'))">
-                                                    <i class="fa fa-check-circle"> Đã xét duyệt</i>
-                                                </a>
-                                            </div>
+<!--                                            <div th:if="${item.document.documentStatus.statusId==4}">-->
+<!--                                                <a style="cursor: pointer; color: #ffab10;" th:data-id="${item.id}"-->
+<!--                                                   onclick="showConfigDeliveredModalDialog(this.getAttribute('data-id'))">-->
+<!--                                                    <i class="fa fa-check-circle"> Đã xét duyệt</i>-->
+<!--                                                </a>-->
+<!--                                            </div>-->
 
-                                            <div th:if="${item.document.documentStatus.statusId==3}"
+                                            <div th:if="${item.documentStatus.statusId==3}"
+                                                 style="cursor: pointer; color: #ff3838;">
+                                                <i class="fa fa-check-circle"> Đã xét duyệt</i>
+                                            </div>
+                                            <div th:if="${item.documentStatus.statusId==4}"
                                                  style="cursor: pointer; color: #ff3838;">
                                                 <i class="fas fa-ban"> Đã huỷ</i>
                                             </div>
@@ -169,7 +180,7 @@
                                     <div class="modal-dialog" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Xác nhận</h5>
+                                                <h5 class="modal-title">Xét duyệt</h5>
                                                 <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
@@ -177,7 +188,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <p>
-                                                    Bạn có muốn xác nhận tài liệu này"<span id="idConfirm"></span>" ?
+                                                    Bạn có muốn xét duyệt tài liệu này ?
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
@@ -212,7 +223,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <p>
-                                                    Bạn có muốn huỷ tài liệu này"<span id="idCancel"></span>" ?
+                                                    Bạn có muốn huỷ tài liệu này ?
                                                 </p>
                                             </div>
                                             <div class="modal-footer">
@@ -247,8 +258,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 <p>
-                                                    Bạn có muốn xác nhận tài liệu này đã được duyệt"<span
-                                                        id="idDelivered"></span>" ?
+                                                    Bạn có muốn xác nhận tài liệu này đã được xét duyệt ?
                                                 </p>
                                             </div>
                                             <div class="modal-footer">

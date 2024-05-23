@@ -69,21 +69,21 @@ public class ShopController extends CommomController {
 
 	public Page<Document> findPaginated(Pageable pageable) {
 
-		List<Document> productPage = documentRepository.findAll();
+		List<Document> documentPage = documentRepository.findAllByDocumentStatus();
 
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
 		List<Document> list;
 
-		if (productPage.size() < startItem) {
+		if (documentPage.size() < startItem) {
 			list = Collections.emptyList();
 		} else {
-			int toIndex = Math.min(startItem + pageSize, productPage.size());
-			list = productPage.subList(startItem, toIndex);
+			int toIndex = Math.min(startItem + pageSize, documentPage.size());
+			list = documentPage.subList(startItem, toIndex);
 		}
 
-		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), productPage.size());
+		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
 	}
 
 	// search document

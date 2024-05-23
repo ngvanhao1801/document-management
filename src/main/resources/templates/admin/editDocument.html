@@ -106,7 +106,7 @@
                                                         <option th:each="item : ${folderList}"
                                                                 th:value="${item.folderId}" th:text="${item.folderName}"
                                                                 th:selected="${item.folderId == document.folder.folderId}">
-                                                            Category Name
+                                                            Folder Name
                                                         </option>
                                                     </select>
                                                 </div>
@@ -166,7 +166,7 @@
                                                     <label>Mô tả sản phẩm</label>
                                                     <textarea th:field="*{description}" id="description"
                                                               class="form-control"
-                                                              placeholder="Mô tả sản phẩm"></textarea>
+                                                              placeholder="Mô tả tài liệu..."></textarea>
                                                 </div>
                                             </div>
                                         </div>

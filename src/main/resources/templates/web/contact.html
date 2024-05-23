@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,7 +10,7 @@
     <meta name="template" content="greeny">
     <meta name="title" content="greeny - Ecommerce Food Store HTML Template">
     <meta name="keywords"
-        content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online">
+          content="organic, food, shop, ecommerce, store, html, bootstrap, template, agriculture, vegetables, products, farm, grocery, natural, online">
     <title>Document Management System</title>
     <link rel="icon" href="images/favicon.png">
     <link rel="stylesheet" href="fonts/flaticon/flaticon.css">
@@ -22,9 +22,11 @@
     <link rel="stylesheet" href="vendor/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/contact.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha384-DyZ88mC6Up2uqS13mUP7bVgx2k1pHbRlujij2APpVUMy4GopSb3g1t5mg1CwSi5R" crossorigin="anonymous">
     <style>
         .chat-icon {
-            top: 800px;
+            top: 550px;
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -42,7 +44,7 @@
         }
 
         .chat-box {
-            top: 350px;
+            top: 100px;
             position: fixed;
             bottom: 80px;
             right: 20px;
@@ -65,238 +67,245 @@
 </head>
 
 <body>
-    
-    <!--************************************
-				Header Start
-		*************************************-->
-		<header th:replace="~{/web/fragments/header :: header}"></header>
-		<!--************************************
-				Header End
-		*************************************-->
 
-    
-    <section class="inner-section single-banner" style="background: url(images/hethongQuanLy.png) no-repeat center;">
-        <div class="container">
-            <h2>Liên hệ chúng tôi</h2>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
-            </ol>
-        </div>
-    </section>
-    <section class="inner-section contact-part">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-lg-4">
-                    <div class="contact-card">
-                    	<i class="icofont-location-pin"></i>
-                        <h4>Địa chỉ</h4>
-                        <p>Số 41A Đ.Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="contact-card">
-                    	<i class="icofont-phone"></i>
-                        <h4>Số điện thoại</h4>
-                        <p>
-                        	<a href="javascript:void(0);">0934.406.830 <span>(free)</span></a>
-                        	<a href="javascript:void(0);">0339.303.747</a>
-                        </p>
-                    </div>
-                </div>
-                <div class="col-md-6 col-lg-4">
-                    <div class="contact-card">
-                    	<i class="icofont-email"></i>
-                        <h4>Email hỗ trợ</h4>
-                        <p>
-	                        <a href="javascript:void(0);">ngohao1801@gmail.com</a>
-	                        <a href="javascript:void(0);">document@gmail.com</a>
-                        </p>
-                    </div>
+<!--************************************
+            Header Start
+    *************************************-->
+<header th:replace="~{/web/fragments/header :: header}"></header>
+<!--************************************
+        Header End
+*************************************-->
+
+
+<section class="inner-section single-banner" style="background: url(images/hethongQuanLy.png) no-repeat center;">
+    <div class="container">
+        <h2>Liên hệ chúng tôi</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
+        </ol>
+    </div>
+</section>
+<section class="inner-section contact-part">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-4">
+                <div class="contact-card">
+                    <i class="icofont-location-pin"></i>
+                    <h4>Địa chỉ</h4>
+                    <p>Số 41A Đ.Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="contact-map">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2973.5670523833665!2d105.77249651494485!3d21.041029794206122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac9a8e90213f%3A0xf700a80ac1b53f13!2sVietnam%20University%20of%20Natural%20Resources%20and%20Environment!5e0!3m2!1sen!2sus!4v1640796947382!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                    </div>
-                </div>
-                <div class="col-lg-6">
-                    <form class="contact-form">
-                        <h4>Gửi yêu cầu hỗ trợ</h4>
-                        <div class="form-group">
-                            <div class="form-input-group"><input class="form-control" type="text"
-                                    placeholder="Tên của bạn"><i class="icofont-user-alt-3"></i></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-input-group"><input class="form-control" type="text"
-                                    placeholder="Email của bạn"><i class="icofont-email"></i></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-input-group"><input class="form-control" type="text"
-                                    placeholder="Tiêu đề"><i class="icofont-book-mark"></i></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="form-input-group"><textarea class="form-control"
-                                    placeholder="Nội dung"></textarea><i class="icofont-paragraph"></i></div>
-                        </div>
-                        <button type="submit" class="form-btn-group">
-	                        <i class="fas fa-envelope"></i>
-	                        <span>Gửi tin nhắn</span>
-                        </button>
-                    </form>
+            <div class="col-md-6 col-lg-4">
+                <div class="contact-card">
+                    <i class="icofont-phone"></i>
+                    <h4>Số điện thoại</h4>
+                    <p>
+                        <a href="javascript:void(0);">0934.406.830 <span>(free)</span></a>
+                        <a href="javascript:void(0);">0339.303.747</a>
+                    </p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="branch-card"><img src="images/branch/01.jpg" alt="branch">
-                        <div class="branch-overlay">
-                            <h3>dhaka</h3>
-                            <p>kawran bazar, 1100 east tejgaon, dhaka.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="branch-card"><img src="images/branch/02.jpg" alt="branch">
-                        <div class="branch-overlay">
-                            <h3>Narayanganj</h3>
-                            <p>west jalkuri, 1420 shiddirganj, narayanganj.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="branch-card"><img src="images/branch/03.jpg" alt="branch">
-                        <div class="branch-overlay">
-                            <h3>chandpur</h3>
-                            <p>east lautuli, 2344 faridganj, chandpur.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-md-6 col-lg-3">
-                    <div class="branch-card"><img src="images/branch/04.jpg" alt="branch">
-                        <div class="branch-overlay">
-                            <h3>noakhli</h3>
-                            <p>begumganj, 3737 shonaimuri, noakhli.</p>
-                        </div>
-                    </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="contact-card">
+                    <i class="icofont-email"></i>
+                    <h4>Email hỗ trợ</h4>
+                    <p>
+                        <a href="javascript:void(0);">ngohao1801@gmail.com</a>
+                        <a href="javascript:void(0);">document@gmail.com</a>
+                    </p>
                 </div>
             </div>
         </div>
-    </section>
-    <section class="news-part"
-             style="background: url(images/book-5.jpg) no-repeat center">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-5 col-lg-6 col-xl-7">
-                    <div class="news-text">
-                        <h2>Đăng ký ngay hôm nay và tận hưởng ưu đãi miễn phí!</h2>
-                        <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được sự hướng dẫn nhiệt tình, mà còn mở ra cơ hội trải nghiệm sản phẩm chất lượng vượt trội.
-                            Với sự kết hợp hoàn hảo chúng tôi cam kết mang đến cho bạn trải nghiệm tuyệt vời nhất mà không tốn một xu.
-                            Hãy khám phá ngay!"</p>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="contact-map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2973.5670523833665!2d105.77249651494485!3d21.041029794206122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac9a8e90213f%3A0xf700a80ac1b53f13!2sVietnam%20University%20of%20Natural%20Resources%20and%20Environment!5e0!3m2!1sen!2sus!4v1640796947382!5m2!1sen!2sus"
+                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <form class="contact-form">
+                    <h4>Gửi yêu cầu hỗ trợ</h4>
+                    <div class="form-group">
+                        <div class="form-input-group"><input class="form-control" type="text"
+                                                             placeholder="Tên của bạn"><i
+                                class="icofont-user-alt-3"></i></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-input-group"><input class="form-control" type="text"
+                                                             placeholder="Email của bạn"><i class="icofont-email"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-input-group"><input class="form-control" type="text"
+                                                             placeholder="Tiêu đề"><i class="icofont-book-mark"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="form-input-group"><textarea class="form-control"
+                                                                placeholder="Nội dung"></textarea><i
+                                class="icofont-paragraph"></i></div>
+                    </div>
+                    <button type="submit" class="form-btn-group">
+                        <i class="fas fa-envelope"></i>
+                        <span>Gửi tin nhắn</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                <div class="branch-card"><img src="images/branch/01.jpg" alt="branch">
+                    <div class="branch-overlay">
+                        <h3>dhaka</h3>
+                        <p>kawran bazar, 1100 east tejgaon, dhaka.</p>
                     </div>
                 </div>
-                <div class="col-md-7 col-lg-6 col-xl-5">
-                    <form class="news-form">
-                        <input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn" />
-                        <button>
-                            <span><i class="icofont-email"></i>Gửi</span>
-                        </button>
-                    </form>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                <div class="branch-card"><img src="images/branch/02.jpg" alt="branch">
+                    <div class="branch-overlay">
+                        <h3>Narayanganj</h3>
+                        <p>west jalkuri, 1420 shiddirganj, narayanganj.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                <div class="branch-card"><img src="images/branch/03.jpg" alt="branch">
+                    <div class="branch-overlay">
+                        <h3>chandpur</h3>
+                        <p>east lautuli, 2344 faridganj, chandpur.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-3">
+                <div class="branch-card"><img src="images/branch/04.jpg" alt="branch">
+                    <div class="branch-overlay">
+                        <h3>noakhli</h3>
+                        <p>begumganj, 3737 shonaimuri, noakhli.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    <section class="intro-part">
-        <div class="container">
-            <div class="row intro-content">
-                <div class="col-sm-6 col-lg-3">
-                    <div class="intro-wrap">
-                        <div class="intro-icon">
-                            <i class="fas fa-handshake"></i>
-                        </div>
-                        <div class="intro-content">
-                            <h5>Quản Lý Tài Liệu Miễn Phí</h5>
-                            <p>Quản lý tài liệu hoàn toàn miễn phí, trải nghiệm dễ dàng!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="intro-wrap">
-                        <div class="intro-icon">
-                            <i class="fas fa-sync-alt"></i>
-                        </div>
-                        <div class="intro-content">
-                            <h5>Chính Sách Bảo Mật</h5>
-                            <p>Tự tin sử dụng - Chính sách bảo mật an toàn, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="intro-wrap">
-                        <div class="intro-icon">
-                            <i class="fas fa-headset"></i>
-                        </div>
-                        <div class="intro-content">
-                            <h5>Hệ Thống Hỗ Trợ</h5>
-                            <p>Liên kết tin cậy - Hệ thống hỗ trợ 24/7, sẵn sàng đồng hành cùng bạn mọi lúc mọi nơi!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6 col-lg-3">
-                    <div class="intro-wrap">
-                        <div class="intro-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <div class="intro-content">
-                            <h5>Bảo Mật Hệ Thống</h5>
-                            <p>Đăng tải và sử dụng tài liêu an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="chat-icon" onclick="toggleChatBox()">
-                    <i class="fa fa-comment"></i> <!-- Sử dụng Font Awesome để thêm biểu tượng chat -->
-                </div>
-                <div class="chat-box" id="chatBox">
-                    <iframe
-                            allow="microphone;"
-                            src="https://console.dialogflow.com/api-client/demo/embedded/974899ae-eb96-4830-bb1d-b3bba7256d9a">
-                    </iframe>
+    </div>
+</section>
+<section class="news-part"
+         style="background: url(images/book-5.jpg) no-repeat center">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-5 col-lg-6 col-xl-7">
+                <div class="news-text">
+                    <h2>Đăng ký ngay hôm nay và tận hưởng ưu đãi miễn phí!</h2>
+                    <p>"Khi bạn đăng ký ngay bây giờ, không chỉ bạn nhận được sự hướng dẫn nhiệt tình, mà còn mở ra cơ
+                        hội trải nghiệm sản phẩm chất lượng vượt trội.
+                        Với sự kết hợp hoàn hảo chúng tôi cam kết mang đến cho bạn trải nghiệm tuyệt vời nhất mà không
+                        tốn một xu.
+                        Hãy khám phá ngay!"</p>
                 </div>
             </div>
+            <div class="col-md-7 col-lg-6 col-xl-5">
+                <form class="news-form">
+                    <input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn"/>
+                    <button>
+                        <span><i class="icofont-email"></i>Gửi</span>
+                    </button>
+                </form>
+            </div>
         </div>
-    </section>
-    <script>
-        function toggleChatBox() {
-            var chatBox = document.getElementById('chatBox');
-            if (chatBox.style.display === 'none' || chatBox.style.display === '') {
-                chatBox.style.display = 'block';
-            } else {
-                chatBox.style.display = 'none';
-            }
+    </div>
+</section>
+<section class="intro-part">
+    <div class="container">
+        <div class="row intro-content">
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon">
+                        <i class="fas fa-handshake"></i>
+                    </div>
+                    <div class="intro-content">
+                        <h5>Quản Lý Tài Liệu Miễn Phí</h5>
+                        <p>Quản lý tài liệu hoàn toàn miễn phí, trải nghiệm dễ dàng!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <div class="intro-content">
+                        <h5>Chính Sách Bảo Mật</h5>
+                        <p>Tự tin sử dụng - Chính sách bảo mật an toàn, sự hài lòng của bạn là ưu tiên hàng đầu!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="intro-content">
+                        <h5>Hệ Thống Hỗ Trợ</h5>
+                        <p>Liên kết tin cậy - Hệ thống hỗ trợ 24/7, sẵn sàng đồng hành cùng bạn mọi lúc mọi nơi!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-lg-3">
+                <div class="intro-wrap">
+                    <div class="intro-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="intro-content">
+                        <h5>Bảo Mật Hệ Thống</h5>
+                        <p>Đăng tải và sử dụng tài liêu an toàn - Bảo vệ dựa trên đáng tin cậy!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-icon" onclick="toggleChatBox()">
+                <i class="fa fa-comment"></i> <!-- Sử dụng Font Awesome để thêm biểu tượng chat -->
+            </div>
+            <div class="chat-box" id="chatBox">
+                <iframe
+                        allow="microphone;"
+                        src="https://console.dialogflow.com/api-client/demo/embedded/974899ae-eb96-4830-bb1d-b3bba7256d9a">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    function toggleChatBox() {
+        var chatBox = document.getElementById('chatBox');
+        if (chatBox.style.display === 'none' || chatBox.style.display === '') {
+            chatBox.style.display = 'block';
+        } else {
+            chatBox.style.display = 'none';
         }
-    </script>
-    
-	<!--************************************
-				Footer Start
-		*************************************-->
-		<footer th:replace="~{/web/fragments/footer :: footer}"></footer>
-				
-		<!--************************************
-				Footer End
-		*************************************-->
-		
-		
-    <script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
-    <script src="vendor/bootstrap/popper.min.js"></script>
-    <script src="vendor/bootstrap/bootstrap.min.js"></script>
-    <script src="vendor/countdown/countdown.min.js"></script>
-    <script src="vendor/niceselect/nice-select.min.js"></script>
-    <script src="vendor/slickslider/slick.min.js"></script>
-    <script src="vendor/venobox/venobox.min.js"></script>
-    <script src="js/nice-select.js"></script>
-    <script src="js/countdown.js"></script>
-    <script src="js/accordion.js"></script>
-    <script src="js/venobox.js"></script>
-    <script src="js/slick.js"></script>
-    <script src="js/main.js"></script>
+    }
+</script>
+
+<!--************************************
+            Footer Start
+    *************************************-->
+<footer th:replace="~{/web/fragments/footer :: footer}"></footer>
+
+<!--************************************
+        Footer End
+*************************************-->
+
+
+<script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
+<script src="vendor/bootstrap/popper.min.js"></script>
+<script src="vendor/bootstrap/bootstrap.min.js"></script>
+<script src="vendor/countdown/countdown.min.js"></script>
+<script src="vendor/niceselect/nice-select.min.js"></script>
+<script src="vendor/slickslider/slick.min.js"></script>
+<script src="vendor/venobox/venobox.min.js"></script>
+<script src="js/nice-select.js"></script>
+<script src="js/countdown.js"></script>
+<script src="js/accordion.js"></script>
+<script src="js/venobox.js"></script>
+<script src="js/slick.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>
