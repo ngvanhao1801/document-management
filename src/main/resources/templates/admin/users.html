@@ -1,174 +1,315 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-	<meta charset="UTF-8" />
-	<title>Greeny - Trang quản trị</title>
-	<meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-	<link rel="icon" href="/assets/img/icon.ico" type="image/x-icon"/>
-	
-	<!-- Fonts and icons -->
-	<script src="/assets/js/plugin/webfont/webfont.min.js"></script>
-	<script>
-		WebFont.load({
-			google: {"families":["Lato:300,400,700,900"]},
-			custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"], urls: ['/assets/css/fonts.min.css']},
-			active: function() {
-				sessionStorage.fonts = true;
-			}
-		});
-	</script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="UTF-8"/>
+    <title>Greeny - Trang quản trị</title>
+    <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport'/>
+    <link rel="icon" href="/assets/img/icon.ico" type="image/x-icon"/>
 
-	<!-- CSS Files -->
-	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-	<link rel="stylesheet" href="/assets/css/atlantis.min.css">
-	<!-- CSS Just for demo purpose, don't include it in your project -->
-	<link rel="stylesheet" href="/assets/css/demo.css">
+    <!-- Fonts and icons -->
+    <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
+    <script>
+        WebFont.load({
+            google: {"families": ["Lato:300,400,700,900"]},
+            custom: {
+                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands", "simple-line-icons"],
+                urls: ['/assets/css/fonts.min.css']
+            },
+            active: function () {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/atlantis.min.css">
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link rel="stylesheet" href="/assets/css/demo.css">
 </head>
 <body>
-	<div class="wrapper">
-	<!-- Header -->
-	
-	<th:block th:replace="~{admin/fragments/header :: header}"></th:block>
-	
-	<!-- End Header -->
-	
-	<!-- Navbar -->
-	
-	<th:block th:replace="~{admin/fragments/navbar :: navbar}"></th:block>
-	
-	<!-- End Navbar -->
-		
-	<div class="main-panel">
-		<div class="content">
-			<div class="page-inner">
-				<div class="page-header">
-					<h4 class="page-title">Quản lý người dùng</h4>
-					<ul class="breadcrumbs">
-						<li class="nav-home">
-							<a href="javascript:void(0);">
-								<i class="flaticon-home"></i>
-							</a>
-						</li>
-						<li class="separator">
-							<i class="flaticon-right-arrow"></i>
-						</li>
-						<li class="nav-item">
-							<a href="javascript:void(0);">Trang chủ</a>
-						</li>
-						<li class="separator">
-							<i class="flaticon-right-arrow"></i>
-						</li>
-						<li class="nav-item">
-							<a href="javascript:void(0);">Quản lý người dùng</a>
-						</li>
-					</ul>
-				</div>
-					<div class="col-md-12">
-						<div class="card">
-							<div class="card-header">
-								<div class="d-flex align-items-center">
-									<h4 class="card-title" style="text-decoration: underline;">Quản lý người dùng</h4>
-								</div>
-							</div>
-							<div class="card-body">
-								<!-- Modal -->
+<div class="wrapper">
+    <!-- Header -->
 
-								<div class="table-responsive">
-									<table id="add-row" class="display table table-striped table-hover" >
-										<thead>
-											<tr>
-												<th>id</th>
-												<th>Ảnh đại diện</th>
-												<th>Họ và tên</th>
-												<th>Email</th>
-												<th>Ngày đăng ký</th>
-												<th>Trạng thái</th>
-												<th>Loại tài khoản</th>
-												<th>Hành động</th>
-											</tr>
-										</thead>
-										<tbody>
-										<tr th:each="item : ${users}">
-											<td>[[${item.userId}]]</td>
-											<td>
-												<img src="../assets/img/05.png" alt="..." class="avatar-img rounded-circle" style="width: 60px">
-											</td>
-											<td>[[${item.name}]]</td>
-											<td>[[${item.email}]]</td>
-											<td>[[${item.registerDate}]]</td>
-											<td>[[${item.status ? 'Đang hoạt động' : 'Ngừng hoạt động'}]]</td>
-											<td>[[${item.roleName}]]</td>
-											<td>
-												<div class="form-button-action">
-													<button type="button" data-toggle="tooltip" title="Xem" class="btn btn-link btn-primary btn-lg">
-														<i class="fa fa-eye"></i>
-													</button>
-													<button th:data-id="${item.userId}" th:data-name="${item.name}"
-															onclick="showConfigModalDialog(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-															type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Xóa">
-														<i class="fa fa-times"></i>
-													</button>
-												</div>
-											</td>
-										</tr>
-										</tbody>
-									</table>
-<!--									<div class="modal" tabindex="-1" role="dialog" id="configmationId">-->
-<!--										<div class="modal-dialog" role="document">-->
-<!--											<div class="modal-content">-->
-<!--												<div class="modal-header">-->
-<!--													<h5 class="modal-title" style="color: black">Xác nhận</h5>-->
-<!--													<button type="button" class="close" data-dismiss="modal"-->
-<!--															aria-label="Close">-->
-<!--														<span aria-hidden="true">&times;</span>-->
-<!--													</button>-->
-<!--												</div>-->
-<!--												<div class="modal-body">-->
-<!--													<p style="color: black">Bạn có muốn xóa người dùng này không?</p>-->
-<!--												</div>-->
-<!--												<div class="modal-footer">-->
-<!--													<a id="yesOption" type="button" class="btn btn-primary">Có</a>-->
-<!--													<button type="button" class="btn btn-danger"-->
-<!--															data-dismiss="modal">Không</button>-->
-<!--												</div>-->
-<!--											</div>-->
-<!--										</div>-->
-<!--									</div>-->
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		<footer class="footer">
-			<div class="container-fluid">
-				<nav class="pull-left">
-					<ul class="nav">
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);">
-								GREENY-SHOP
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);">
-								Help
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="javascript:void(0);">
-								Licenses
-							</a>
-						</li>
-					</ul>
-				</nav>
-				<div class="copyright ml-auto">
-					2024, made with <i class="fa fa-heart heart text-danger"></i> by <a href="javascript:void(0);">DOCUMENT-MANAGEMENT</a>
-				</div>				
-			</div>
-		</footer>
-	</div>
-	</div>
+    <th:block th:replace="~{admin/fragments/header :: header}"></th:block>
+
+    <!-- End Header -->
+
+    <!-- Navbar -->
+
+    <th:block th:replace="~{admin/fragments/navbar :: navbar}"></th:block>
+
+    <!-- End Navbar -->
+
+    <div class="main-panel">
+        <div class="content">
+            <div class="page-inner">
+                <div class="page-header">
+                    <h4 class="page-title">Quản lý người dùng</h4>
+                    <ul class="breadcrumbs">
+                        <li class="nav-home">
+                            <a href="javascript:void(0);">
+                                <i class="flaticon-home"></i>
+                            </a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0);">Trang chủ</a>
+                        </li>
+                        <li class="separator">
+                            <i class="flaticon-right-arrow"></i>
+                        </li>
+                        <li class="nav-item">
+                            <a href="javascript:void(0);">Quản lý người dùng</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title" style="text-decoration: underline;">Quản lý người dùng</h4>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <!-- Modal -->
+                            <div class="table-responsive">
+                                <table id="add-row" class="display table table-striped table-hover"
+                                       style="text-align: center">
+                                    <thead>
+                                    <tr>
+                                        <th>Mã người dùng</th>
+                                        <th>Ảnh đại diện</th>
+                                        <th>Họ và tên</th>
+                                        <th>Email</th>
+                                        <th>Ngày đăng ký</th>
+                                        <th>Trạng thái</th>
+                                        <th>Loại tài khoản</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Mã người dùng</th>
+                                        <th>Ảnh đại diện</th>
+                                        <th>Họ và tên</th>
+                                        <th>Email</th>
+                                        <th>Ngày đăng ký</th>
+                                        <th>Trạng thái</th>
+                                        <th>Loại tài khoản</th>
+                                        <th>Hành động</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    <tr th:each="item : ${users}">
+                                        <td>[[${item.userId}]]</td>
+                                        <td>
+                                            <img src="../assets/img/05.png" alt="..." class="avatar-img rounded-circle"
+                                                 style="width: 50px">
+                                        </td>
+                                        <td>[[${item.name}]]</td>
+                                        <td>[[${item.email}]]</td>
+                                        <td>[[${item.registerDate}]]</td>
+                                        <td>[[${item.status ? 'Đang hoạt động' : 'Ngừng hoạt động'}]]</td>
+                                        <td>[[${item.roleName}]]</td>
+                                        <td>
+                                            <div class="form-button-action">
+                                                <button type="button" data-toggle="tooltip" title="Xem"
+                                                        class="btn btn-link btn-primary btn-lg"
+                                                        th:data-id="${item.userId}"
+                                                        onclick="viewUser(this.getAttribute('th:data-id'))">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
+                                                <button type="button" data-toggle="tooltip" title="Chỉnh sửa"
+                                                        class="btn btn-link btn-warning btn-lg"
+                                                        th:data-id="${item.userId}"
+                                                        onclick="editUser(this.getAttribute('th:data-id'))">
+                                                    <i class="fa fa-edit"></i>
+                                                </button>
+                                                <button th:data-id="${item.userId}" th:data-status="${item.status}"
+                                                        onclick="toggleUserStatus(this.getAttribute('data-id'), this.getAttribute('data-status'))"
+                                                        type="button" data-toggle="tooltip"
+                                                        th:title="${item.status == 1 ? 'Khóa' : 'Mở khóa'}"
+                                                        class="btn btn-link btn-secondary btn-lg">
+                                                    <i th:class="${item.status == 1 ? 'fa fa-lock' : 'fa fa-unlock'}"></i>
+                                                </button>
+                                                <button th:data-id="${item.userId}" th:data-name="${item.name}"
+                                                        onclick="showConfigModalDialog(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                                                        type="button" data-toggle="tooltip" title="Xóa"
+                                                        class="btn btn-link btn-danger btn-lg">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <!--									<div class="modal" tabindex="-1" role="dialog" id="configmationId">-->
+                                <!--										<div class="modal-dialog" role="document">-->
+                                <!--											<div class="modal-content">-->
+                                <!--												<div class="modal-header">-->
+                                <!--													<h5 class="modal-title" style="color: black">Xác nhận</h5>-->
+                                <!--													<button type="button" class="close" data-dismiss="modal"-->
+                                <!--															aria-label="Close">-->
+                                <!--														<span aria-hidden="true">&times;</span>-->
+                                <!--													</button>-->
+                                <!--												</div>-->
+                                <!--												<div class="modal-body">-->
+                                <!--													<p style="color: black">Bạn có muốn xóa người dùng này không?</p>-->
+                                <!--												</div>-->
+                                <!--												<div class="modal-footer">-->
+                                <!--													<a id="yesOption" type="button" class="btn btn-primary">Có</a>-->
+                                <!--													<button type="button" class="btn btn-danger"-->
+                                <!--															data-dismiss="modal">Không</button>-->
+                                <!--												</div>-->
+                                <!--											</div>-->
+                                <!--										</div>-->
+                                <!--									</div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="container-fluid">
+                <nav class="pull-left">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);">
+                                DOCUMENT-MANAGEMENT
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);">
+                                Help
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="javascript:void(0);">
+                                Licenses
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <div class="copyright ml-auto">
+                    2024, made with <i class="fa fa-heart heart text-danger"></i> by <a href="javascript:void(0);">DOCUMENT-MANAGEMENT</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+</div>
+
+<script>
+    // Hàm xem chi tiết người dùng
+    function viewUser(userId) {
+        // Gửi yêu cầu tới server để lấy thông tin chi tiết người dùng
+        console.log('Xem chi tiết người dùng có ID:', userId);
+        // Hiển thị modal hoặc điều hướng tới trang chi tiết người dùng
+    }
+
+    // Hàm chỉnh sửa người dùng
+    function editUser(userId) {
+        // Gửi yêu cầu tới server để lấy thông tin hiện tại của người dùng
+        console.log('Chỉnh sửa người dùng có ID:', userId);
+        // Hiển thị modal chỉnh sửa với thông tin hiện tại của người dùng
+    }
+
+    // Hàm khóa/mở khóa người dùng
+    function toggleUserStatus(userId, currentStatus) {
+        let newStatus = currentStatus === '1' ? '0' : '1';
+        let confirmMessage = currentStatus === '1' ? 'Bạn có chắc chắn muốn khóa người dùng này?' : 'Bạn có chắc chắn muốn mở khóa người dùng này?';
+
+        if (confirm(confirmMessage)) {
+            // Gửi yêu cầu tới server để thay đổi trạng thái người dùng
+            console.log('Thay đổi trạng thái của người dùng có ID:', userId, 'thành', newStatus);
+            // Cập nhật giao diện sau khi thay đổi trạng thái
+            // Giả sử bạn có một API endpoint /api/users/toggleStatus để thay đổi trạng thái
+            fetch(`/api/users/toggleStatus`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({userId: userId, status: newStatus})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Trạng thái người dùng đã được cập nhật.');
+                        location.reload(); // Tải lại trang để cập nhật giao diện
+                    } else {
+                        alert('Đã xảy ra lỗi khi cập nhật trạng thái người dùng.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã xảy ra lỗi khi cập nhật trạng thái người dùng.');
+                });
+        }
+    }
+
+    // Hàm xóa người dùng
+    function showConfigModalDialog(userId, userName) {
+        if (confirm(`Bạn có chắc chắn muốn xóa người dùng ${userName} (ID: ${userId})?`)) {
+            // Gọi API hoặc thực hiện hành động xóa người dùng
+            console.log('Xóa người dùng có ID:', userId);
+            // Giả sử bạn có một API endpoint /api/users/delete để xóa người dùng
+            fetch(`/api/users/delete`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({userId: userId})
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Người dùng đã được xóa.');
+                        location.reload(); // Tải lại trang để cập nhật giao diện
+                    } else {
+                        alert('Đã xảy ra lỗi khi xóa người dùng.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã xảy ra lỗi khi xóa người dùng.');
+                });
+        }
+    }
+
+    // Gắn sự kiện click cho các button sau khi tài liệu được tải
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.btn-link').forEach(button => {
+            button.addEventListener('click', function () {
+                const userId = this.getAttribute('th:data-id');
+                const userName = this.getAttribute('th:data-name');
+                const title = this.getAttribute('title');
+
+                switch (title) {
+                    case 'Xem':
+                        viewUser(userId);
+                        break;
+                    case 'Chỉnh sửa':
+                        editUser(userId);
+                        break;
+                    case 'Khóa':
+                    case 'Mở khóa':
+                        const status = this.getAttribute('th:data-status');
+                        toggleUserStatus(userId, status);
+                        break;
+                    case 'Xóa':
+                        showConfigModalDialog(userId, userName);
+                        break;
+                    default:
+                        console.log('Hành động không xác định:', title);
+                }
+            });
+        });
+    });
+</script>
 
 <!--	<script>-->
 <!--		function showConfigModalDialog(id, name) {-->
@@ -178,69 +319,68 @@
 <!--		}-->
 <!--	</script>-->
 
-	<!--   Core JS Files   -->
-	<script src="/assets/js/core/jquery.3.2.1.min.js"></script>
-	<script src="/assets/js/core/popper.min.js"></script>
-	<script src="/assets/js/core/bootstrap.min.js"></script>
-	<!-- jQuery UI -->
-	<script src="/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-	<script src="/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-	
-	<!-- jQuery Scrollbar -->
-	<script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
-	<!-- Datatables -->
-	<script src="/assets/js/plugin/datatables/datatables.min.js"></script>
-	<!-- Atlantis JS -->
-	<script src="/assets/js/atlantis.min.js"></script>
-	<!-- Atlantis DEMO methods, don't include it in your project! -->
-	<script src="/assets/js/setting-demo2.js"></script>
-	<script >
-		$(document).ready(function() {
-			$('#basic-datatables').DataTable({
-			});
+<!--   Core JS Files   -->
+<script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="/assets/js/core/popper.min.js"></script>
+<script src="/assets/js/core/bootstrap.min.js"></script>
+<!-- jQuery UI -->
+<script src="/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
+<script src="/assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
 
-			$('#multi-filter-select').DataTable( {
-				"pageLength": 5,
-				initComplete: function () {
-					this.api().columns().every( function () {
-						var column = this;
-						var select = $('<select class="form-control"><option value=""></option></select>')
-						.appendTo( $(column.footer()).empty() )
-						.on( 'change', function () {
-							var val = $.fn.dataTable.util.escapeRegex(
-								$(this).val()
-								);
+<!-- jQuery Scrollbar -->
+<script src="/assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js"></script>
+<!-- Datatables -->
+<script src="/assets/js/plugin/datatables/datatables.min.js"></script>
+<!-- Atlantis JS -->
+<script src="/assets/js/atlantis.min.js"></script>
+<!-- Atlantis DEMO methods, don't include it in your project! -->
+<script src="/assets/js/setting-demo2.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#basic-datatables').DataTable({});
 
-							column
-							.search( val ? '^'+val+'$' : '', true, false )
-							.draw();
-						} );
+        $('#multi-filter-select').DataTable({
+            "pageLength": 5,
+            initComplete: function () {
+                this.api().columns().every(function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                        .appendTo($(column.footer()).empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
 
-						column.data().unique().sort().each( function ( d, j ) {
-							select.append( '<option value="'+d+'">'+d+'</option>' )
-						} );
-					} );
-				}
-			});
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
 
-			// Add Row
-			/* $('#add-row').DataTable({
-				"pageLength": 5,
-			});
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            }
+        });
 
-			var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
+        // Add Row
+        /* $('#add-row').DataTable({
+            "pageLength": 5,
+        });
 
-			$('#addRowButton').click(function() {
-				$('#add-row').dataTable().fnAddData([
-					$("#addName").val(),
-					$("#addPosition").val(),
-					$("#addOffice").val(),
-					action
-					]);
-				$('#addRowModal').modal('hide');
+        var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-			}); */
-		});
-	</script>
+        $('#addRowButton').click(function() {
+            $('#add-row').dataTable().fnAddData([
+                $("#addName").val(),
+                $("#addPosition").val(),
+                $("#addOffice").val(),
+                action
+                ]);
+            $('#addRowModal').modal('hide');
+
+        }); */
+    });
+</script>
 </body>
 </html>
