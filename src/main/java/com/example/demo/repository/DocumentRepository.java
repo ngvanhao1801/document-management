@@ -19,15 +19,15 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	public List<Document> listDocumentByFolder(Long folderId);
 
 	// Top 10 product by category
-	@Query(value = "SELECT * FROM document AS b WHERE b.folder_id = ?;", nativeQuery = true)
+	@Query(value = "SELECT * FROM document AS b WHERE b.status_id = 3 and b.folder_id = ?;", nativeQuery = true)
 	List<Document> listDocumentByFolder10(Long folderId);
 
 	// List product new
-	@Query(value = "SELECT * FROM document ORDER BY upload_date DESC limit 10;", nativeQuery = true)
+	@Query(value = "SELECT * FROM document d where d.status_id = 3 ORDER BY d.upload_date DESC limit 10;", nativeQuery = true)
 	public List<Document> listDocumentNew20();
 
 	// Search Product
-	@Query(value = "SELECT * FROM document WHERE document_name LIKE %?1%", nativeQuery = true)
+	@Query(value = "SELECT * FROM document d WHERE d.status_id = 3 and d.document_name LIKE %?1%", nativeQuery = true)
 	public List<Document> searchDocument(String documentName);
 
 	@Query(value = "SELECT f.folder_id, f.folder_name, " +

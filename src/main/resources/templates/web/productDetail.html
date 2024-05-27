@@ -160,22 +160,24 @@
                             </a>
                         </th:block>
                         <th:block th:if="${user.email != null}">
-                            <a th:if="${document.favorite} == false"
-                               title="Yêu thích"
-                               th:href="@{/doFavorite(id=${document.id})}"
-                               style="background-color: rgba(167,231,209,0.45)"
-                               class="details-wish action-button">
-                                <i class="icofont-heart"></i>
-                                <span style="color: #0c0303">Thêm yêu thích</span>
-                            </a>
-                            <a th:if="${document.favorite} == true"
-                               title="Xóa Yêu thích"
-                               th:href="@{/doUnFavorite(id=${document.id})}"
-                               style="background-color: rgba(167,231,209,0.45)"
-                               class="action-button">
-                                <i class="fas fa-heart"></i>
-                                <span style="color: #0c0303">Xóa Yêu thích</span>
-                            </a>
+                            <th:block th:if="${document.documentStatus.statusId == 3}">
+                                <a th:if="${document.favorite} == false"
+                                   title="Yêu thích"
+                                   th:href="@{/doFavorite(id=${document.id})}"
+                                   class="fas fa-heart">
+                                </a>
+
+                                <a th:if="${document.favorite} == true"
+                                   title="Xóa Yêu thích"
+                                   th:href="@{/doUnFavorite(id=${document.id})}"
+                                   style="background-color: #fd7e14"
+                                   class="fas fa-heart">
+                                </a>
+                            </th:block>
+
+                            <th:block th:if="${document.documentStatus.statusId != 3}">
+                                <span style="color: red;">Tài liệu chưa được xét duyệt hoặc đã bị hủy!</span>
+                            </th:block>
                         </th:block>
                         <a th:href="@{'/loadFile?fileName=' + ${document.documentFile}}"
                            class="action-button"

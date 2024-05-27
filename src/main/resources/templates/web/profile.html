@@ -103,16 +103,22 @@
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-4">
+                            <div class="col-md-4 col-lg-3" style="margin-right: 20px">
                                 <div class="form-group">
                                     <label class="form-label">Họ và tên</label>
                                     <input class="form-control" type="text" th:value="${user.name}"/>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-lg-4">
+                            <div class="col-md-4 col-lg-3" style="margin-right: 20px">
                                 <div class="form-group">
                                     <label class="form-label">Địa chỉ Email</label>
                                     <input class="form-control" type="email" th:value="${user.email}"/>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-lg-3">
+                                <div class="form-group">
+                                    <label class="form-label">Ngày tạo tài khoản</label>
+                                    <input class="form-control" type="date" th:value="${user.registerDate}"/>
                                 </div>
                             </div>
                         </div>

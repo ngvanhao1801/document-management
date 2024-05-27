@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -63,9 +62,22 @@
             border: none;
             border-radius: 10px;
         }
+
+        .custom-btn {
+            padding: 8px 16px; /* Kích thước padding cho nút */
+            font-size: 14px; /* Kích thước chữ cho nút */
+            border-radius: 4px; /* Độ cong viền cho nút */
+            background-color: #007bff; /* Màu nền cho nút */
+            color: #fff; /* Màu chữ cho nút */
+        }
+
+        .custom-btn:hover {
+            background-color: #0056b3; /* Màu nền hover cho nút */
+            color: #fff; /* Màu chữ hover cho nút */
+        }
+
     </style>
 </head>
-
 <body>
 
 <!--************************************
@@ -78,7 +90,7 @@
 
 <section class="inner-section single-banner" style="background: url(/images/hethongQuanLy.png) no-repeat center;">
     <div class="container">
-        <h2>Liên hệ chúng tôi</h2>
+        <h2>Yêu cầu của bạn đã được gửi thành công!</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a th:href="@{/}">Trang chủ</a></li>
         </ol>
@@ -88,111 +100,18 @@
 <section class="inner-section contact-part">
     <div class="container">
         <div class="row">
-            <div class="col-md-6 col-lg-4">
+            <div class="col-lg-12">
                 <div class="contact-card">
-                    <i class="icofont-location-pin"></i>
-                    <h4>Địa chỉ</h4>
-                    <p>Số 41A Đ.Phú Diễn, Phú Diễn, Bắc Từ Liêm, Hà Nội</p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="contact-card">
-                    <i class="icofont-phone"></i>
-                    <h4>Số điện thoại</h4>
-                    <p>
-                        <a href="javascript:void(0);">0934.406.830 <span>(free)</span></a>
-                        <a href="javascript:void(0);">0339.303.747</a>
-                    </p>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="contact-card">
-                    <i class="icofont-email"></i>
-                    <h4>Email hỗ trợ</h4>
-                    <p>
-                        <a href="javascript:void(0);">ngohao1801@gmail.com</a>
-                        <a href="javascript:void(0);">document@gmail.com</a>
-                    </p>
+                    <i class="icofont-check-circled"></i>
+                    <h3>Cảm ơn bạn đã liên hệ với chúng tôi</h3>
+                    <p>Chúng tôi sẽ phản hồi lại bạn trong thời gian sớm nhất.</p>
+                    <a href="/" class="btn btn-primary custom-btn">Trở về trang chủ</a>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="contact-map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2973.5670523833665!2d105.77249651494485!3d21.041029794206122!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135ac9a8e90213f%3A0xf700a80ac1b53f13!2sVietnam%20University%20of%20Natural%20Resources%20and%20Environment!5e0!3m2!1sen!2sus!4v1640796947382!5m2!1sen!2sus"
-                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <form class="contact-form" method="post" action="/sendEmail">
-                    <h4>Gửi yêu cầu hỗ trợ</h4>
-                    <div class="form-group">
-                        <div class="form-input-group">
-                            <input class="form-control" id="name" type="text" name="name" placeholder="Tên của bạn">
-                            <i class="icofont-user-alt-3"></i>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-input-group">
-                            <input class="form-control" id="email" type="text" name="email" placeholder="Email của bạn">
-                            <i class="icofont-email"></i>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-input-group">
-                            <input class="form-control" id="subject" type="text" name="subject" placeholder="Tiêu đề">
-                            <i class="icofont-book-mark"></i>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="form-input-group">
-                            <textarea class="form-control" id="massage" name="message" placeholder="Nội dung"></textarea>
-                            <i class="icofont-paragraph"></i>
-                        </div>
-                    </div>
-                    <button type="submit" class="form-btn-group">
-                        <i class="fas fa-envelope"></i>
-                        <span>Gửi tin nhắn</span>
-                    </button>
-                </form>
-            </div>
-        </div>
-<!--        <div class="row">-->
-<!--            <div class="col-sm-6 col-md-6 col-lg-3">-->
-<!--                <div class="branch-card"><img src="/images/branch/01.jpg" alt="branch">-->
-<!--                    <div class="branch-overlay">-->
-<!--                        <h3>dhaka</h3>-->
-<!--                        <p>kawran bazar, 1100 east tejgaon, dhaka.</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-sm-6 col-md-6 col-lg-3">-->
-<!--                <div class="branch-card"><img src="images/branch/02.jpg" alt="branch">-->
-<!--                    <div class="branch-overlay">-->
-<!--                        <h3>Narayanganj</h3>-->
-<!--                        <p>west jalkuri, 1420 shiddirganj, narayanganj.</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-sm-6 col-md-6 col-lg-3">-->
-<!--                <div class="branch-card"><img src="images/branch/03.jpg" alt="branch">-->
-<!--                    <div class="branch-overlay">-->
-<!--                        <h3>chandpur</h3>-->
-<!--                        <p>east lautuli, 2344 faridganj, chandpur.</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="col-sm-6 col-md-6 col-lg-3">-->
-<!--                <div class="branch-card"><img src="images/branch/04.jpg" alt="branch">-->
-<!--                    <div class="branch-overlay">-->
-<!--                        <h3>noakhli</h3>-->
-<!--                        <p>begumganj, 3737 shonaimuri, noakhli.</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
     </div>
 </section>
+
 <section class="news-part"
          style="background: url(/images/book-5.jpg) no-repeat center">
     <div class="container">
@@ -292,11 +211,9 @@
             Footer Start
     *************************************-->
 <footer th:replace="~{/web/fragments/footer :: footer}"></footer>
-
 <!--************************************
         Footer End
 *************************************-->
-
 
 <script src="/vendor/bootstrap/jquery-1.12.4.min.js"></script>
 <script src="/vendor/bootstrap/popper.min.js"></script>
