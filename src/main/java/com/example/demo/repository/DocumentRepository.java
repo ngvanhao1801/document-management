@@ -4,10 +4,12 @@ import com.example.demo.dto.ChartDTO;
 import com.example.demo.entity.Document;
 import com.example.demo.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -21,7 +23,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	List<Document> listDocumentByFolder10(Long folderId);
 
 	// List product new
-	@Query(value = "SELECT * FROM document ORDER BY upload_date DESC limit 20;", nativeQuery = true)
+	@Query(value = "SELECT * FROM document ORDER BY upload_date DESC limit 10;", nativeQuery = true)
 	public List<Document> listDocumentNew20();
 
 	// Search Product
@@ -67,5 +69,10 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	@Query(value = "select * from document d where d.status_id = 3;", nativeQuery = true)
 	List<Document> findAllByDocumentStatus();
+
+	@Modifying
+	@Transactional
+	@Query(value = "UPDATE document d SET d.views = d.views + 1 WHERE d.id = :id", nativeQuery = true)
+	void incrementViews(@Param("id") Long id);
 
 }

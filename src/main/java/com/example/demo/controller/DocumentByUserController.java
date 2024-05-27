@@ -201,7 +201,13 @@ public class DocumentByUserController {
   public String editDocument(@PathVariable("id") Long id, ModelMap model) {
     Document document = documentRepository.findById(id).orElse(null);
 
+    if (document == null) {
+      return "web/notFound";
+    }
+
     model.addAttribute("editDocument", document);
+    model.addAttribute("folderList", folderRepository.findAll());
+    model.addAttribute("userList", userRepository.findAllByRoles());
 
     return "web/edit_document_upload";
   }

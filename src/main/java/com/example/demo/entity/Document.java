@@ -73,6 +73,10 @@ public class Document implements Serializable {
 
   public boolean favorite;
 
+  private int version;
+
+  private int views;
+
   @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Feedback> feedbacks = new ArrayList<>();
 

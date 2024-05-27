@@ -123,12 +123,6 @@
                                                         onclick="viewUser(this.getAttribute('th:data-id'))">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <button type="button" data-toggle="tooltip" title="Chỉnh sửa"
-                                                        class="btn btn-link btn-warning btn-lg"
-                                                        th:data-id="${item.userId}"
-                                                        onclick="editUser(this.getAttribute('th:data-id'))">
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
                                                 <button th:data-id="${item.userId}" th:data-status="${item.status}"
                                                         onclick="toggleUserStatus(this.getAttribute('data-id'), this.getAttribute('data-status'))"
                                                         type="button" data-toggle="tooltip"

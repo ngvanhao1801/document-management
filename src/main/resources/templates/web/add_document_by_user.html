@@ -224,7 +224,7 @@
                                 <a class="view" th:href="@{/documentDetails(id=${item.id})}" title="Chi tiết tài liệu">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a class="trash" th:href="@{/edit-document-upload(id=${item.id})}" title="Sửa tài liệu">
+                                <a class="trash" th:href="@{/edit-document-upload/{id}(id=${item.id})}" title="Sửa tài liệu">
                                     <i class="fa fa-edit"></i>
                                 </a>
                             </td>
