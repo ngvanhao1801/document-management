@@ -62,11 +62,21 @@
                 </form>
 
                 <div class="header-widget-group">
+                    <th:block th:if="${user.email == null}">
+                        <a title="Yêu thích" th:href="@{/login}" href="javascript:void(0);"
+                                class="header-widget">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                        <a th:href="@{/login}" class="header-widget header-cart" title="Thêm tài liệu mới">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </a>
+                    </th:block>
                     <th:block th:if="${#request.remoteUser}">
                         <a th:href="@{/profile}" class="header-widget" title="Trang cá nhân">
                             <i class="fas fa-user"></i>
                         </a>
                     </th:block>
+                    <th:block th:if="${user.email != null}">
                     <a th:href="@{/favorite}" class="header-widget" title="Yêu thích">
                         <i class="fas fa-heart"></i><sup th:text="${totalSave}" id="totalSave">0</sup>
                     </a>
@@ -74,6 +84,7 @@
                         <i class="fas fa-cloud-upload-alt"></i> <sup th:text="${totalDocumentUpload}"
                                                                      id="totalDocumentUpload">0</sup>
                     </a>
+                    </th:block>
                 </div>
             </div>
         </div>

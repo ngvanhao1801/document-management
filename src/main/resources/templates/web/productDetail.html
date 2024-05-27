@@ -63,6 +63,38 @@
             border: none;
             border-radius: 10px;
         }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff !important;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            cursor: pointer;
+        }
+
+        .favorite-button {
+            background-color: #007bff;
+        }
+
+        .favorite-button.favorite-active {
+            background-color: #fd7e14;
+        }
+
+        .action-button {
+            background-color: rgba(167,231,209,0.45);
+        }
+
+        .action-button i {
+            margin-right: 5px;
+        }
+
+        .action-button .fas {
+            margin-right: 5px;
+        }
+
     </style>
 </head>
 <body>
@@ -164,28 +196,27 @@
                                 <a th:if="${document.favorite} == false"
                                    title="Yêu thích"
                                    th:href="@{/doFavorite(id=${document.id})}"
-                                   class="fas fa-heart">
+                                   class="btn action-button favorite-button fas fa-heart">
+                                    <span> Yêu thích</span>
                                 </a>
-
                                 <a th:if="${document.favorite} == true"
                                    title="Xóa Yêu thích"
                                    th:href="@{/doUnFavorite(id=${document.id})}"
-                                   style="background-color: #fd7e14"
-                                   class="fas fa-heart">
+                                   class="btn action-button favorite-button favorite-active fas fa-heart">
+                                    <span> Xóa Yêu thích</span>
                                 </a>
                             </th:block>
-
                             <th:block th:if="${document.documentStatus.statusId != 3}">
                                 <span style="color: red;">Tài liệu chưa được xét duyệt hoặc đã bị hủy!</span>
                             </th:block>
                         </th:block>
                         <a th:href="@{'/loadFile?fileName=' + ${document.documentFile}}"
-                           class="action-button"
+                           class="btn action-button"
                            style="background-color: rgba(167,231,209,0.45)">
                             <i class="fas fa-file"></i>
                             <span style="color: #0c0303">Xem tài liệu</span>
                         </a>
-<!--                        <a href="javascript:void(0);"-->
+                        <!--                        <a href="javascript:void(0);"-->
 <!--                           class="action-button"-->
 <!--                           style="background-color: rgba(167,231,209,0.45)"-->
 <!--                           onclick="showCommentPopup()">-->

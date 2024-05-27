@@ -23,8 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "SELECT u.user_id, u.name, u.email, u.register_date, u.status, r.name as role_name " +
 			"FROM `user` u " +
 			"INNER JOIN users_roles ur ON ur.user_id = u.user_id " +
-			"INNER JOIN `role` r ON ur.role_id = r.id " +
-			"WHERE u.status = 1", nativeQuery = true)
+			"INNER JOIN `role` r ON ur.role_id = r.id ORDER BY u.user_id", nativeQuery = true)
 	List<Object[]> findUsersByStatus();
 
 }

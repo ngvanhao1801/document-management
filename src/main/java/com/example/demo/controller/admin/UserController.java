@@ -4,18 +4,15 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.security.Principal;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
@@ -43,6 +40,30 @@ public class UserController {
     model.addAttribute("users", users);
 
     return "/admin/users";
+  }
+
+  @PostMapping(value = "/admin/users/toggleStatus")
+  public ResponseEntity<Map<String, Object>> toggleUserStatus(@RequestBody Map<String, Object> request) {
+    Long userId = Long.valueOf(request.get("userId").toString());
+    boolean newStatus = Boolean.parseBoolean(request.get("status").toString());
+
+    Optional<User> userOptional = userRepository.findById(userId);
+    if (userOptional.isPresent()) {
+      User user = userOptional.get();
+      user.setStatus(newStatus);  // Cập nhật trạng thái người dùng
+      userRepository.save(user);
+
+      // Tạo phản hồi thành công
+      Map<String, Object> response = new HashMap<>();
+      response.put("success", true);
+      return ResponseEntity.ok(response);
+    } else {
+      // Tạo phản hồi khi không tìm thấy người dùng
+      Map<String, Object> response = new HashMap<>();
+      response.put("success", false);
+      response.put("message", "User not found");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
   }
 
   @PostMapping(value = "/admin/users/delete/{id}")
