@@ -1,9 +1,11 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
+import com.example.demo.entity.Document;
 import com.example.demo.entity.Order;
 import com.example.demo.entity.OrderDetail;
 import com.example.demo.entity.User;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.OrderDetailRepository;
 import com.example.demo.repository.OrderRepository;
 import com.example.demo.repository.UserRepository;
@@ -37,6 +39,9 @@ public class ProfileController extends CommomController{
 
 	@Autowired
 	OrderRepository orderRepository;
+
+	@Autowired
+	DocumentRepository documentRepository;
 	
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
@@ -58,39 +63,37 @@ public class ProfileController extends CommomController{
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(10);
 
-		Page<Order> orderPage = findPaginated(PageRequest.of(currentPage - 1, pageSize), user);
+		Page<Document> documentPage = findPaginated(PageRequest.of(currentPage - 1, pageSize), user);
 
-		int totalPages = orderPage.getTotalPages();
+		int totalPages = documentPage.getTotalPages();
 		if (totalPages > 0) {
 			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
 			model.addAttribute("pageNumbers", pageNumbers);
 		}
 
 		commomDataService.commonData(model, user);
-		model.addAttribute("orderByUser", orderPage);
+		model.addAttribute("documentByUser", documentPage);
 
 		return "web/profile";
 	}
 
-	public Page<Order> findPaginated(Pageable pageable, User user) {
+	public Page<Document> findPaginated(Pageable pageable, User user) {
 
-		List<Order> orderPage = orderRepository.findOrderByUserId(user.getUserId());
+		List<Document> documentPage = documentRepository.getListDocumentUpload(user.getUserId());
 
 		int pageSize = pageable.getPageSize();
 		int currentPage = pageable.getPageNumber();
 		int startItem = currentPage * pageSize;
-		List<Order> list;
+		List<Document> list;
 
-		if (orderPage.size() < startItem) {
+		if (documentPage.size() < startItem) {
 			list = Collections.emptyList();
 		} else {
-			int toIndex = Math.min(startItem + pageSize, orderPage.size());
-			list = orderPage.subList(startItem, toIndex);
+			int toIndex = Math.min(startItem + pageSize, documentPage.size());
+			list = documentPage.subList(startItem, toIndex);
 		}
 
-		Page<Order> orderPages = new PageImpl<Order>(list, PageRequest.of(currentPage, pageSize), orderPage.size());
-
-		return orderPages;
+    return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
 	}
 	
 	@GetMapping("/order/detail/{order_id}")

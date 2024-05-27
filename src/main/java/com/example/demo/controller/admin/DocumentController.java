@@ -143,6 +143,17 @@ public class DocumentController {
       }
     }
 
+    if (document.getId() != null) {
+      Document existingDocument = documentRepository.findById(document.getId()).orElse(null);
+      if (existingDocument != null) {
+        document.setVersion(existingDocument.getVersion() + 1);
+      } else {
+        document.setVersion(1);
+      }
+    } else {
+      document.setVersion(1);
+    }
+
     Document savedDocument = documentRepository.save(document);
 
     if (savedDocument != null) {

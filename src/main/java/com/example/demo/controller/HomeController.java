@@ -40,7 +40,7 @@ public class HomeController extends CommomController {
 	public String home(Model model, User user) {
 
 		commomDataService.commonData(model, user);
-		bestSaleProduct20(model, user);
+		documentFavourite(model, user);
 		return "web/home";
 	}
 	
@@ -53,7 +53,7 @@ public class HomeController extends CommomController {
 	}
 	
 	// Top 20 best sale.
-	public void bestSaleProduct20(Model model, User customer) {
+	public void documentFavourite(Model model, User customer) {
 		List<Object[]> productList = productRepository.bestSaleProduct20();
 		if (productList != null) {
 			ArrayList<Integer> listIdProductArrayList = new ArrayList<>();

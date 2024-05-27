@@ -31,6 +31,7 @@ public class DocumentDetailController extends CommomController{
 	@GetMapping(value = "/documentDetails")
 	public String documentDetail(@RequestParam("id") Long id, Model model, User user) {
 
+		documentRepository.incrementViews(id);
 		Document document = documentRepository.findById(id).orElse(null);
 		model.addAttribute("document", document);
 
@@ -48,7 +49,6 @@ public class DocumentDetailController extends CommomController{
 		return foundDocument;
 	}
 
-	
 	// Gợi ý top 10 sản phẩm cùng loại
 	public void listDocumentByFolder10(Model model, Long folderId) {
 		List<Document> documents = documentRepository.listDocumentByFolder10(folderId);

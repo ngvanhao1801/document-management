@@ -213,23 +213,23 @@
                                         <th>Ngày thêm</th>
                                         <th>Trạng thái</th>
                                         <th>Mô tả tài liệu</th>
-                                        <th style="width: 10%">Hành động</th>
-                                    </tr>
-                                    </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Mã tài liệu</th>
-                                        <th>Ảnh</th>
-                                        <th>File</th>
-                                        <th>Tên tài liệu</th>
-                                        <th>Người đăng tải</th>
-                                        <th>Tên thư mục</th>
-                                        <th>Ngày thêm</th>
-                                        <th>Trạng thái</th>
-                                        <th>Mô tả tài liệu</th>
                                         <th>Hành động</th>
                                     </tr>
-                                    </tfoot>
+                                    </thead>
+<!--                                    <tfoot>-->
+<!--                                    <tr>-->
+<!--                                        <th>Mã tài liệu</th>-->
+<!--                                        <th>Ảnh</th>-->
+<!--                                        <th>File</th>-->
+<!--                                        <th>Tên tài liệu</th>-->
+<!--                                        <th>Người đăng tải</th>-->
+<!--                                        <th>Tên thư mục</th>-->
+<!--                                        <th>Ngày thêm</th>-->
+<!--                                        <th>Trạng thái</th>-->
+<!--                                        <th>Mô tả tài liệu</th>-->
+<!--                                        <th>Hành động</th>-->
+<!--                                    </tr>-->
+<!--                                    </tfoot>-->
                                     <tbody>
                                     <tr th:each="item : ${documents}">
                                         <td>[[${item.id}]]</td>
@@ -244,8 +244,7 @@
                                                             application/vnd.openxmlformats-officedocument.presentationml.presentation,
                                                             application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
                                                     width="100%" height="600px">
-                                                <a th:href="@{'/loadFile?fileName=' + ${item.documentFile}}"> Xem trực
-                                                    tiếp tài liệu </a>
+                                                <a th:href="@{'/loadFile?fileName=' + ${item.documentFile}}"> Xem tài liệu </a>
                                             </object>
                                         </td>
                                         <td>[[${item.documentName}]]</td>
