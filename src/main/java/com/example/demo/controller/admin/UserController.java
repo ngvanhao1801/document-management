@@ -3,14 +3,15 @@ package com.example.demo.controller.admin;
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -18,8 +19,11 @@ import java.util.stream.Collectors;
 @Controller
 public class UserController {
 
-  @Autowired
-  UserRepository userRepository;
+  private final UserRepository userRepository;
+
+  public UserController(UserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @GetMapping(value = "/admin/users")
   public String customer(Model model, Principal principal) {
@@ -45,17 +49,20 @@ public class UserController {
   @PostMapping(value = "/admin/users/toggleStatus")
   public ResponseEntity<Map<String, Object>> toggleUserStatus(@RequestBody Map<String, Object> request) {
     Long userId = Long.valueOf(request.get("userId").toString());
-    boolean newStatus = Boolean.parseBoolean(request.get("status").toString());
 
     Optional<User> userOptional = userRepository.findById(userId);
     if (userOptional.isPresent()) {
       User user = userOptional.get();
-      user.setStatus(newStatus);  // Cập nhật trạng thái người dùng
+      boolean currentStatus = user.isStatus();
+      boolean newStatus = !currentStatus;
+      user.setStatus(newStatus);
+
       userRepository.save(user);
 
       // Tạo phản hồi thành công
       Map<String, Object> response = new HashMap<>();
       response.put("success", true);
+      response.put("newStatus", newStatus);
       return ResponseEntity.ok(response);
     } else {
       // Tạo phản hồi khi không tìm thấy người dùng
@@ -66,15 +73,9 @@ public class UserController {
     }
   }
 
-  @PostMapping(value = "/admin/users/delete/{id}")
-  @Transactional
-  public String deleteUser(@PathVariable("id") Long id) {
-    Optional<User> userOptional = userRepository.findById(id);
-    if (userOptional.isPresent()) {
-      User user = userOptional.get();
-      user.setStatus(false);
-      userRepository.save(user);
-    }
+  @GetMapping(value = "/admin/users/delete/{userId}")
+  public String deleteUser(@PathVariable("userId") Long userId) {
+    userRepository.deleteById(userId);
 
     return "redirect:/admin/users";
   }

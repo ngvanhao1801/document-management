@@ -91,18 +91,6 @@
                                         <th>Hành động</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>Mã người dùng</th>
-                                        <th>Ảnh đại diện</th>
-                                        <th>Họ và tên</th>
-                                        <th>Email</th>
-                                        <th>Ngày đăng ký</th>
-                                        <th>Trạng thái</th>
-                                        <th>Loại tài khoản</th>
-                                        <th>Hành động</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
                                     <tr th:each="item : ${users}">
                                         <td>[[${item.userId}]]</td>
@@ -123,12 +111,15 @@
                                                         onclick="viewUser(this.getAttribute('data-id'))">
                                                     <i class="fa fa-eye"></i>
                                                 </button>
-                                                <button th:data-id="${item.userId}" th:data-status="${item.status}"
-                                                        onclick="toggleUserStatus(this.getAttribute('data-id'), this.getAttribute('data-status'))"
-                                                        type="button" data-toggle="tooltip"
-                                                        th:title="${item.status == 1 ? 'Khóa' : 'Mở khóa'}"
+                                                <button
+                                                        th:data-id="${item.userId}"
+                                                        th:data-status="${item.status}"
+                                                        onclick="toggleUserStatus(this)"
+                                                        type="button"
+                                                        data-toggle="tooltip"
+                                                        th:title="${item.status ? 'Khóa' : 'Mở khóa'}"
                                                         class="btn btn-link btn-secondary btn-lg">
-                                                    <i th:class="${item.status == 1 ? 'fa fa-lock' : 'fa fa-unlock'}"></i>
+                                                    <i th:class="${item.status ? 'fa fa-lock' : 'fa fa-unlock'}"></i>
                                                 </button>
                                                 <button th:data-id="${item.userId}" th:data-name="${item.name}"
                                                         onclick="showConfigModalDialog(this.getAttribute('data-id'), this.getAttribute('data-name'))"
@@ -141,27 +132,38 @@
                                     </tr>
                                     </tbody>
                                 </table>
-                                <!--									<div class="modal" tabindex="-1" role="dialog" id="configmationId">-->
-                                <!--										<div class="modal-dialog" role="document">-->
-                                <!--											<div class="modal-content">-->
-                                <!--												<div class="modal-header">-->
-                                <!--													<h5 class="modal-title" style="color: black">Xác nhận</h5>-->
-                                <!--													<button type="button" class="close" data-dismiss="modal"-->
-                                <!--															aria-label="Close">-->
-                                <!--														<span aria-hidden="true">&times;</span>-->
-                                <!--													</button>-->
-                                <!--												</div>-->
-                                <!--												<div class="modal-body">-->
-                                <!--													<p style="color: black">Bạn có muốn xóa người dùng này không?</p>-->
-                                <!--												</div>-->
-                                <!--												<div class="modal-footer">-->
-                                <!--													<a id="yesOption" type="button" class="btn btn-primary">Có</a>-->
-                                <!--													<button type="button" class="btn btn-danger"-->
-                                <!--															data-dismiss="modal">Không</button>-->
-                                <!--												</div>-->
-                                <!--											</div>-->
-                                <!--										</div>-->
-                                <!--									</div>-->
+
+                                <script>
+                                    function showConfigModalDialog(userId, name) {
+                                        $('#name').text(name);
+                                        $('#yesOption').attr('href', '/admin/users/delete/' + userId);
+                                        $('#configmationId').modal('show');
+                                    }
+                                </script>
+                                <!-- Modal -->
+                                <div class="modal" tabindex="-1" role="dialog" id="configmationId">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" style="color: black">Xác nhận</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p style="color: black">Bạn muốn xóa tài khoản này không?</p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a id="yesOption" type="button" class="btn btn-primary">Có</a>
+                                                <button type="button" class="btn btn-danger"
+                                                        data-dismiss="modal">Không
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -213,21 +215,21 @@
     }
 
     // Hàm khóa/mở khóa người dùng
-    function toggleUserStatus(userId, currentStatus) {
-        let newStatus = currentStatus === '1' ? '0' : '1';
-        let confirmMessage = currentStatus === '1' ? 'Bạn có chắc chắn muốn khóa người dùng này?' : 'Bạn có chắc chắn muốn mở khóa người dùng này?';
+    function toggleUserStatus(button) {
+        let userId = button.getAttribute('data-id');
+        let confirmMessage = 'Bạn có chắc chắn muốn thay đổi trạng thái người dùng này?';
 
         // Hiển thị hộp thoại xác nhận với thông điệp xác nhận
         if (confirm(confirmMessage)) {
             // Gửi yêu cầu tới server để thay đổi trạng thái người dùng
-            console.log('Thay đổi trạng thái của người dùng có ID:', userId, 'thành', newStatus);
-            // Gửi yêu cầu POST tới endpoint /api/users/toggleStatus
+            console.log('Thay đổi trạng thái của người dùng có ID:', userId);
+            // Gửi yêu cầu POST tới endpoint /admin/users/toggleStatus
             fetch(`/admin/users/toggleStatus`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({userId: userId, status: newStatus})
+                body: JSON.stringify({userId: userId})
             })
                 .then(response => response.json())
                 .then(data => {
@@ -249,73 +251,44 @@
         }
     }
 
-    // Hàm xóa người dùng
-    function showConfigModalDialog(userId, userName) {
-        if (confirm(`Bạn có chắc chắn muốn xóa người dùng ${userName} (ID: ${userId})?`)) {
-            // Gọi API hoặc thực hiện hành động xóa người dùng
-            console.log('Xóa người dùng có ID:', userId);
-            // Giả sử bạn có một API endpoint /api/users/delete để xóa người dùng
-            fetch(`/api/users/delete`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({userId: userId})
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Người dùng đã được xóa.');
-                        location.reload(); // Tải lại trang để cập nhật giao diện
-                    } else {
-                        alert('Đã xảy ra lỗi khi xóa người dùng.');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã xảy ra lỗi khi xóa người dùng.');
-                });
-        }
-    }
-
-    // // Gắn sự kiện click cho các button sau khi tài liệu được tải
-    // document.addEventListener('DOMContentLoaded', function () {
-    //     document.querySelectorAll('.btn-link').forEach(button => {
-    //         button.addEventListener('click', function () {
-    //             const userId = this.getAttribute('th:data-id');
-    //             const userName = this.getAttribute('th:data-name');
-    //             const title = this.getAttribute('title');
-    //
-    //             switch (title) {
-    //                 case 'Xem':
-    //                     viewUser(userId);
-    //                     break;
-    //                 case 'Chỉnh sửa':
-    //                     editUser(userId);
-    //                     break;
-    //                 case 'Khóa':
-    //                 case 'Mở khóa':
-    //                     const status = this.getAttribute('th:data-status');
-    //                     toggleUserStatus(userId, status);
-    //                     break;
-    //                 case 'Xóa':
-    //                     showConfigModalDialog(userId, userName);
-    //                     break;
-    //                 default:
-    //                     console.log('Hành động không xác định:', title);
-    //             }
-    //         });
-    //     });
-    // });
 </script>
 
-<!--	<script>-->
-<!--		function showConfigModalDialog(id, name) {-->
-<!--			$('#name').text(name);-->
-<!--			$('#yesOption').attr('href', '/admin/delete/'+id);-->
-<!--			$('#configmationId').modal('show');-->
-<!--		}-->
-<!--	</script>-->
+<!--<script>-->
+<!--    // Hàm xóa người dùng-->
+<!--    function showConfigModalDialog(userId, userName) {-->
+<!--        document.getElementById('deleteConfirmationText').innerText = `Bạn có chắc chắn muốn xóa người dùng ${userName} (ID: ${userId})?`;-->
+<!--        $('#confirmDeleteModal').modal('show');-->
+<!--        $('#confirmDeleteModal .btn-primary').attr('data-id', userId);-->
+<!--    }-->
+<!--    function deleteUser(userId) {-->
+<!--        if (!userId || isNaN(userId)) {-->
+<!--            console.error('Invalid userId:', userId);-->
+<!--            alert('Đã xảy ra lỗi khi xóa người dùng. Vui lòng thử lại sau.');-->
+<!--            return;-->
+<!--        }-->
+
+<!--        fetch(`/admin/users/delete/${userId}`, {-->
+<!--            method: 'DELETE',-->
+<!--            headers: {-->
+<!--                'Content-Type': 'application/json'-->
+<!--            }-->
+<!--        })-->
+<!--            .then(response => response.json())-->
+<!--            .then(data => {-->
+<!--                if (data.success) {-->
+<!--                    alert('Người dùng đã được xóa.');-->
+<!--                    $('#confirmDeleteModal').modal('hide');-->
+<!--                    window.location.href = "/admin/users";-->
+<!--                } else {-->
+<!--                    alert('Đã xảy ra lỗi khi xóa người dùng.');-->
+<!--                }-->
+<!--            })-->
+<!--            .catch(error => {-->
+<!--                console.error('Error:', error);-->
+<!--                alert('Đã xảy ra lỗi khi xóa người dùng.');-->
+<!--            });-->
+<!--    }-->
+<!--</script>-->
 
 <!--   Core JS Files   -->
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
@@ -362,22 +335,22 @@
         });
 
         // Add Row
-        /* $('#add-row').DataTable({
+        $('#add-row').DataTable({
             "pageLength": 5,
         });
 
         var action = '<td> <div class="form-button-action"> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-primary btn-lg" data-original-title="Edit Task"> <i class="fa fa-edit"></i> </button> <button type="button" data-toggle="tooltip" title="" class="btn btn-link btn-danger" data-original-title="Remove"> <i class="fa fa-times"></i> </button> </div> </td>';
 
-        $('#addRowButton').click(function() {
-            $('#add-row').dataTable().fnAddData([
-                $("#addName").val(),
-                $("#addPosition").val(),
-                $("#addOffice").val(),
-                action
-                ]);
-            $('#addRowModal').modal('hide');
-
-        }); */
+        // $('#addRowButton').click(function() {
+        //     $('#add-row').dataTable().fnAddData([
+        //         $("#addName").val(),
+        //         $("#addPosition").val(),
+        //         $("#addOffice").val(),
+        //         action
+        //         ]);
+        //     $('#addRowModal').modal('hide');
+        //
+        // }); */
     });
 </script>
 </body>

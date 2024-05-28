@@ -26,6 +26,9 @@ public class UserDetailService implements UserDetailsService {
 		if (user == null) {
 			throw new UsernameNotFoundException("Invalid username or password.");
 		}
+		if (!user.isStatus()) { // Kiểm tra nếu status là false
+			throw new UserAccountLockedException("Account is locked."); // Ném ngoại lệ tùy chỉnh
+		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
 				mapRolesToAuthorities(user.getRoles()));
 
@@ -33,6 +36,12 @@ public class UserDetailService implements UserDetailsService {
 
 	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
 		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
+	}
+
+	public static class UserAccountLockedException extends RuntimeException {
+		public UserAccountLockedException(String message) {
+			super(message);
+		}
 	}
 
 }

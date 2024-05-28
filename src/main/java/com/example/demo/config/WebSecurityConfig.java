@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -42,6 +43,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     auth.authenticationProvider(authenticationProvider());
   }
 
+  @Bean
+  public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+    return new CustomAuthenticationFailureHandler();
+  }
+
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable();
@@ -60,8 +66,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         .loginProcessingUrl("/doLogin")
         .loginPage("/login")
         .defaultSuccessUrl("/?login_success")
-        .successHandler(new SuccessHandler()).failureUrl("/login?error=true")
-        .failureUrl("/login?error=true")
+        .successHandler(new SuccessHandler())
+        .failureHandler(customAuthenticationFailureHandler()) // Sử dụng CustomAuthenticationFailureHandler
         .permitAll()
         .and()
         .logout()
@@ -75,6 +81,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     http.rememberMe()
         .rememberMeParameter("remember");
   }
-
 
 }

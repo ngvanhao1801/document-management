@@ -1,7 +1,9 @@
 package com.example.demo.controller.admin;
 
+import com.example.demo.entity.Document;
 import com.example.demo.entity.OrderDetail;
 import com.example.demo.entity.User;
+import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.OrderDetailRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +25,20 @@ public class ReportController {
 	@Autowired
 	OrderDetailRepository orderDetailRepository;
 
-	// Statistics by product sold
+	private final DocumentRepository documentRepository;
+
+  public ReportController(DocumentRepository documentRepository) {
+    this.documentRepository = documentRepository;
+  }
+
+  // Statistics by product sold
 	@GetMapping(value = "/admin/report-product")
 	public String report(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
 		model.addAttribute("user", user);
 
-		OrderDetail orderDetail = new OrderDetail();
-		model.addAttribute("orderDetail", orderDetail);
-		List<Object[]> listReportCommon = orderDetailRepository.repo();
-		model.addAttribute("listReportCommon", listReportCommon);
+		List<Document> documentList = documentRepository.findAllByDocumentStatus();
+		model.addAttribute("documentList", documentList);
 
 		return "admin/statistical-product";
 	}
@@ -53,42 +59,36 @@ public class ReportController {
 
 	// Statistics of products sold by year
 	@RequestMapping(value = "/admin/report-year")
-	public String reportyear(Model model, Principal principal) throws SQLException {
+	public String reportYear(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
 		model.addAttribute("user", user);
 
-		OrderDetail orderDetail = new OrderDetail();
-		model.addAttribute("orderDetail", orderDetail);
-		List<Object[]> listReportCommon = orderDetailRepository.repoWhereYear();
-		model.addAttribute("listReportCommon", listReportCommon);
+		List<Object[]> listReportYearCommon = documentRepository.listReportYearCommon();
+		model.addAttribute("listReportYearCommon", listReportYearCommon);
 
 		return "admin/statistical-year";
 	}
 
 	// Statistics of products sold by month
 	@RequestMapping(value = "/admin/report-month")
-	public String reportmonth(Model model, Principal principal) throws SQLException {
+	public String reportMonth(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
 		model.addAttribute("user", user);
 
-		OrderDetail orderDetail = new OrderDetail();
-		model.addAttribute("orderDetail", orderDetail);
-		List<Object[]> listReportCommon = orderDetailRepository.repoWhereMonth();
-		model.addAttribute("listReportCommon", listReportCommon);
+		List<Object[]> listReportMonthCommon = documentRepository.listReportMonthCommon();
+		model.addAttribute("listReportMonthCommon", listReportMonthCommon);
 
 		return "admin/statistical-month";
 	}
 
 	// Statistics of products sold by quarter
 	@RequestMapping(value = "/admin/report-quarter")
-	public String reportquarter(Model model, Principal principal) throws SQLException {
+	public String reportQuarter(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
 		model.addAttribute("user", user);
 
-		OrderDetail orderDetail = new OrderDetail();
-		model.addAttribute("orderDetail", orderDetail);
-		List<Object[]> listReportCommon = orderDetailRepository.repoWhereQUARTER();
-		model.addAttribute("listReportCommon", listReportCommon);
+		List<Object[]> listReportQuarterCommon = documentRepository.listReportQuarterCommon();
+		model.addAttribute("listReportQuarterCommon", listReportQuarterCommon);
 
 		return "admin/statistical-quarter";
 	}
