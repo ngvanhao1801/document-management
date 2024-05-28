@@ -77,6 +77,7 @@
 										<thead>
 											<tr>
 												<th>Mã tài liệu</th>
+												<th>Tên tài liệu</th>
 												<th>Mô tả</th>
 												<th>Người đăng tải</th>
 												<th>Ngày đăng tải</th>
@@ -96,6 +97,7 @@
 												<td>[[${item.user.name}]]</td>
 												<td>[[${item.uploadDate}]]</td>
 												<td>[[${item.folder.folderName}]]</td>
+												<td>[[${item.documentStatus.statusName}]]</td>
 												<td>
 													<object th:data="@{'/loadFile?fileName='+${item.documentFile}}"
 															type="application/pdf,

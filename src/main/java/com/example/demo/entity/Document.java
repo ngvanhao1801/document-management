@@ -26,11 +26,12 @@ import java.util.List;
 @NamedNativeQuery(
     name = "getDocumentFavourite",
     resultSetMapping = "ChartMapping",
-    query = "SELECT d.document_name AS label, COUNT(f.favorite_id) AS value \n" +
-        "FROM document d \n" +
-        "INNER JOIN favorites f ON f.document_id = d.id \n" +
-        "WHERE d.favorite = 1 \n" +
-        "GROUP BY d.document_name;"
+    query = "SELECT d.document_name AS label, d.views AS value\n" +
+        "FROM document d\n" +
+        "WHERE d.status_id = 3\n" +
+        "GROUP BY d.document_name\n" +
+        "ORDER BY d.views DESC \n" +
+        "LIMIT 5"
 )
 
 @Getter

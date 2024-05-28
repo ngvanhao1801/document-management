@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta charset="UTF-8"/>
-    <title>Greeny - Trang quản trị</title>
+    <title>Document Management - Trang quản trị</title>
     <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport'/>
     <link rel="icon" href="/assets/img/icon.ico" type="image/x-icon"/>
 
@@ -108,7 +108,7 @@
                                                                        required="required">
                                                             </div>
                                                             <div class="form-group form-group-default">
-                                                                <label>Thể loại <span
+                                                                <label>Danh mục <span
                                                                         style="color: red">*</span></label>
                                                                 <select class="form-control" name="category"
                                                                         th:field="*{category.categoryId}"
@@ -122,10 +122,10 @@
                                                             </div>
                                                             <div class="form-group form-group-default"
                                                                  style="height: 150px;">
-                                                                <label>Mô tả sản phẩm <span style="color: red">*</span></label>
+                                                                <label>Mô tả thư mục <span style="color: red">*</span></label>
                                                                 <textarea th:field="*{description}" id="description"
                                                                           class="form-control"
-                                                                          placeholder="Mô tả sản phẩm..."></textarea>
+                                                                          placeholder="Mô tả thư mục..."></textarea>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -158,15 +158,6 @@
                                         <th style="width: 10%">Action</th>
                                     </tr>
                                     </thead>
-                                    <tfoot>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Tên thư mục</th>
-                                        <th>Tên danh mục</th>
-                                        <th>Mô tả thư mục</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </tfoot>
                                     <tbody>
                                     <tr th:each="item : ${folders}">
                                         <td>[[${item.folderId}]]</td>

@@ -85,22 +85,20 @@
                             <div class="modal fade" id="addRowModal" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content"
-                                         style="width: 1200px; margin-left: -300px; margin-top: 50px;">
+                                         style="width: 800px; margin-left: -100px; margin-top: 50px;">
                                         <div class="modal-header no-bd">
                                             <h5 class="modal-title">
-													<span class="fw-mediumbold"
-                                                          style="text-decoration: underline; color: black;">
-													Thêm mới tài liệu</span>
+													<span class="fw-mediumbold" style="text-decoration: underline; color: black;">Thêm mới tài liệu</span>
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div class="modal-body" >
                                             <form th:action="@{/admin/addDocument}" th:object="${document}"
                                                   method="post" enctype="multipart/form-data">
                                                 <div class="row">
-                                                    <div class="col-md-3 pr-0">
+                                                    <div class="col-md-3 pr-0" style="margin-right: 65px">
                                                         <div class="form-group form-group-default">
                                                             <label>Tên tài liệu <span
                                                                     style="color: red">*</span></label>
@@ -109,7 +107,7 @@
                                                                    placeholder="Tên tài liệu...">
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 pr-0">
+                                                    <div class="col-md-3 pr-0" style="margin-right: 65px">
                                                         <div class="form-group form-group-default">
                                                             <label>Thư mục <span style="color: red">*</span></label>
                                                             <select class="form-control"
@@ -138,7 +136,28 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 pr-0">
+                                                    <div class="col-md-7 pr-0">
+                                                        <div class="form-group form-group-default">
+                                                            <label>Hình ảnh <span style="color: red">*</span></label>
+                                                            <input type="file" id="documentImage" name="file"
+                                                                   class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 pr-0">
+                                                        <div class="form-group form-group-default">
+                                                            <label>Ngày thêm <span style="color: red">*</span></label>
+                                                            <input th:field="*{uploadDate}" id="enteredDate" type="date"
+                                                                   class="form-control" placeholder="Ngày thêm">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-7 pr-0">
+                                                        <div class="form-group form-group-default">
+                                                            <label>File tài liệu <span style="color: red">*</span></label>
+                                                            <input type="file" id="documentFile" name="file"
+                                                                   accept=".pdf, .docx, .pptx, .xlsx" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 pr-0">
                                                         <div class="form-group form-group-default">
                                                             <label>Trạng thái <span style="color: red">*</span></label>
                                                             <select class="form-control"
@@ -154,28 +173,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3 pr-0">
-                                                        <div class="form-group form-group-default">
-                                                            <label>Ngày thêm <span style="color: red">*</span></label>
-                                                            <input th:field="*{uploadDate}" id="enteredDate" type="date"
-                                                                   class="form-control" placeholder="Ngày thêm">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-9 pr-0">
-                                                        <div class="form-group form-group-default">
-                                                            <label>Hình ảnh <span style="color: red">*</span></label>
-                                                            <input type="file" id="documentImage" name="file"
-                                                                   class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-9 pr-0">
-                                                        <div class="form-group form-group-default">
-                                                            <label>File <span style="color: red">*</span></label>
-                                                            <input type="file" id="documentFile" name="file"
-                                                                   accept=".pdf, .docx, .pptx, .xlsx" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-12">
+                                                    <div class="col-md-11 pr-0">
                                                         <div class="form-group form-group-default"
                                                              style="height: 150px;">
                                                             <label>Mô tả tài liệu <span
@@ -206,7 +204,7 @@
                                     <tr>
                                         <th>Mã tài liệu</th>
                                         <th>Ảnh</th>
-                                        <th>File</th>
+                                        <th>File tài liệu</th>
                                         <th>Tên tài liệu</th>
                                         <th>Người đăng tải</th>
                                         <th>Tên thư mục</th>
