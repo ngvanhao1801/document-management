@@ -104,13 +104,10 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"        LIMIT 1\n" +
 			"    ) AS latestDocument,\n" +
 			"    (\n" +
-			"        SELECT user_id\n" +
+			"        SELECT COUNT(DISTINCT user_id)\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date)\n" +
-			"        GROUP BY user_id\n" +
-			"        ORDER BY COUNT(*) DESC\n" +
-			"        LIMIT 1\n" +
-			"    ) AS mostActiveUser,\n" +
+			"        WHERE YEAR(upload_date) = YEAR(d.upload_date)\n" +
+			"    ) AS totalUsersUploaded," +
 			"    (\n" +
 			"        SELECT GROUP_CONCAT(DISTINCT u.name)\n" +
 			"        FROM document doc\n" +
@@ -167,15 +164,11 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"        ORDER BY upload_date DESC\n" +
 			"        LIMIT 1\n" +
 			"    ) AS latestDocument,\n" +
-			"    (\n" +
-			"        SELECT user_id\n" +
+			"		(\n" +
+			"        SELECT COUNT(DISTINCT user_id)\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date)\n" +
-			"        AND month(upload_date) = month(d.upload_date)\n" +
-			"        GROUP BY user_id\n" +
-			"        ORDER BY COUNT(*) DESC\n" +
-			"        LIMIT 1\n" +
-			"    ) AS mostActiveUser,\n" +
+			"        WHERE YEAR(upload_date) = YEAR(d.upload_date)\n" +
+			"    ) AS totalUsersUploaded," +
 			"    (\n" +
 			"        SELECT GROUP_CONCAT(DISTINCT u.name)\n" +
 			"        FROM document doc\n" +
@@ -236,14 +229,10 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"        LIMIT 1\n" +
 			"    ) AS latestDocument,\n" +
 			"    (\n" +
-			"        SELECT user_id\n" +
+			"        SELECT COUNT(DISTINCT user_id)\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date)\n" +
-			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
-			"        GROUP BY user_id\n" +
-			"        ORDER BY COUNT(*) DESC\n" +
-			"        LIMIT 1\n" +
-			"    ) AS mostActiveUser,\n" +
+			"        WHERE YEAR(upload_date) = YEAR(d.upload_date)\n" +
+			"    ) AS totalUsersUploaded," +
 			"    (\n" +
 			"        SELECT GROUP_CONCAT(DISTINCT u.name)\n" +
 			"        FROM document doc\n" +

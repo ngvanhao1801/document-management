@@ -179,11 +179,11 @@
         </div>
         <div class="card-header">
             <section class="row">
-                <div class="col-9 offset-1">
+                <div class="col-10 offset-1">
                     <form th:action="@{/uploadDocument}" th:object="${editDocument}" method="post"
                           enctype="multipart/form-data">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-md-12 pr-0">
                                 <div class="form-group form-group-default">
                                     <label for="id">ID <a
                                             style="color: red"><strong>*</strong></a></label>
@@ -197,7 +197,7 @@
                                 <div class="form-group form-group-default">
                                     <label>Tên tài liệu</label>
                                     <input th:field="*{documentName}" id="documentName" type="text"
-                                           class="form-control" placeholder="Tên tài liệu...">
+                                           class="form-control" placeholder="Tên tài liệu..." required="required">
                                 </div>
                             </div>
                             <div class="col-md-6 pr-0">
@@ -234,27 +234,26 @@
                                            class="form-control" placeholder="Ngày thêm">
                                 </div>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-md-12 pr-0">
                                 <div class="form-group form-group-default">
                                     <label>Hình ảnh</label>
-                                    <input type="file" id="documentImage" name="file"
-                                           class="form-control">
+                                    <input type="file" id="documentImage" name="file" class="form-control">
                                 </div>
                             </div>
-                            <div class="col-sm-12">
+                            <div class="col-md-12 pr-0">
                                 <div class="form-group form-group-default">
                                     <label>Tài liệu</label>
-                                    <input type="file" id="documentFile" name="file"
-                                           class="form-control">
+                                    <input type="file" id="documentFile" name="file" class="form-control">
                                 </div>
                             </div>
 
-                            <div class="col-sm-12">
+                            <div class="col-md-12 pr-0">
                                 <div class="form-group form-group-default">
                                     <label>Mô tả sản phẩm</label>
                                     <textarea th:field="*{description}" id="description"
                                               class="form-control"
-                                              placeholder="Mô tả tài liệu..."></textarea>
+                                              placeholder="Mô tả tài liệu..." required="required">
+                                    </textarea>
                                 </div>
                             </div>
                         </div>

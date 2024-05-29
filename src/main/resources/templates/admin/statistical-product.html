@@ -84,7 +84,6 @@
 												<th>Thư mục</th>
 												<th>Trạng thái tài liệu</th>
 												<th>File tài liệu</th>
-												<th>Định dạng</th>
 												<th>Phiên bản</th>
 												<th>Lượt xem</th>
 											</tr>
@@ -108,7 +107,6 @@
 														<a th:href="@{'/loadFile?fileName=' + ${item.documentFile}}"> Xem tài liệu </a>
 													</object>
 												</td>
-												<td>[[${item.mediaType}]]</td>
 												<td>[[${item.version}]]</td>
 												<td>[[${item.views}]]</td>
 											</tr>

@@ -95,6 +95,14 @@
             margin-right: 5px;
         }
 
+        .document-image {
+            display: block;
+            width: 100%; /* Chiều rộng của ảnh sẽ bằng với chiều rộng của phần tử cha */
+            max-width: 200px; /* Đặt chiều rộng tối đa nếu cần */
+            aspect-ratio: 1; /* Đặt tỷ lệ khung hình 1:1 nếu muốn hình vuông */
+            overflow: hidden;
+        }
+
     </style>
 </head>
 <body>
@@ -282,6 +290,23 @@
                                        style="-webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box;
                                            overflow: hidden;">[[${item.documentName}]]</a>
                                 </h6>
+                                <div class="product-content">
+                                    <div class="product-rating">
+                                        <i class="active icofont-star"></i>
+                                        <i class="active icofont-star"></i>
+                                        <i class="active icofont-star"></i>
+                                        <i class="active icofont-star"></i>
+                                        <i class="icofont-star"></i>
+                                    </div>
+                                    <h6 class="product-name">
+                                        <a href="javascript:void(0);" th:href="@{/documentDetails(id=${item.id})}"
+                                           style="-webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box;
+                                           overflow: hidden;">[[${item.documentName}]]
+                                        </a>
+                                    </h6>
+                                    <p>Total Favorites: [[${item.favorites}]]</p>
+                                    <p>Total Views: [[${item.views}]]</p>
+                                </div>
                                 <div class="product-widget">
                                     <th:block href="/login" th:if="${user.email == null}">
                                         <a title="Hãy đăng nhập" th:href="@{/login}" class="fas fa-heart"></a>
@@ -310,8 +335,8 @@
         <div class="row">
             <div class="col">
                 <div class="section-btn-25">
-                    <a th:href="@{/documents}" class="btn btn-outline"
-                    ><i class="fas fa-eye"></i><span>xem thêm</span></a
+                    <a th:href="@{/documents}" class="btn btn-outline" style="background: #0F9E5E">
+                        <i class="fas fa-eye"></i><span>xem thêm</span></a
                     >
                 </div>
             </div>
