@@ -216,4 +216,38 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"ORDER BY year(d.upload_date), QUARTER(d.upload_date);\n", nativeQuery = true)
 	List<Object[]> listReportQuarterCommon();
 
+	@Query(value = "select\n" +
+			"\tu.name as UserName,\n" +
+			"\tr.name as Rolename,\n" +
+			"\tu.email as Email,\n" +
+			"\tCOUNT(d.id) as TotalDocumentsUploaded,\n" +
+			"\tIFNULL(SUM(d.views), 0) as TotalViews,\n" +
+			"\tIFNULL(SUM(case when d.favorite = true then 1 else 0 end), 0) as TotalFavorites,\n" +
+			"\tu.register_date as RegisterDate,\n" +
+			"\tcase\n" +
+			"\t\twhen u.status = true then 'Đang hoạt động'\n" +
+			"\t\telse 'Ngừng hoạt động'\n" +
+			"\tend as Status\n" +
+			"from\n" +
+			"\t`user` u\n" +
+			"left join\n" +
+			"    document d on\n" +
+			"\tu.user_id = d.user_id\n" +
+			"left join\n" +
+			"    users_roles ur on\n" +
+			"\tu.user_id = ur.user_id\n" +
+			"left join\n" +
+			"    `role` r on\n" +
+			"\tur.role_id = r.id\n" +
+			"where\n" +
+			"\tr.name = 'ROLE_USER'\n" +
+			"group by\n" +
+			"\tu.user_id,\n" +
+			"\tu.name,\n" +
+			"\tu.email,\n" +
+			"\tu.register_date,\n" +
+			"\tu.status\n" +
+			"order by TotalDocumentsUploaded desc;", nativeQuery = true)
+	List<Object[]> listReportCustomerCommon();
+
 }

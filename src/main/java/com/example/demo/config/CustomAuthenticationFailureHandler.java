@@ -14,11 +14,14 @@ import java.io.IOException;
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
   @Override
-  public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+  public void onAuthenticationFailure(HttpServletRequest request,
+                                      HttpServletResponse response,
+                                      AuthenticationException exception) throws IOException, ServletException {
     if (exception instanceof BadCredentialsException) {
       // Xử lý lỗi sai tên người dùng hoặc mật khẩu
       getRedirectStrategy().sendRedirect(request, response, "/login?error=true");
-    } else if (exception instanceof InternalAuthenticationServiceException && exception.getCause() instanceof UserDetailService.UserAccountLockedException) {
+    } else if (exception instanceof InternalAuthenticationServiceException && exception.getCause()
+        instanceof UserDetailService.UserAccountLockedException) {
       // Xử lý lỗi tài khoản bị khóa
       getRedirectStrategy().sendRedirect(request, response, "/login?accountLocked=true");
     } else {

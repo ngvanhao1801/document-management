@@ -63,21 +63,24 @@
 
                             <!-- error message -->
                             <div th:if="${param.error}">
-                                <div class="alert alert-danger"><span>Tài khoản hoặc mật khẩu không chính xác!</span></div>
+                                <div class="alert alert-danger"><span>Tài khoản hoặc mật khẩu không chính xác!</span>
+                                </div>
                             </div>
                             <div th:if="${param.accountLocked}">
                                 <div class="alert alert-danger"><span>Tài khoản của bạn đã bị khóa!</span></div>
                             </div>
                             <br>
                             <div class="form-group">
-                                <input type="email"
+                                <input required
+                                       type="email"
                                        name="username"
                                        class="form-control"
                                        placeholder="Địa chỉ Email"
                                        autocomplete="off"/>
                             </div>
                             <div class="form-group">
-                                <input type="password"
+                                <input required
+                                       type="password"
                                        name="password"
                                        class="form-control"
                                        id="myPass"

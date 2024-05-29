@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -27,5 +28,8 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 			"inner join document d on f.document_id = d.id  \n" +
 			"where f.user_id = ? and d.status_id = 3;", nativeQuery = true)
 	public Integer selectCountSave(Long userId);
+
+	@Transactional
+	void deleteByDocumentId(Long documentId);
 
 }

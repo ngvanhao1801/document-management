@@ -73,39 +73,32 @@
 								</div>
 							<div class="card-body">
 								<div class="table-responsive">
-									<table id="add-row" class="display table table-striped table-hover" >
+									<table id="add-row" class="display table table-striped table-hover">
 										<thead>
-											<tr>
-												<th>STT</th>
-												<th>Khách hàng</th>
-												<th>Số lượng bán ra</th>
-												<th>Doanh thu</th>
-												<th>Giá trung bình</th>
-												<th>Giá thấp nhất</th>
-												<th>Giá cao nhất</th>
-											</tr>
+										<tr>
+											<th>STT</th>
+											<th>Tên người dùng</th>
+											<th>Loại tài khoản</th>
+											<th>Email</th>
+											<th>Số lượng tài liệu tải lên</th>
+											<th>Số lượt xem</th>
+											<th>Số lượt yêu thích</th>
+											<th>Ngày đăng ký</th>
+											<th>Trạng thái</th>
+										</tr>
 										</thead>
-										<tfoot>
-											<tr>
-												<th>STT</th>
-												<th>Khách hàng</th>
-												<th>Số lượng bán ra</th>
-												<th>Doanh thu</th>
-												<th>Giá trung bình</th>
-												<th>Giá thấp nhất</th>
-												<th>Giá cao nhất</th>
-											</tr>
-										</tfoot>
 										<tbody>
-											<tr th:each="item, iState : ${listReportCommon}">
-												<td>[[${iState.index + 1}]]</td>
-												<td>[[${item[0]}]]</td>
-												<td>[[${item[1]}]]</td>
-												<td>[[${#numbers.formatDecimal(item[2], 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ']]</td>
-												<td>[[${#numbers.formatDecimal(item[3], 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ']]</td>
-												<td>[[${#numbers.formatDecimal(item[4], 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ']]</td>
-												<td>[[${#numbers.formatDecimal(item[5], 1, 'DEFAULT', 0, 'DEFAULT')} + ' đ']]</td>
-											</tr>
+										<tr th:each="item, iState : ${listReportCustomerCommon}">
+											<td th:text="${iState.index + 1}"></td>
+											<td th:text="${item[0]}"></td>
+											<td th:text="${item[1]}"></td>
+											<td th:text="${item[2]}"></td>
+											<td th:text="${item[3]}"></td>
+											<td th:text="${item[4]}"></td>
+											<td th:text="${item[5]}"></td>
+											<td th:text="${#dates.format(item[6], 'yyyy-MM-dd')}"></td>
+											<td th:text="${item[7]}"></td>
+										</tr>
 										</tbody>
 									</table>
 								</div>

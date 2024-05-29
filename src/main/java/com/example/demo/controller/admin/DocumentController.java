@@ -4,12 +4,10 @@ import com.example.demo.entity.Document;
 import com.example.demo.entity.DocumentStatus;
 import com.example.demo.entity.Folder;
 import com.example.demo.entity.User;
-import com.example.demo.repository.DocumentRepository;
-import com.example.demo.repository.DocumentStatusRepository;
-import com.example.demo.repository.FolderRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +37,10 @@ public class DocumentController {
 
   private final UserRepository userRepository;
 
+  private final PendingDocumentRepository pendingDocumentRepository;
+
+  private final FavoriteRepository favoriteRepository;
+
   private final DocumentStatusRepository documentStatusRepository;
 
   private final HttpSession httpSession;
@@ -51,12 +53,14 @@ public class DocumentController {
 
   public DocumentController(DocumentRepository documentRepository,
                             FolderRepository folderRepository,
-                            UserRepository userRepository,
+                            UserRepository userRepository, PendingDocumentRepository pendingDocumentRepository, FavoriteRepository favoriteRepository,
                             DocumentStatusRepository documentStatusRepository,
                             HttpSession httpSession) {
     this.documentRepository = documentRepository;
     this.folderRepository = folderRepository;
     this.userRepository = userRepository;
+    this.pendingDocumentRepository = pendingDocumentRepository;
+    this.favoriteRepository = favoriteRepository;
     this.documentStatusRepository = documentStatusRepository;
     this.httpSession = httpSession;
   }
@@ -205,9 +209,15 @@ public class DocumentController {
   // delete document
   @GetMapping("/deleteDocument/{id}")
   public String deleteDocument(@PathVariable("id") Long id, Model model) {
-    documentRepository.deleteById(id);
-    model.addAttribute("message", "Delete successful!");
-
+    try {
+      // Xóa các hàng con trong pending_document trước khi xóa hàng cha
+      pendingDocumentRepository.deleteByDocumentId(id);
+      favoriteRepository.deleteByDocumentId(id);
+      documentRepository.deleteById(id);
+      model.addAttribute("message", "Delete successful!");
+    } catch (DataIntegrityViolationException e) {
+      model.addAttribute("message", "Delete failed: " + e.getMessage());
+    }
     return "redirect:/admin/documents";
   }
 

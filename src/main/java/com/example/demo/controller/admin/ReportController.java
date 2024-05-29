@@ -45,7 +45,7 @@ public class ReportController {
 
 	// Statistics by category sold
 	@RequestMapping(value = "/admin/report-category")
-	public String reportcategory(Model model, Principal principal) throws SQLException {
+	public String reportCategory(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
 		model.addAttribute("user", user);
 
@@ -95,14 +95,12 @@ public class ReportController {
 
 	// Statistics by user
 	@RequestMapping(value = "/admin/report-customer")
-	public String reportordercustomer(Model model, Principal principal) throws SQLException {
+	public String reportOrderCustomer(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
 		model.addAttribute("user", user);
 
-		OrderDetail orderDetail = new OrderDetail();
-		model.addAttribute("orderDetail", orderDetail);
-		List<Object[]> listReportCommon = orderDetailRepository.reportCustommer();
-		model.addAttribute("listReportCommon", listReportCommon);
+		List<Object[]> listReportCustomerCommon = documentRepository.listReportCustomerCommon();
+		model.addAttribute("listReportCustomerCommon", listReportCustomerCommon);
 
 		return "admin/statistical-customer";
 	}
