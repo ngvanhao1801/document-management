@@ -72,6 +72,9 @@ public class Document implements Serializable {
 
   private String mediaType;
 
+  private int favorites;
+
+  @Transient
   public boolean favorite;
 
   private int version;

@@ -59,11 +59,7 @@ public class CommomDataService {
 			totalSave = favoriteRepository.selectCountSave(user.getUserId());
 		}
 
-		Integer totalPendindDocuments = shoppingCartService.getCount();
-
 		model.addAttribute("totalSave", totalSave);
-
-		model.addAttribute("totalPendindDocuments", totalPendindDocuments);
 
 		Collection<CartItem> cartItems = shoppingCartService.getCartItems();
 		model.addAttribute("cartItems", cartItems);

@@ -3,93 +3,65 @@ package com.example.demo.controller;
 import com.example.demo.commom.CommomDataService;
 import com.example.demo.entity.Document;
 import com.example.demo.entity.Favorite;
-import com.example.demo.entity.Product;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.ProductRepository;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class HomeController extends CommomController {
-	
-	@Autowired
-	ProductRepository productRepository;
-	
-	@Autowired
-	CommomDataService commomDataService;
-	
-	@Autowired
-	FavoriteRepository favoriteRepository;
 
-	private final DocumentRepository documentRepositoryl;
+  private final CommomDataService commomDataService;
 
-	public HomeController(DocumentRepository documentRepositoryl) {
-		this.documentRepositoryl = documentRepositoryl;
-	}
+  private final FavoriteRepository favoriteRepository;
 
-	@GetMapping(value = "/")
-	public String home(Model model, User user) {
+  private final DocumentRepository documentRepository;
 
-		commomDataService.commonData(model, user);
-		documentFavourite(model, user);
-		return "web/home";
-	}
-	
-	// list product ở trang chủ limit 10 sản phẩm mới nhất
-	@ModelAttribute("listDocument10")
-	public List<Document> listDocument10(Model model) {
-		List<Document> documentList = documentRepositoryl.listDocumentNew20();
-		model.addAttribute("c", documentList);
-		return documentList;
-	}
-	
-	// Top 20 best sale.
-	public void documentFavourite(Model model, User customer) {
-		List<Object[]> productList = productRepository.bestSaleProduct20();
-		if (productList != null) {
-			ArrayList<Integer> listIdProductArrayList = new ArrayList<>();
-			for (int i = 0; i < productList.size(); i++) {
-				String id = String.valueOf(productList.get(i)[0]);
-				listIdProductArrayList.add(Integer.valueOf(id));
-			}
-			List<Product> listProducts = productRepository.findByInventoryIds(listIdProductArrayList);
+  public HomeController(ProductRepository productRepository,
+                        CommomDataService commomDataService,
+                        FavoriteRepository favoriteRepository,
+                        DocumentRepository documentRepository) {
+    this.productRepository = productRepository;
+    this.commomDataService = commomDataService;
+    this.favoriteRepository = favoriteRepository;
+    this.documentRepository = documentRepository;
+  }
 
-			List<Product> listProductNew = new ArrayList<>();
+  @GetMapping(value = "/")
+  public String home(Model model, @ModelAttribute("user") User user) {
 
-			for (Product product : listProducts) {
+    commomDataService.commonData(model, user);
+    return "web/home";
+  }
 
-				Product productEntity = new Product();
+  @ModelAttribute("listDocument10")
+  public List<Document> listDocumentNew(Model model, @ModelAttribute("user") User user) {
+    List<Document> documentList = documentRepository.listDocumentNew();
 
-				BeanUtils.copyProperties(product, productEntity);
+    for (Document document : documentList) {
+      Favorite favorite = favoriteRepository.selectSaves(document.getId(), user.getUserId());
+      if (favorite != null) {
+        document.setFavorite(true);
+      } else {
+        document.setFavorite(false);
+      }
+    }
 
-				Favorite save = favoriteRepository.selectSaves(productEntity.getProductId(), customer.getUserId());
+    model.addAttribute("documentNew", documentList);
+    commomDataService.commonData(model, user);
+    return documentList;
+  }
 
-				if (save != null) {
-					productEntity.favorite = true;
-				} else {
-					productEntity.favorite = false;
-				}
-				listProductNew.add(productEntity);
+  @GetMapping(value = "/lien-he")
+  public String contact(Model model, @ModelAttribute("user") User user) {
 
-			}
-
-			model.addAttribute("bestSaleProduct20", listProductNew);
-		}
-	}
-
-	@GetMapping(value = "/lien-he")
-	public String contact(Model model, User user) {
-
-		commomDataService.commonData(model, user);
-		return "web/contact";
-	}
+    commomDataService.commonData(model, user);
+    return "web/contact";
+  }
 }

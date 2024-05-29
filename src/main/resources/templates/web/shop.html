@@ -62,6 +62,14 @@
             border: none;
             border-radius: 10px;
         }
+
+        .document-image {
+            display: block;
+            width: 100%; /* Chiều rộng của ảnh sẽ bằng với chiều rộng của phần tử cha */
+            max-width: 200px; /* Đặt chiều rộng tối đa nếu cần */
+            aspect-ratio: 1; /* Đặt tỷ lệ khung hình 1:1 nếu muốn hình vuông */
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -76,7 +84,7 @@
 
 <section
         class="inner-section single-banner"
-        style="background: url(images/hethongQuanLy.png) no-repeat center">
+        style="background: url(/images/hethongQuanLy.png) no-repeat center">
     <div class="container">
         <h2>Tài liệu</h2>
         <ol class="breadcrumb">
@@ -100,7 +108,7 @@
                         <li th:each="item : ${countDocumentByFolder}">
                             <div class="shop-widget-content">
                                 <a href="javascript:void(0);" th:href="@{/documentByFolder(folderId=${item[0]})}">
-                                    <label for="cate1" style="color: #119744">[[${item[1]}]]</label>
+                                    <label for="countDocumentByFolder" id="countDocumentByFolder" style="color: #119744">[[${item[1]}]]</label>
                                 </a>
                             </div>
                             <span class="shop-widget-number">([[${item[2]}]])</span>
@@ -120,15 +128,14 @@
 
                     <!-- item product -->
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" style="margin-top: -30px;">
-                        <div class="col" th:each="item : ${documents}">
-                            <div class="product-card">
+                        <div class="col" style="margin-right: 50px" th:each="item : ${documents}">
+                            <div class="product-card" style="margin-left: 50px;">
                                 <div class="product-media">
                                     <th:block th:if="${user.email != null}">
-                                        <button class="product-wish" th:if="${item.favorite} == false">
+                                        <button class="product-wish" th:if="${!item.favorite}">
                                             <i class="fas fa-heart"></i>
                                         </button>
-                                        <button class="product-wish" th:if="${item.favorite} == true"
-                                                style="color: #fd7e14">
+                                        <button class="product-wish" th:if="${item.favorite}" style="color: #fd7e14">
                                             <i class="fas fa-heart"></i>
                                         </button>
                                     </th:block>
@@ -138,8 +145,8 @@
                                             <i class="fas fa-heart"></i>
                                         </button>
                                     </th:block>
-                                    <a class="product-image" href="javascript:void(0);">
-                                        <img th:src="@{'/loadImage?imageName='+${item.documentImage}}" alt="product"/>
+                                    <a class="document-image" href="javascript:void(0);">
+                                        <img th:src="@{'/loadImage?imageName='+${item.documentImage}}" alt="document"/>
                                     </a>
                                     <div class="product-widget">
                                         <th:block href="/login" th:if="${user.email == null}">
@@ -147,13 +154,13 @@
                                         </th:block>
                                         <th:block th:if="${user.email != null}">
                                             <th:block th:if="${item.documentStatus.statusId == 3}">
-                                                <a th:if="${item.favorite} == false"
+                                                <a th:if="${!item.favorite}"
                                                    title="Yêu thích"
                                                    th:href="@{/doFavorite(id=${item.id})}"
                                                    class="fas fa-heart">
                                                 </a>
 
-                                                <a th:if="${item.favorite} == true"
+                                                <a th:if="${item.favorite}"
                                                    title="Xóa Yêu thích"
                                                    th:href="@{/doUnFavorite(id=${item.id})}"
                                                    style="background-color: #fd7e14"
@@ -183,8 +190,11 @@
                                     <h6 class="product-name">
                                         <a href="javascript:void(0);" th:href="@{/documentDetails(id=${item.id})}"
                                            style="-webkit-line-clamp: 2; -webkit-box-orient: vertical; display: -webkit-box;
-                                           overflow: hidden;">[[${item.documentName}]]</a>
+                                           overflow: hidden;">[[${item.documentName}]]
+                                        </a>
                                     </h6>
+                                    <p>Total Favorites: [[${item.favorites}]]</p>
+                                    <p>Total Views: [[${item.views}]]</p>
                                 </div>
                             </div>
                         </div>

@@ -24,7 +24,7 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	// List product new
 	@Query(value = "SELECT * FROM document d where d.status_id = 3 ORDER BY d.upload_date DESC limit 10;", nativeQuery = true)
-	public List<Document> listDocumentNew20();
+	public List<Document> listDocumentNew();
 
 	// Search Product
 	@Query(value = "SELECT * FROM document d WHERE d.status_id = 3 and d.document_name LIKE %?1%", nativeQuery = true)
@@ -78,7 +78,12 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	@Query(value = "SELECT \n" +
 			"    year(d.upload_date) AS year,\n" +
 			"    COUNT(*) AS totalDocuments,\n" +
-			"    SUM(CASE WHEN d.favorite = true THEN 1 ELSE 0 END) AS favoriteDocuments,\n" +
+			"    (\n" +
+			"        SELECT COUNT(DISTINCT f.document_id)\n" +
+			"        FROM favorites f\n" +
+			"        INNER JOIN document d2 ON f.document_id = d2.id\n" +
+			"        WHERE year(d2.upload_date) = year(d.upload_date)\n" +
+			"    ) AS favoriteDocuments,\n" +
 			"    SUM(d.views) AS totalViews,\n" +
 			"    (\n" +
 			"        SELECT media_type\n" +
@@ -118,7 +123,13 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"        WHERE year(upload_date) = year(d.upload_date)\n" +
 			"        ORDER BY views DESC\n" +
 			"        LIMIT 1\n" +
-			"    ) AS mostViewedDocument\n" +
+			"    ) AS mostViewedDocument,\n" +
+			"    (SELECT document_name\n" +
+			"    FROM document\n" +
+			"    WHERE year(upload_date) = year(d.upload_date)\n" +
+			"    ORDER BY favorites DESC\n" +
+			"        LIMIT 1\n" +
+			"    ) AS mostFavouriteDocument\n" +
 			"FROM document d\n" +
 			"GROUP BY year(d.upload_date)\n" +
 			"ORDER BY year(d.upload_date);", nativeQuery = true)
@@ -128,12 +139,19 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"    year(d.upload_date) AS year,\n" +
 			"    month(d.upload_date) AS month,\n" +
 			"    COUNT(*) AS totalDocuments,\n" +
-			"    SUM(CASE WHEN d.favorite = true THEN 1 ELSE 0 END) AS favoriteDocuments,\n" +
+			"    (\n" +
+			"        SELECT COUNT(DISTINCT f.document_id)\n" +
+			"        FROM favorites f\n" +
+			"        INNER JOIN document d2 ON f.document_id = d2.id\n" +
+			"        WHERE year(d2.upload_date) = year(d.upload_date)\n" +
+			"        AND month(upload_date) = month(d.upload_date)\n" +
+			"    ) AS favoriteDocuments,\n" +
 			"    SUM(d.views) AS totalViews,\n" +
 			"    (\n" +
 			"        SELECT media_type\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND month(upload_date) = month(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND month(upload_date) = month(d.upload_date)\n" +
 			"        GROUP BY media_type\n" +
 			"        ORDER BY COUNT(*) DESC\n" +
 			"        LIMIT 1\n" +
@@ -144,42 +162,64 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"    (\n" +
 			"        SELECT document_name\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND month(upload_date) = month(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND month(upload_date) = month(d.upload_date)\n" +
 			"        ORDER BY upload_date DESC\n" +
 			"        LIMIT 1\n" +
 			"    ) AS latestDocument,\n" +
 			"    (\n" +
 			"        SELECT user_id\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND month(upload_date) = month(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND month(upload_date) = month(d.upload_date)\n" +
 			"        GROUP BY user_id\n" +
 			"        ORDER BY COUNT(*) DESC\n" +
 			"        LIMIT 1\n" +
 			"    ) AS mostActiveUser,\n" +
-			"    GROUP_CONCAT(DISTINCT u.name) AS userNames,\n" +
+			"    (\n" +
+			"        SELECT GROUP_CONCAT(DISTINCT u.name)\n" +
+			"        FROM document doc\n" +
+			"        INNER JOIN `user` u ON doc.user_id = u.user_id\n" +
+			"        WHERE year(doc.upload_date) = year(d.upload_date)\n" +
+			"        AND month(upload_date) = month(d.upload_date)\n" +
+			"    ) AS userNames,\n" +
 			"    (\n" +
 			"        SELECT document_name\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND month(upload_date) = month(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND month(upload_date) = month(d.upload_date)\n" +
 			"        ORDER BY views DESC\n" +
 			"        LIMIT 1\n" +
-			"    ) AS mostViewedDocument\n" +
+			"    ) AS mostViewedDocument,\n" +
+			"    (SELECT document_name\n" +
+			"    FROM document\n" +
+			"    WHERE year(upload_date) = year(d.upload_date)\n" +
+			"    AND month(upload_date) = month(d.upload_date)\n" +
+			"    ORDER BY favorites DESC\n" +
+			"        LIMIT 1\n" +
+			"    ) AS mostFavouriteDocument\n" +
 			"FROM document d\n" +
-			"INNER JOIN `user` u ON d.user_id = u.user_id\n" +
 			"GROUP BY year(d.upload_date), month(d.upload_date)\n" +
 			"ORDER BY year(d.upload_date), month(d.upload_date);", nativeQuery = true)
 	List<Object[]> listReportMonthCommon();
 
 	@Query(value = "SELECT \n" +
 			"    year(d.upload_date) AS year,\n" +
-			"    QUARTER(d.upload_date) AS QUARTER,\n" +
+			"    quarter(d.upload_date) AS quarter,\n" +
 			"    COUNT(*) AS totalDocuments,\n" +
-			"    SUM(CASE WHEN d.favorite = true THEN 1 ELSE 0 END) AS favoriteDocuments,\n" +
+			"    (\n" +
+			"        SELECT COUNT(DISTINCT f.document_id)\n" +
+			"        FROM favorites f\n" +
+			"        INNER JOIN document d2 ON f.document_id = d2.id\n" +
+			"        WHERE year(d2.upload_date) = year(d.upload_date)\n" +
+			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
+			"    ) AS favoriteDocuments,\n" +
 			"    SUM(d.views) AS totalViews,\n" +
 			"    (\n" +
 			"        SELECT media_type\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND QUARTER(upload_date) = QUARTER(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
 			"        GROUP BY media_type\n" +
 			"        ORDER BY COUNT(*) DESC\n" +
 			"        LIMIT 1\n" +
@@ -190,64 +230,81 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"    (\n" +
 			"        SELECT document_name\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND QUARTER(upload_date) = QUARTER(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
 			"        ORDER BY upload_date DESC\n" +
 			"        LIMIT 1\n" +
 			"    ) AS latestDocument,\n" +
 			"    (\n" +
 			"        SELECT user_id\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND QUARTER(upload_date) = QUARTER(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
 			"        GROUP BY user_id\n" +
 			"        ORDER BY COUNT(*) DESC\n" +
 			"        LIMIT 1\n" +
 			"    ) AS mostActiveUser,\n" +
-			"    GROUP_CONCAT(DISTINCT u.name) AS userNames,\n" +
+			"    (\n" +
+			"        SELECT GROUP_CONCAT(DISTINCT u.name)\n" +
+			"        FROM document doc\n" +
+			"        INNER JOIN `user` u ON doc.user_id = u.user_id\n" +
+			"        WHERE year(doc.upload_date) = year(d.upload_date)\n" +
+			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
+			"    ) AS userNames,\n" +
 			"    (\n" +
 			"        SELECT document_name\n" +
 			"        FROM document\n" +
-			"        WHERE year(upload_date) = year(d.upload_date) AND QUARTER(upload_date) = QUARTER(d.upload_date)\n" +
+			"        WHERE year(upload_date) = year(d.upload_date)\n" +
+			"        AND quarter(upload_date) = quarter(d.upload_date)\n" +
 			"        ORDER BY views DESC\n" +
 			"        LIMIT 1\n" +
-			"    ) AS mostViewedDocument\n" +
+			"    ) AS mostViewedDocument,\n" +
+			"    (SELECT document_name\n" +
+			"    FROM document\n" +
+			"    WHERE year(upload_date) = year(d.upload_date)\n" +
+			"    AND quarter(upload_date) = quarter(d.upload_date)\n" +
+			"    ORDER BY favorites DESC\n" +
+			"        LIMIT 1\n" +
+			"    ) AS mostFavouriteDocument\n" +
 			"FROM document d\n" +
-			"INNER JOIN `user` u ON d.user_id = u.user_id\n" +
-			"GROUP BY year(d.upload_date), QUARTER(d.upload_date)\n" +
-			"ORDER BY year(d.upload_date), QUARTER(d.upload_date);\n", nativeQuery = true)
+			"GROUP BY year(d.upload_date), quarter(d.upload_date)\n" +
+			"ORDER BY year(d.upload_date), quarter(d.upload_date);\n", nativeQuery = true)
 	List<Object[]> listReportQuarterCommon();
 
-	@Query(value = "select\n" +
-			"\tu.name as UserName,\n" +
-			"\tr.name as Rolename,\n" +
-			"\tu.email as Email,\n" +
-			"\tCOUNT(d.id) as TotalDocumentsUploaded,\n" +
-			"\tIFNULL(SUM(d.views), 0) as TotalViews,\n" +
-			"\tIFNULL(SUM(case when d.favorite = true then 1 else 0 end), 0) as TotalFavorites,\n" +
-			"\tu.register_date as RegisterDate,\n" +
-			"\tcase\n" +
-			"\t\twhen u.status = true then 'Đang hoạt động'\n" +
-			"\t\telse 'Ngừng hoạt động'\n" +
-			"\tend as Status\n" +
-			"from\n" +
-			"\t`user` u\n" +
-			"left join\n" +
-			"    document d on\n" +
-			"\tu.user_id = d.user_id\n" +
-			"left join\n" +
-			"    users_roles ur on\n" +
-			"\tu.user_id = ur.user_id\n" +
-			"left join\n" +
-			"    `role` r on\n" +
-			"\tur.role_id = r.id\n" +
-			"where\n" +
-			"\tr.name = 'ROLE_USER'\n" +
-			"group by\n" +
-			"\tu.user_id,\n" +
-			"\tu.name,\n" +
-			"\tu.email,\n" +
-			"\tu.register_date,\n" +
-			"\tu.status\n" +
-			"order by TotalDocumentsUploaded desc;", nativeQuery = true)
+	@Query(value = "SELECT\n" +
+			"    u.name AS UserName,\n" +
+			"    r.name AS RoleName,\n" +
+			"    u.email AS Email,\n" +
+			"    COUNT(d.id) AS TotalDocumentsUploaded,\n" +
+			"    IFNULL(SUM(d.views), 0) AS TotalViews,\n" +
+			"    IFNULL(\n" +
+			"        (SELECT COUNT(DISTINCT f.document_id)\n" +
+			"         FROM favorites f\n" +
+			"         INNER JOIN document d2 ON f.document_id = d2.id\n" +
+			"         WHERE d2.user_id = u.user_id), 0) AS TotalFavorites,\n" +
+			"    u.register_date AS RegisterDate,\n" +
+			"    CASE\n" +
+			"        WHEN u.status = true THEN 'Đang hoạt động'\n" +
+			"        ELSE 'Ngừng hoạt động'\n" +
+			"    END AS Status\n" +
+			"FROM\n" +
+			"    `user` u\n" +
+			"LEFT JOIN\n" +
+			"    document d ON u.user_id = d.user_id\n" +
+			"LEFT JOIN\n" +
+			"    users_roles ur ON u.user_id = ur.user_id\n" +
+			"LEFT JOIN\n" +
+			"    `role` r ON ur.role_id = r.id\n" +
+			"WHERE\n" +
+			"    r.name = 'ROLE_USER'\n" +
+			"GROUP BY\n" +
+			"    u.user_id,\n" +
+			"    u.name,\n" +
+			"    u.email,\n" +
+			"    u.register_date,\n" +
+			"    u.status\n" +
+			"ORDER BY\n" +
+			"    RegisterDate DESC;", nativeQuery = true)
 	List<Object[]> listReportCustomerCommon();
 
 }
