@@ -17,62 +17,62 @@ import java.security.Principal;
 @Controller
 public class SendMailSupportController {
 
-  private final SendMailService sendMailService;
+	private final SendMailService sendMailService;
 
-  private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-  public SendMailSupportController(SendMailService sendMailService, UserRepository userRepository) {
-    this.sendMailService = sendMailService;
-    this.userRepository = userRepository;
-  }
+	public SendMailSupportController(SendMailService sendMailService, UserRepository userRepository) {
+		this.sendMailService = sendMailService;
+		this.userRepository = userRepository;
+	}
 
-  @ModelAttribute(value = "user")
-  public User user(Model model, Principal principal, User user) {
+	@ModelAttribute(value = "user")
+	public User user(Model model, Principal principal, User user) {
 
-    if (principal != null) {
-      model.addAttribute("user", new User());
-      user = userRepository.findByEmail(principal.getName());
-      model.addAttribute("user", user);
-    }
+		if (principal != null) {
+			model.addAttribute("user", new User());
+			user = userRepository.findByEmail(principal.getName());
+			model.addAttribute("user", user);
+		}
 
-    return user;
-  }
+		return user;
+	}
 
-  @PostMapping(value = "/sendEmail")
-  public ModelAndView sendEmail(@RequestParam("name") String name,
-                                @RequestParam("email") String email,
-                                @RequestParam("subject") String subject,
-                                @RequestParam("message") String message,
-                                ModelMap model) {
+	@PostMapping(value = "/sendEmail")
+	public ModelAndView sendEmail(@RequestParam("name") String name,
+	                              @RequestParam("email") String email,
+	                              @RequestParam("subject") String subject,
+	                              @RequestParam("message") String message,
+	                              ModelMap model) {
 
-    String adminEmail = "ngohao181102@gmail.com";
-    String emailSubject = "Yêu cầu hỗ trợ từ " + name + ": " + subject;
-    String emailBody = "Tên: " + name + "<br>Email: " + email + "<br>Nội dung: " + message;
+		String adminEmail = "ngohao181102@gmail.com";
+		String emailSubject = "Yêu cầu hỗ trợ từ " + name + ": " + subject;
+		String emailBody = "Tên: " + name + "<br>Email: " + email + "<br>Nội dung: " + message;
 
-    MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
-    sendMailService.queue(mailInfo);
+		MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
+		sendMailService.queue(mailInfo);
 
-    model.addAttribute("name", name);
-    model.addAttribute("email", email);
-    model.addAttribute("subject", subject);
-    model.addAttribute("message", message);
+		model.addAttribute("name", name);
+		model.addAttribute("email", email);
+		model.addAttribute("subject", subject);
+		model.addAttribute("message", message);
 
-    return new ModelAndView("web/send-mail-success", model);
-  }
+		return new ModelAndView("web/send-mail-success", model);
+	}
 
-  @PostMapping(value = "/sendEmailRegister")
-  public ModelAndView sendEmailRegister(@RequestParam("email") String email, ModelMap model) {
+	@PostMapping(value = "/sendEmailRegister")
+	public ModelAndView sendEmailRegister(@RequestParam("email") String email, ModelMap model) {
 
-    String adminEmail = "ngohao181102@gmail.com";
-    String emailSubject = "Yêu cầu hỗ trợ đăng ký tài khoản từ người dùng";
-    String emailBody = "Email người dùng: " + email;
+		String adminEmail = "ngohao181102@gmail.com";
+		String emailSubject = "Yêu cầu hỗ trợ đăng ký tài khoản từ người dùng";
+		String emailBody = "Email người dùng: " + email;
 
-    MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
-    sendMailService.queue(mailInfo);
+		MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
+		sendMailService.queue(mailInfo);
 
-    model.addAttribute("email", email);
+		model.addAttribute("email", email);
 
-    return new ModelAndView("web/send-mail-success", model);
-  }
+		return new ModelAndView("web/send-mail-success", model);
+	}
 
 }

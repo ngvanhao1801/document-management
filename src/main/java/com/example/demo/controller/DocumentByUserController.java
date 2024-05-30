@@ -26,190 +26,187 @@ import java.util.Optional;
 @Controller
 public class DocumentByUserController {
 
-  private final DocumentRepository documentRepository;
+	private final DocumentRepository documentRepository;
 
-  private final PendingDocumentRepository pendingDocumentRepository;
+	private final PendingDocumentRepository pendingDocumentRepository;
 
-  private final FolderRepository folderRepository;
+	private final FolderRepository folderRepository;
 
-  private final UserRepository userRepository;
+	private final UserRepository userRepository;
 
-  private final DocumentStatusRepository documentStatusRepository;
+	private final DocumentStatusRepository documentStatusRepository;
 
-  private final HttpSession httpSession;
+	@Value("${upload.path}")
+	private String pathUploadImage;
 
-  @Value("${upload.path}")
-  private String pathUploadImage;
+	@Value("${upload.file.path}")
+	private String pathUploadFile;
 
-  @Value("${upload.file.path}")
-  private String pathUploadFile;
+	public DocumentByUserController(DocumentRepository documentRepository,
+	                                PendingDocumentRepository pendingDocumentRepository,
+	                                FolderRepository folderRepository,
+	                                UserRepository userRepository,
+	                                DocumentStatusRepository documentStatusRepository,
+	                                HttpSession httpSession) {
+		this.documentRepository = documentRepository;
+		this.pendingDocumentRepository = pendingDocumentRepository;
+		this.folderRepository = folderRepository;
+		this.userRepository = userRepository;
+		this.documentStatusRepository = documentStatusRepository;
+	}
 
-  public DocumentByUserController(DocumentRepository documentRepository,
-                                  PendingDocumentRepository pendingDocumentRepository,
-                                  FolderRepository folderRepository,
-                                  UserRepository userRepository,
-                                  DocumentStatusRepository documentStatusRepository,
-                                  HttpSession httpSession) {
-    this.documentRepository = documentRepository;
-    this.pendingDocumentRepository = pendingDocumentRepository;
-    this.folderRepository = folderRepository;
-    this.userRepository = userRepository;
-    this.documentStatusRepository = documentStatusRepository;
-    this.httpSession = httpSession;
-  }
+	@ModelAttribute(value = "user")
+	public User user(Model model, Principal principal, User user) {
 
-  @ModelAttribute(value = "user")
-  public User user(Model model, Principal principal, User user) {
+		if (principal != null) {
+			model.addAttribute("user", new User());
+			user = userRepository.findByEmail(principal.getName());
+			model.addAttribute("user", user);
+		}
 
-    if (principal != null) {
-      model.addAttribute("user", new User());
-      user = userRepository.findByEmail(principal.getName());
-      model.addAttribute("user", user);
-    }
+		return user;
+	}
 
-    return user;
-  }
+	@GetMapping(value = "/list-documents")
+	public String documents(Model model, User user) {
 
-  @GetMapping(value = "/list-documents")
-  public String documents(Model model, User user) {
+		int totalDocumentUpload = documentRepository.countDocumentUploadByUser(user.getUserId());
 
-    int totalDocumentUpload = documentRepository.countDocumentUploadByUser(user.getUserId());
+		List<Document> documents = documentRepository.getListDocumentUpload(user.getUserId());
+		model.addAttribute("documents", documents);
+		model.addAttribute("totalDocumentUpload", totalDocumentUpload);
+		model.addAttribute("document", new Document());
 
-    List<Document> documents = documentRepository.getListDocumentUpload(user.getUserId());
-    model.addAttribute("documents", documents);
-    model.addAttribute("totalDocumentUpload", totalDocumentUpload);
-    model.addAttribute("document", new Document());
+		return "web/add_document_by_user";
+	}
 
-    return "web/add_document_by_user";
-  }
+	@PostMapping(value = "/uploadDocument")
+	public String addDocument(@ModelAttribute("document") Document document,
+	                          ModelMap model,
+	                          @RequestParam("file") MultipartFile[] files,
+	                          HttpServletRequest httpServletRequest,
+	                          BindingResult result) {
 
-  @PostMapping(value = "/uploadDocument")
-  public String addDocument(@ModelAttribute("document") Document document,
-                            ModelMap model,
-                            @RequestParam("file") MultipartFile[] files,
-                            HttpServletRequest httpServletRequest,
-                            BindingResult result) {
+		if (result.hasErrors()) {
+			return "web/add_document_by_user";
+		}
 
-    if (result.hasErrors()) {
-      return "web/add_document_by_user";
-    }
+		for (MultipartFile file : files) {
+			try {
+				String nameFile = file.getOriginalFilename();
+				String filePath = null;
+				switch (file.getContentType()) {
+					case "image/jpeg":
+					case "image/png":
+					case "image/gif":
+					case "image/bmp":
+						filePath = pathUploadImage + "/" + nameFile;
+						break;
+					case "application/pdf":
+					case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+					case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
+					case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+						filePath = pathUploadFile + "/" + nameFile;
+						break;
+					default:
+						// Xử lý loại tệp không được hỗ trợ ở đây
+						break;
+				}
 
-    for (MultipartFile file : files) {
-      try {
-        String nameFile = file.getOriginalFilename();
-        String filePath = null;
-        switch (file.getContentType()) {
-          case "image/jpeg":
-          case "image/png":
-          case "image/gif":
-          case "image/bmp":
-            filePath = pathUploadImage + "/" + nameFile;
-            break;
-          case "application/pdf":
-          case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-          case "application/vnd.openxmlformats-officedocument.presentationml.presentation":
-          case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-            filePath = pathUploadFile + "/" + nameFile;
-            break;
-          default:
-            // Xử lý loại tệp không được hỗ trợ ở đây
-            break;
-        }
+				if (filePath != null) {
+					File convFile = new File(filePath);
+					FileOutputStream fos = new FileOutputStream(convFile);
+					fos.write(file.getBytes());
+					fos.close();
+				}
 
-        if (filePath != null) {
-          File convFile = new File(filePath);
-          FileOutputStream fos = new FileOutputStream(convFile);
-          fos.write(file.getBytes());
-          fos.close();
-        }
+				// Lưu thông tin loại phương tiện vào cơ sở dữ liệu
+				document.setMediaType(file.getContentType());
 
-        // Lưu thông tin loại phương tiện vào cơ sở dữ liệu
-        document.setMediaType(file.getContentType());
+				// Lưu tên file vào đối tượng Document
+				if (file.getContentType().startsWith("image")) {
+					document.setDocumentImage(nameFile);
+				}
+				if (file.getContentType().equals("application/pdf")
+						|| file.getContentType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+						|| file.getContentType().equals("application/vnd.openxmlformats-officedocument.presentationml" +
+						".presentation")
+						|| file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
+					document.setDocumentFile(nameFile);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		Long statusId = 1L; // Trạng thái "Chờ xét duyệt"
+		Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
+		if (documentStatusOptional.isEmpty()) {
+			throw new RuntimeException("Document status not found");
+		}
+		DocumentStatus documentStatus = documentStatusOptional.get();
 
-        // Lưu tên file vào đối tượng Document
-        if (file.getContentType().startsWith("image")) {
-          document.setDocumentImage(nameFile);
-        }
-        if (file.getContentType().equals("application/pdf")
-            || file.getContentType().equals("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
-            || file.getContentType().equals("application/vnd.openxmlformats-officedocument.presentationml" +
-            ".presentation")
-            || file.getContentType().equals("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")) {
-          document.setDocumentFile(nameFile);
-        }
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-    Long statusId = 1L; // Trạng thái "Chờ xét duyệt"
-    Optional<DocumentStatus> documentStatusOptional = documentStatusRepository.findById(statusId);
-    if (documentStatusOptional.isEmpty()) {
-      throw new RuntimeException("Document status not found");
-    }
-    DocumentStatus documentStatus = documentStatusOptional.get();
+		// Thiết lập trạng thái cho Document
+		document.setDocumentStatus(documentStatus);
 
-    // Thiết lập trạng thái cho Document
-    document.setDocumentStatus(documentStatus);
+		// Lưu Document vào cơ sở dữ liệu
+		Document savedDocument = documentRepository.save(document);
 
-    // Lưu Document vào cơ sở dữ liệu
-    Document savedDocument = documentRepository.save(document);
+		// Tạo và thiết lập trạng thái cho PendingDocument
+		PendingDocument pendingDocument = new PendingDocument();
+		pendingDocument.setDocument(savedDocument);
+		pendingDocument.setUser(savedDocument.getUser());
+		pendingDocument.setUploadDate(new Date());
+		pendingDocument.setDocumentStatus(documentStatus);
 
-    // Tạo và thiết lập trạng thái cho PendingDocument
-    PendingDocument pendingDocument = new PendingDocument();
-    pendingDocument.setDocument(savedDocument);
-    pendingDocument.setUser(savedDocument.getUser());
-    pendingDocument.setUploadDate(new Date());
-    pendingDocument.setDocumentStatus(documentStatus);
+		// Lưu PendingDocument vào cơ sở dữ liệu
+		pendingDocumentRepository.save(pendingDocument);
 
-    // Lưu PendingDocument vào cơ sở dữ liệu
-    pendingDocumentRepository.save(pendingDocument);
+		if (savedDocument != null) {
+			model.addAttribute("message", "Update success");
+			model.addAttribute("document", document);
+		} else {
+			model.addAttribute("message", "Update failure");
+			model.addAttribute("document", document);
+		}
+		return "redirect:/list-documents";
+	}
 
-    if (savedDocument != null) {
-      model.addAttribute("message", "Update success");
-      model.addAttribute("document", document);
-    } else {
-      model.addAttribute("message", "Update failure");
-      model.addAttribute("document", document);
-    }
-    return "redirect:/list-documents";
-  }
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		sdf.setLenient(true);
+		binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
+	}
 
-  @InitBinder
-  public void initBinder(WebDataBinder binder) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-    sdf.setLenient(true);
-    binder.registerCustomEditor(Date.class, new CustomDateEditor(sdf, true));
-  }
+	@ModelAttribute("folderList")
+	public List<Folder> showFolder(Model model) {
+		List<Folder> folderList = folderRepository.findAll();
+		model.addAttribute("folderList", folderList);
 
-  @ModelAttribute("folderList")
-  public List<Folder> showFolder(Model model) {
-    List<Folder> folderList = folderRepository.findAll();
-    model.addAttribute("folderList", folderList);
+		return folderList;
+	}
 
-    return folderList;
-  }
+	@ModelAttribute("userList")
+	public List<User> showUser(Model model) {
+		List<User> userList = userRepository.findAllByRoles();
+		model.addAttribute("userList", userList);
 
-  @ModelAttribute("userList")
-  public List<User> showUser(Model model) {
-    List<User> userList = userRepository.findAllByRoles();
-    model.addAttribute("userList", userList);
+		return userList;
+	}
 
-    return userList;
-  }
+	@GetMapping(value = "/edit-document-upload/{id}")
+	public String editDocument(@PathVariable("id") Long id, ModelMap model) {
+		Document document = documentRepository.findById(id).orElse(null);
 
-  @GetMapping(value = "/edit-document-upload/{id}")
-  public String editDocument(@PathVariable("id") Long id, ModelMap model) {
-    Document document = documentRepository.findById(id).orElse(null);
+		if (document == null) {
+			return "web/notFound";
+		}
 
-    if (document == null) {
-      return "web/notFound";
-    }
+		model.addAttribute("editDocument", document);
+		model.addAttribute("folderList", folderRepository.findAll());
+		model.addAttribute("userList", userRepository.findAllByRoles());
 
-    model.addAttribute("editDocument", document);
-    model.addAttribute("folderList", folderRepository.findAll());
-    model.addAttribute("userList", userRepository.findAllByRoles());
-
-    return "web/edit_document_upload";
-  }
+		return "web/edit_document_upload";
+	}
 
 }

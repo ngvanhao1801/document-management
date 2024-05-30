@@ -4,7 +4,6 @@ import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.SendMailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -25,17 +24,23 @@ import java.util.List;
 @Controller
 public class RegisterController {
 
-	@Autowired
-	UserRepository userRepository;
+	private final UserRepository userRepository;
 
-	@Autowired
-	SendMailService sendMailService;
+	private final SendMailService sendMailService;
 
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Autowired
-	HttpSession session;
+	private final HttpSession session;
+
+	public RegisterController(UserRepository userRepository,
+	                          SendMailService sendMailService,
+	                          BCryptPasswordEncoder bCryptPasswordEncoder,
+	                          HttpSession session) {
+		this.userRepository = userRepository;
+		this.sendMailService = sendMailService;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.session = session;
+	}
 
 	@GetMapping("/register")
 	public ModelAndView registerForm(ModelMap model) {

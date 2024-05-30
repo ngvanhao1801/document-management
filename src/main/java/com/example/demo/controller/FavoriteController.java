@@ -16,62 +16,63 @@ import java.util.List;
 @Controller
 public class FavoriteController extends CommomController {
 
-  private final DocumentRepository documentRepository;
+	private final DocumentRepository documentRepository;
 
-  private final FavoriteRepository favoriteRepository;
+	private final FavoriteRepository favoriteRepository;
 
-  private final CommomDataService commomDataService;
+	private final CommomDataService commomDataService;
 
-  public FavoriteController(DocumentRepository documentRepository, FavoriteRepository favoriteRepository, CommomDataService commomDataService) {
-    this.documentRepository = documentRepository;
-    this.favoriteRepository = favoriteRepository;
-    this.commomDataService = commomDataService;
-  }
+	public FavoriteController(DocumentRepository documentRepository, FavoriteRepository favoriteRepository,
+                            CommomDataService commomDataService) {
+		this.documentRepository = documentRepository;
+		this.favoriteRepository = favoriteRepository;
+		this.commomDataService = commomDataService;
+	}
 
-  @GetMapping(value = "/favorite")
-  public String favorite(Model model, User user) {
-    List<Favorite> favorites = favoriteRepository.selectAllSaves(user.getUserId());
-    commomDataService.commonData(model, user);
+	@GetMapping(value = "/favorite")
+	public String favorite(Model model, User user) {
+		List<Favorite> favorites = favoriteRepository.selectAllSaves(user.getUserId());
+		commomDataService.commonData(model, user);
 
-    model.addAttribute("favorites", favorites);
+		model.addAttribute("favorites", favorites);
 
-    return "web/favorite";
-  }
+		return "web/favorite";
+	}
 
-  @GetMapping(value = "/doFavorite")
-  public String doFavorite(Model model, Favorite favorite, User user, @RequestParam("id") Long id) {
-    Document document = documentRepository.findById(id).orElse(null);
-    if (document != null) {
-      favorite.setDocument(document);
-      favorite.setUser(user);
+	@GetMapping(value = "/doFavorite")
+	public String doFavorite(Model model, Favorite favorite, User user, @RequestParam("id") Long id) {
+		Document document = documentRepository.findById(id).orElse(null);
+		if (document != null) {
+			favorite.setDocument(document);
+			favorite.setUser(user);
 
-      favoriteRepository.save(favorite);
+			favoriteRepository.save(favorite);
 
-      document.setFavorites(document.getFavorites() + 1);
+			document.setFavorites(document.getFavorites() + 1);
 //      document.favorite = true;
-      documentRepository.save(document);
+			documentRepository.save(document);
 
-    }
-    commomDataService.commonData(model, user);
+		}
+		commomDataService.commonData(model, user);
 
-    return "redirect:/documents";
-  }
+		return "redirect:/documents";
+	}
 
-  @GetMapping(value = "/doUnFavorite")
-  public String doUnFavorite(Model model, User user, @RequestParam("id") Long id) {
-    Favorite favorite = favoriteRepository.selectSaves(id, user.getUserId());
-    Document document = documentRepository.findById(id).orElse(null);
+	@GetMapping(value = "/doUnFavorite")
+	public String doUnFavorite(Model model, User user, @RequestParam("id") Long id) {
+		Favorite favorite = favoriteRepository.selectSaves(id, user.getUserId());
+		Document document = documentRepository.findById(id).orElse(null);
 
-    if (document != null && favorite != null) {
-      favoriteRepository.delete(favorite);
+		if (document != null && favorite != null) {
+			favoriteRepository.delete(favorite);
 
-      document.setFavorites(document.getFavorites() - 1);
+			document.setFavorites(document.getFavorites() - 1);
 //      document.favorite = false;
-      documentRepository.save(document);
+			documentRepository.save(document);
 
-    }
-    commomDataService.commonData(model, user);
+		}
+		commomDataService.commonData(model, user);
 
-    return "redirect:/documents";
-  }
+		return "redirect:/documents";
+	}
 }

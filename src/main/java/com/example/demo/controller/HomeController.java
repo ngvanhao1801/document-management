@@ -16,49 +16,49 @@ import java.util.List;
 @Controller
 public class HomeController extends CommomController {
 
-  private final CommomDataService commomDataService;
+	private final CommomDataService commomDataService;
 
-  private final FavoriteRepository favoriteRepository;
+	private final FavoriteRepository favoriteRepository;
 
-  private final DocumentRepository documentRepository;
+	private final DocumentRepository documentRepository;
 
-  public HomeController(CommomDataService commomDataService,
-                        FavoriteRepository favoriteRepository,
-                        DocumentRepository documentRepository) {
-    this.commomDataService = commomDataService;
-    this.favoriteRepository = favoriteRepository;
-    this.documentRepository = documentRepository;
-  }
+	public HomeController(CommomDataService commomDataService,
+	                      FavoriteRepository favoriteRepository,
+	                      DocumentRepository documentRepository) {
+		this.commomDataService = commomDataService;
+		this.favoriteRepository = favoriteRepository;
+		this.documentRepository = documentRepository;
+	}
 
-  @GetMapping(value = "/")
-  public String home(Model model, @ModelAttribute("user") User user) {
+	@GetMapping(value = "/")
+	public String home(Model model, @ModelAttribute("user") User user) {
 
-    commomDataService.commonData(model, user);
-    return "web/home";
-  }
+		commomDataService.commonData(model, user);
+		return "web/home";
+	}
 
-  @ModelAttribute("listDocument10")
-  public List<Document> listDocumentNew(Model model, @ModelAttribute("user") User user) {
-    List<Document> documentList = documentRepository.listDocumentNew();
+	@ModelAttribute("listDocument10")
+	public List<Document> listDocumentNew(Model model, @ModelAttribute("user") User user) {
+		List<Document> documentList = documentRepository.listDocumentNew();
 
-    for (Document document : documentList) {
-      Favorite favorite = favoriteRepository.selectSaves(document.getId(), user.getUserId());
-      if (favorite != null) {
-        document.setFavorite(true);
-      } else {
-        document.setFavorite(false);
-      }
-    }
+		for (Document document : documentList) {
+			Favorite favorite = favoriteRepository.selectSaves(document.getId(), user.getUserId());
+			if (favorite != null) {
+				document.setFavorite(true);
+			} else {
+				document.setFavorite(false);
+			}
+		}
 
-    model.addAttribute("documentNew", documentList);
-    commomDataService.commonData(model, user);
-    return documentList;
-  }
+		model.addAttribute("documentNew", documentList);
+		commomDataService.commonData(model, user);
+		return documentList;
+	}
 
-  @GetMapping(value = "/lien-he")
-  public String contact(Model model, @ModelAttribute("user") User user) {
+	@GetMapping(value = "/lien-he")
+	public String contact(Model model, @ModelAttribute("user") User user) {
 
-    commomDataService.commonData(model, user);
-    return "web/contact";
-  }
+		commomDataService.commonData(model, user);
+		return "web/contact";
+	}
 }

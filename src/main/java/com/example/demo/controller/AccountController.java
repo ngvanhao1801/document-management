@@ -4,7 +4,6 @@ import com.example.demo.dto.ChangePassword;
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.SendMailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,17 +21,23 @@ import java.util.List;
 @Controller
 public class AccountController {
 
-	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-	@Autowired
-	HttpSession session;
+	private final HttpSession session;
 
-	@Autowired
-	UserRepository userRepository;
+	private final UserRepository userRepository;
 
-	@Autowired
-	SendMailService sendMailService;
+	private final SendMailService sendMailService;
+
+	public AccountController(BCryptPasswordEncoder bCryptPasswordEncoder,
+	                         HttpSession session,
+	                         UserRepository userRepository,
+	                         SendMailService sendMailService) {
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+		this.session = session;
+		this.userRepository = userRepository;
+		this.sendMailService = sendMailService;
+	}
 
 	@GetMapping(value = "/forgotPassword")
 	public String forgotPassword() {
