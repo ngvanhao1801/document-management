@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.firewall.DefaultHttpFirewall;
 import org.springframework.security.web.firewall.HttpFirewall;
 import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -21,86 +20,86 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-  @Autowired
-  private UserDetailService userDetailService;
+	@Autowired
+	private UserDetailService userDetailService;
 
-  @Bean
-  public BCryptPasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
-  }
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-  @Bean
-  public DaoAuthenticationProvider authenticationProvider() {
-    DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-    auth.setUserDetailsService(userDetailService);
-    auth.setPasswordEncoder(passwordEncoder());
-    return auth;
-  }
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
+		auth.setUserDetailsService(userDetailService);
+		auth.setPasswordEncoder(passwordEncoder());
+		return auth;
+	}
 
-  @Autowired
-  public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-    auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
-  }
+	@Autowired
+	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
+	}
 
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.authenticationProvider(authenticationProvider());
-  }
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.authenticationProvider(authenticationProvider());
+	}
 
-  @Bean
-  public AuthenticationFailureHandler customAuthenticationFailureHandler() {
-    return new CustomAuthenticationFailureHandler();
-  }
+	@Bean
+	public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+		return new CustomAuthenticationFailureHandler();
+	}
 
-  @Bean
-  public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-    StrictHttpFirewall firewall = new StrictHttpFirewall();
-    firewall.setAllowUrlEncodedSlash(true);
-    firewall.setAllowSemicolon(true);
-    firewall.setAllowBackSlash(true);
-    // Sử dụng phương pháp tùy chỉnh để xử lý dấu gạch chéo kép
-    firewall.setAllowUrlEncodedDoubleSlash(true); // Nếu phương pháp này không có, bỏ qua
-    return firewall;
-  }
+	@Bean
+	public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+		StrictHttpFirewall firewall = new StrictHttpFirewall();
+		firewall.setAllowUrlEncodedSlash(true);
+		firewall.setAllowSemicolon(true);
+		firewall.setAllowBackSlash(true);
+		// Sử dụng phương pháp tùy chỉnh để xử lý dấu gạch chéo kép
+		firewall.setAllowUrlEncodedDoubleSlash(true); // Nếu phương pháp này không có, bỏ qua
+		return firewall;
+	}
 
-  @Override
-  public void configure(WebSecurity web) throws Exception {
-    super.configure(web);
-    web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
-  }
+	@Override
+	public void configure(WebSecurity web) throws Exception {
+		super.configure(web);
+		web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+	}
 
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable();
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
 
-    // Admin page
-    http.authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
+		// Admin page
+		http.authorizeRequests().antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')");
 
-    // If you are not logged in, you will be redirected to the /login page.
-    http.authorizeRequests().antMatchers("/checkout").access("hasRole('ROLE_USER')");
+		// If you are not logged in, you will be redirected to the /login page.
+		http.authorizeRequests().antMatchers("/checkout").access("hasRole('ROLE_USER')");
 
-    http.authorizeRequests()
-        .antMatchers("/**").permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .formLogin()
-        .loginProcessingUrl("/doLogin")
-        .loginPage("/login")
-        .defaultSuccessUrl("/?login_success")
-        .successHandler(new SuccessHandler())
-        .failureHandler(customAuthenticationFailureHandler()) // Sử dụng CustomAuthenticationFailureHandler
-        .permitAll()
-        .and()
-        .logout()
-        .invalidateHttpSession(true)
-        .clearAuthentication(true)
-        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-        .logoutSuccessUrl("/?logout_success")
-        .permitAll();
+		http.authorizeRequests()
+				.antMatchers("/**").permitAll()
+				.anyRequest().authenticated()
+				.and()
+				.formLogin()
+				.loginProcessingUrl("/doLogin")
+				.loginPage("/login")
+				.defaultSuccessUrl("/?login_success")
+				.successHandler(new SuccessHandler())
+				.failureHandler(customAuthenticationFailureHandler()) // Sử dụng CustomAuthenticationFailureHandler
+				.permitAll()
+				.and()
+				.logout()
+				.invalidateHttpSession(true)
+				.clearAuthentication(true)
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+				.logoutSuccessUrl("/?logout_success")
+				.permitAll();
 
-    // remember-me
-    http.rememberMe()
-        .rememberMeParameter("remember");
-  }
+		// remember-me
+		http.rememberMe()
+				.rememberMeParameter("remember");
+	}
 
 }

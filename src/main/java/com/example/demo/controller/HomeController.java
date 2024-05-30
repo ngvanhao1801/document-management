@@ -6,7 +6,6 @@ import com.example.demo.entity.Favorite;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
-import com.example.demo.repository.ProductRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +22,9 @@ public class HomeController extends CommomController {
 
   private final DocumentRepository documentRepository;
 
-  public HomeController(ProductRepository productRepository,
-                        CommomDataService commomDataService,
+  public HomeController(CommomDataService commomDataService,
                         FavoriteRepository favoriteRepository,
                         DocumentRepository documentRepository) {
-    this.productRepository = productRepository;
     this.commomDataService = commomDataService;
     this.favoriteRepository = favoriteRepository;
     this.documentRepository = documentRepository;

@@ -2,7 +2,6 @@ package com.example.demo.repository;
 
 import com.example.demo.dto.ChartDTO;
 import com.example.demo.entity.Document;
-import com.example.demo.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -54,9 +53,6 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			+ "GROUP BY p.product_id\r\n"
 			+ "ORDER by SoLuong DESC limit 20;", nativeQuery = true)
 	public List<Object[]> bestSaleDocument20();
-
-	@Query(value = "select * from products o where product_id in :ids", nativeQuery = true)
-	List<Product> findByInventoryIds(@Param("ids") List<Integer> listProductId);
 
 	@Query(name = "getDocumentFavourite", nativeQuery = true)
 	List<ChartDTO> getDocumentByFavorite();

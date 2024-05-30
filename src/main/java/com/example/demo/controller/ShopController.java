@@ -6,9 +6,7 @@ import com.example.demo.entity.Favorite;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
-import com.example.demo.repository.ProductRepository;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -28,153 +26,151 @@ import java.util.stream.IntStream;
 @Controller
 public class ShopController extends CommomController {
 
-  private final DocumentRepository documentRepository;
+	private final DocumentRepository documentRepository;
 
-  @Autowired
-  ProductRepository productRepository;
+	private final FavoriteRepository favoriteRepository;
 
-  @Autowired
-  FavoriteRepository favoriteRepository;
+	private final CommomDataService commomDataService;
 
-  @Autowired
-  CommomDataService commomDataService;
+	public ShopController(DocumentRepository documentRepository,
+	                      FavoriteRepository favoriteRepository,
+	                      CommomDataService commomDataService) {
+		this.documentRepository = documentRepository;
+		this.favoriteRepository = favoriteRepository;
+		this.commomDataService = commomDataService;
+	}
 
-  public ShopController(DocumentRepository documentRepository) {
-    this.documentRepository = documentRepository;
-  }
+	@GetMapping(value = "/documents")
+	public String shop(Model model,
+	                   Pageable pageable,
+	                   @RequestParam("page") Optional<Integer> page,
+	                   @RequestParam("size") Optional<Integer> size,
+	                   User user) {
 
-  @GetMapping(value = "/documents")
-  public String shop(Model model,
-                     Pageable pageable,
-                     @RequestParam("page") Optional<Integer> page,
-                     @RequestParam("size") Optional<Integer> size,
-                     User user) {
+		int currentPage = page.orElse(1);
+		int pageSize = size.orElse(12);
 
-    int currentPage = page.orElse(1);
-    int pageSize = size.orElse(12);
+		Page<Document> documentPage = findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
-    Page<Document> documentPage = findPaginated(PageRequest.of(currentPage - 1, pageSize));
+		List<Document> documents = documentPage.getContent();
+		List<Document> updatedDocuments = new ArrayList<>();
 
-    List<Document> documents = documentPage.getContent();
-    List<Document> updatedDocuments = new ArrayList<>();
+		for (Document document : documents) {
+			Favorite favorite = favoriteRepository.selectSaves(document.getId(), user.getUserId());
+			if (favorite != null) {
+				document.setFavorite(true);
+			} else {
+				document.setFavorite(false);
+			}
+			updatedDocuments.add(document);
+		}
 
-    for (Document document : documents) {
-      Favorite favorite = favoriteRepository.selectSaves(document.getId(), user.getUserId());
-      if (favorite != null) {
-        document.setFavorite(true);
-      } else {
-        document.setFavorite(false);
-      }
-      updatedDocuments.add(document);
-    }
+		Page<Document> updatedDocumentPage = new PageImpl<>(updatedDocuments, PageRequest.of(currentPage - 1, pageSize),
+				documentPage.getTotalElements());
 
-    Page<Document> updatedDocumentPage = new PageImpl<>(updatedDocuments, PageRequest.of(currentPage - 1, pageSize), documentPage.getTotalElements());
+		int totalPages = updatedDocumentPage.getTotalPages();
+		if (totalPages > 0) {
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			model.addAttribute("pageNumbers", pageNumbers);
+		}
 
-    int totalPages = updatedDocumentPage.getTotalPages();
-    if (totalPages > 0) {
-      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-      model.addAttribute("pageNumbers", pageNumbers);
-    }
+		commomDataService.commonData(model, user);
+		model.addAttribute("documents", updatedDocumentPage);
 
-    commomDataService.commonData(model, user);
-    model.addAttribute("documents", updatedDocumentPage);
-
-    return "web/shop";
-  }
+		return "web/shop";
+	}
 
 
-  public Page<Document> findPaginated(Pageable pageable) {
+	public Page<Document> findPaginated(Pageable pageable) {
 
-    List<Document> documentPage = documentRepository.findAllByDocumentStatus();
+		List<Document> documentPage = documentRepository.findAllByDocumentStatus();
 
-    int pageSize = pageable.getPageSize();
-    int currentPage = pageable.getPageNumber();
-    int startItem = currentPage * pageSize;
-    List<Document> list;
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = currentPage * pageSize;
+		List<Document> list;
 
-    if (documentPage.size() < startItem) {
-      list = Collections.emptyList();
-    } else {
-      int toIndex = Math.min(startItem + pageSize, documentPage.size());
-      list = documentPage.subList(startItem, toIndex);
-    }
+		if (documentPage.size() < startItem) {
+			list = Collections.emptyList();
+		} else {
+			int toIndex = Math.min(startItem + pageSize, documentPage.size());
+			list = documentPage.subList(startItem, toIndex);
+		}
 
-    return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
-  }
+		return (Page<Document>) new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
+	}
 
-  // search document
-  @GetMapping(value = "/searchDocument")
-  public String showSearch(Model model,
-                           Pageable pageable,
-                           @RequestParam("keyword") String keyword,
-                           @RequestParam("size") Optional<Integer> size,
-                           @RequestParam("page") Optional<Integer> page,
-                           User user) {
+	// search document
+	@GetMapping(value = "/searchDocument")
+	public String showSearch(Model model,
+	                         Pageable pageable,
+	                         @RequestParam("keyword") String keyword,
+	                         @RequestParam("size") Optional<Integer> size,
+	                         @RequestParam("page") Optional<Integer> page,
+	                         User user) {
+		int currentPage = page.orElse(1);
+		int pageSize = size.orElse(12);
 
-    int currentPage = page.orElse(1);
-    int pageSize = size.orElse(12);
+		Page<Document> documentPage = findPaginatSearch(PageRequest.of(currentPage - 1, pageSize), keyword);
 
-    Page<Document> documentPage = findPaginatSearch(PageRequest.of(currentPage - 1, pageSize), keyword);
+		int totalPages = documentPage.getTotalPages();
+		if (totalPages > 0) {
+			List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			model.addAttribute("pageNumbers", pageNumbers);
+		}
 
-    int totalPages = documentPage.getTotalPages();
-    if (totalPages > 0) {
-      List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
-      model.addAttribute("pageNumbers", pageNumbers);
-    }
+		commomDataService.commonData(model, user);
+		model.addAttribute("documents", documentPage);
+		return "web/shop";
+	}
 
-    commomDataService.commonData(model, user);
-    model.addAttribute("documents", documentPage);
-    return "web/shop";
-  }
+	// search product
+	public Page<Document> findPaginatSearch(Pageable pageable,
+	                                        @RequestParam("keyword") String keyword) {
+		List<Document> documentPage = documentRepository.searchDocument(keyword);
 
-  // search product
-  public Page<Document> findPaginatSearch(Pageable pageable,
-                                          @RequestParam("keyword") String keyword) {
+		int pageSize = pageable.getPageSize();
+		int currentPage = pageable.getPageNumber();
+		int startItem = currentPage * pageSize;
+		List<Document> list;
 
-    List<Document> documentPage = documentRepository.searchDocument(keyword);
+		if (documentPage.size() < startItem) {
+			list = Collections.emptyList();
+		} else {
+			int toIndex = Math.min(startItem + pageSize, documentPage.size());
+			list = documentPage.subList(startItem, toIndex);
+		}
 
-    int pageSize = pageable.getPageSize();
-    int currentPage = pageable.getPageNumber();
-    int startItem = currentPage * pageSize;
-    List<Document> list;
+		return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
+	}
 
-    if (documentPage.size() < startItem) {
-      list = Collections.emptyList();
-    } else {
-      int toIndex = Math.min(startItem + pageSize, documentPage.size());
-      list = documentPage.subList(startItem, toIndex);
-    }
+	// list books by category
+	@GetMapping(value = "/documentByFolder")
+	public String listDocumentId(Model model, @RequestParam("folderId") Long folderId, User user) {
+		List<Document> documents = documentRepository.listDocumentByFolder(folderId);
 
-    return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
-  }
+		List<Document> listDocumentNew = new ArrayList<>();
 
-  // list books by category
-  @GetMapping(value = "/documentByFolder")
-  public String listDocumentId(Model model, @RequestParam("folderId") Long folderId, User user) {
-    List<Document> documents = documentRepository.listDocumentByFolder(folderId);
+		for (Document document : documents) {
 
-    List<Document> listDocumentNew = new ArrayList<>();
+			Document documentEntity = new Document();
 
-    for (Document document : documents) {
+			BeanUtils.copyProperties(document, documentEntity);
 
-      Document documentEntity = new Document();
+			Favorite save = favoriteRepository.selectSaves(documentEntity.getId(), user.getUserId());
 
-      BeanUtils.copyProperties(document, documentEntity);
+			if (save != null) {
+				documentEntity.favorite = true;
+			} else {
+				documentEntity.favorite = false;
+			}
+			listDocumentNew.add(documentEntity);
 
-      Favorite save = favoriteRepository.selectSaves(documentEntity.getId(), user.getUserId());
+		}
 
-      if (save != null) {
-        documentEntity.favorite = true;
-      } else {
-        documentEntity.favorite = false;
-      }
-      listDocumentNew.add(documentEntity);
-
-    }
-
-    model.addAttribute("documents", listDocumentNew);
-    commomDataService.commonData(model, user);
-    return "web/shop";
-  }
+		model.addAttribute("documents", listDocumentNew);
+		commomDataService.commonData(model, user);
+		return "web/shop";
+	}
 
 }

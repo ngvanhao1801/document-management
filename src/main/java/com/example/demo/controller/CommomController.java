@@ -5,7 +5,6 @@ import com.example.demo.entity.Folder;
 import com.example.demo.entity.User;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.FolderRepository;
-import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,9 +25,6 @@ public class CommomController {
 
 	@Autowired
 	UserRepository userRepository;
-
-	@Autowired
-	ProductRepository productRepository;
 
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {

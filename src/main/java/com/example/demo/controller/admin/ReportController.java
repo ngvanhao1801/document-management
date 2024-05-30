@@ -1,12 +1,9 @@
 package com.example.demo.controller.admin;
 
 import com.example.demo.entity.Document;
-import com.example.demo.entity.OrderDetail;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
-import com.example.demo.repository.OrderDetailRepository;
 import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,19 +16,17 @@ import java.util.List;
 @Controller
 public class ReportController {
 
-	@Autowired
-	UserRepository userRepository;
-
-	@Autowired
-	OrderDetailRepository orderDetailRepository;
+	private final UserRepository userRepository;
 
 	private final DocumentRepository documentRepository;
 
-  public ReportController(DocumentRepository documentRepository) {
-    this.documentRepository = documentRepository;
-  }
+	public ReportController(UserRepository userRepository,
+	                        DocumentRepository documentRepository) {
+		this.userRepository = userRepository;
+		this.documentRepository = documentRepository;
+	}
 
-  // Statistics by product sold
+	// Statistics by product sold
 	@GetMapping(value = "/admin/report-product")
 	public String report(Model model, Principal principal) throws SQLException {
 		User user = userRepository.findByEmail(principal.getName());
@@ -41,20 +36,6 @@ public class ReportController {
 		model.addAttribute("documentList", documentList);
 
 		return "admin/statistical-product";
-	}
-
-	// Statistics by category sold
-	@RequestMapping(value = "/admin/report-category")
-	public String reportCategory(Model model, Principal principal) throws SQLException {
-		User user = userRepository.findByEmail(principal.getName());
-		model.addAttribute("user", user);
-
-		OrderDetail orderDetail = new OrderDetail();
-		model.addAttribute("orderDetail", orderDetail);
-		List<Object[]> listReportCommon = orderDetailRepository.repoWhereCategory();
-		model.addAttribute("listReportCommon", listReportCommon);
-
-		return "admin/statistical-category";
 	}
 
 	// Statistics of products sold by year
@@ -104,5 +85,5 @@ public class ReportController {
 
 		return "admin/statistical-customer";
 	}
-	
+
 }

@@ -4,7 +4,6 @@ import com.example.demo.entity.Category;
 import com.example.demo.entity.User;
 import com.example.demo.repository.CategoryRepository;
 import com.example.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,16 +14,18 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/admin")
 public class CategoryController {
 
-	@Autowired
-	CategoryRepository categoryRepository;
+	private final CategoryRepository categoryRepository;
 
-	@Autowired
-	UserRepository userRepository;
+	private final UserRepository userRepository;
+
+	public CategoryController(CategoryRepository categoryRepository, UserRepository userRepository) {
+		this.categoryRepository = categoryRepository;
+		this.userRepository = userRepository;
+	}
 
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
@@ -58,7 +59,7 @@ public class CategoryController {
 	// add category
 	@PostMapping(value = "/addCategory")
 	public String addCategory(@Validated @ModelAttribute("category") Category category, ModelMap model,
-			BindingResult bindingResult) {
+	                          BindingResult bindingResult) {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("error", "failure");

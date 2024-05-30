@@ -2,10 +2,10 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.dto.ChartDTO;
 import com.example.demo.entity.User;
-import com.example.demo.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import com.example.demo.repository.CategoryRepository;
+import com.example.demo.repository.DocumentRepository;
+import com.example.demo.repository.PendingDocumentRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,30 +13,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.security.Principal;
-import java.util.Date;
 import java.util.List;
 
 @Controller
-//@RequestMapping("/admin")
-public class IndexAdminController{
-	
-	@Autowired
-	UserRepository userRepository;
+public class IndexAdminController {
 
-	@Autowired
-	CategoryRepository categoryRepository;
+	private final UserRepository userRepository;
 
-	@Autowired
-	OrderRepository orderRepository;
+	private final CategoryRepository categoryRepository;
 
-	@Autowired
-	ProductRepository productRepository;
 
-	@Autowired
-	DocumentRepository documentRepository;
+	private final DocumentRepository documentRepository;
 
-	@Autowired
-	PendingDocumentRepository pendingDocumentRepository;
+	private final PendingDocumentRepository pendingDocumentRepository;
+
+	public IndexAdminController(UserRepository userRepository,
+	                            CategoryRepository categoryRepository,
+	                            DocumentRepository documentRepository,
+	                            PendingDocumentRepository pendingDocumentRepository) {
+		this.userRepository = userRepository;
+		this.categoryRepository = categoryRepository;
+		this.documentRepository = documentRepository;
+		this.pendingDocumentRepository = pendingDocumentRepository;
+	}
 
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
@@ -57,40 +56,40 @@ public class IndexAdminController{
 
 	// dem so luong category
 	@GetMapping("/api/admin/count/categories")
-	public ResponseEntity<Object> getCountCategories(){
+	public ResponseEntity<Object> getCountCategories() {
 		long countCategories = categoryRepository.count();
 		return ResponseEntity.ok(countCategories);
 	}
 
 	// dem so luong user
 	@GetMapping("/api/admin/count/users")
-	public ResponseEntity<Object> getCountUsers(){
+	public ResponseEntity<Object> getCountUsers() {
 		long countUsers = userRepository.count();
 		return ResponseEntity.ok(countUsers);
 	}
 
 	// dem so luong don hang
 	@GetMapping("/api/admin/count/orders")
-	public ResponseEntity<Object> getCountOrders(){
+	public ResponseEntity<Object> getCountOrders() {
 		long countDocumentPending = pendingDocumentRepository.countAllByDocumentStatus();
 		return ResponseEntity.ok(countDocumentPending);
 	}
 
 	// dem so luong sp
 	@GetMapping("/api/admin/count/products")
-	public ResponseEntity<Object> getCountProduct(){
+	public ResponseEntity<Object> getCountProduct() {
 		long countDocuments = documentRepository.count();
 		return ResponseEntity.ok(countDocuments);
 	}
 
 	@GetMapping("/api/admin/product-order-categories")
-	public ResponseEntity<Object> getListProductOrderCategories(){
+	public ResponseEntity<Object> getListProductOrderCategories() {
 		List<ChartDTO> chartDTOS = categoryRepository.getListProductOrderCategories();
 		return ResponseEntity.ok(chartDTOS);
 	}
 
 	@GetMapping("/api/admin/product-order")
-	public ResponseEntity<Object> getDocumentFavourite(){
+	public ResponseEntity<Object> getDocumentFavourite() {
 		List<ChartDTO> chartDTOS = documentRepository.getDocumentByFavorite();
 		return ResponseEntity.ok(chartDTOS);
 	}
