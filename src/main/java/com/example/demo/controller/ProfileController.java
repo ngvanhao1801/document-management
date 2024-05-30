@@ -59,6 +59,9 @@ public class ProfileController extends CommomController{
 			user = userRepository.findByEmail(principal.getName());
 			model.addAttribute("user", user);
 		}
+
+		int totalDocumentUpload = documentRepository.countDocumentUploadByUser(user.getUserId());
+		model.addAttribute("totalDocumentUpload", totalDocumentUpload);
 		
 		int currentPage = page.orElse(1);
 		int pageSize = size.orElse(10);

@@ -167,9 +167,13 @@
 </section>
 
 <div style="text-align: center">
+    <div th:if="${totalDocumentUpload != 0}" class="text-center">
+        <th:block th:if="${user.email != null}">
     <button class="btn btn-primary btn-round " data-toggle="modal" data-target="#addRowModal">
         <i class="fa fa-plus"></i> Thêm Tài liệu mới
     </button>
+        </th:block>
+    </div>
 </div>
 
 <section class="inner-section wishlist-part">

@@ -289,7 +289,7 @@
                             <li class="fas fa-star"></li>
                             <li class="fas fa-star"></li>
                         </ul>
-                        <img src="images/avatar/01.jpg" alt="testimonial"/>
+                        <img src="/images/avatar/01.jpg" alt="testimonial"/>
                     </div>
                     <div class="testimonial-card">
                         <i class="fas fa-quote-left"></i>
@@ -304,12 +304,11 @@
                             <li class="fas fa-star"></li>
                             <li class="fas fa-star"></li>
                         </ul>
-                        <img src="images/avatar/02.jpg" alt="testimonial"/>
+                        <img src="/images/avatar/02.jpg" alt="testimonial"/>
                     </div>
                     <div class="testimonial-card">
                         <i class="fas fa-quote-left"></i>
-                        <p>"Tôi đã sử dụng sản phẩm này trong một thời gian và thấy nó thực sự đáng giá mọi khoản đầu
-                            tư.
+                        <p>"Tôi đã sử dụng sản phẩm này trong một thời gian và thấy nó thực sự đáng giá.
                             Tôi sẽ giới thiệu cho bạn bè và gia đình của mình."
                         </p>
                         <h5>Khánh Thành</h5>
@@ -320,11 +319,11 @@
                             <li class="fas fa-star"></li>
                             <li class="fas fa-star"></li>
                         </ul>
-                        <img src="images/avatar/03.jpg" alt="testimonial"/>
+                        <img src="/images/avatar/03.jpg" alt="testimonial"/>
                     </div>
                     <div class="testimonial-card">
                         <i class="fas fa-quote-left"></i>
-                        <p>"Tôi không thể tin được mình đã tìm thấy sản phẩm tốt như vậy với mức giá này. Đây là một ưu
+                        <p>"Tôi không thể tin được mình đã tìm thấy sản phẩm tốt như vậy. Đây là một ưu
                             đãi thực sự đáng giá."
                         </p>
                         <h5>Vũ Hà</h5>
@@ -335,7 +334,7 @@
                             <li class="fas fa-star"></li>
                             <li class="fas fa-star"></li>
                         </ul>
-                        <img src="images/avatar/04.jpg" alt="testimonial"/>
+                        <img src="/images/avatar/04.jpg" alt="testimonial"/>
                     </div>
                 </div>
             </div>
@@ -344,7 +343,7 @@
 </section>
 
 <section class="news-part"
-         style="background: url(images/book-5.jpg) no-repeat center">
+         style="background: url(/images/book-5.jpg) no-repeat center">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-5 col-lg-6 col-xl-7">
@@ -358,9 +357,9 @@
                 </div>
             </div>
             <div class="col-md-7 col-lg-6 col-xl-5">
-                <form class="news-form">
-                    <input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn"/>
-                    <button>
+                <form class="news-form" method="post" action="/sendEmailRegister">
+                    <input class="form-control" id="email" type="email" name="email" placeholder="Nhập Địa Chỉ Email Của Bạn" required>
+                    <button type="submit">
                         <span><i class="icofont-email"></i>Gửi</span>
                     </button>
                 </form>
@@ -447,20 +446,18 @@
         Footer End
 *************************************-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"
-        integrity="sha384-rOA1PnstxnOBLzCLSPu2PqDQBsz7RDEjz9mBxKwBe61E0KYw2AcrqxM8TOyc3lYd" crossorigin="anonymous"></script>
-<script src="vendor/bootstrap/jquery-1.12.4.min.js"></script>
-<script src="vendor/bootstrap/popper.min.js"></script>
-<script src="vendor/bootstrap/bootstrap.min.js"></script>
-<script src="vendor/countdown/countdown.min.js"></script>
-<script src="vendor/niceselect/nice-select.min.js"></script>
-<script src="vendor/slickslider/slick.min.js"></script>
-<script src="vendor/venobox/venobox.min.js"></script>
-<script src="js/nice-select.js"></script>
-<script src="js/countdown.js"></script>
-<script src="js/accordion.js"></script>
-<script src="js/venobox.js"></script>
-<script src="js/slick.js"></script>
-<script src="js/main.js"></script>
+<script src="/vendor/bootstrap/jquery-1.12.4.min.js"></script>
+<script src="/vendor/bootstrap/popper.min.js"></script>
+<script src="/vendor/bootstrap/bootstrap.min.js"></script>
+<script src="/vendor/countdown/countdown.min.js"></script>
+<script src="/vendor/niceselect/nice-select.min.js"></script>
+<script src="/vendor/slickslider/slick.min.js"></script>
+<script src="/vendor/venobox/venobox.min.js"></script>
+<script src="/js/nice-select.js"></script>
+<script src="/js/countdown.js"></script>
+<script src="/js/accordion.js"></script>
+<script src="/js/venobox.js"></script>
+<script src="/js/slick.js"></script>
+<script src="/js/main.js"></script>
 </body>
 </html>

@@ -106,19 +106,22 @@
                             <div class="col-md-4 col-lg-3" style="margin-right: 20px">
                                 <div class="form-group">
                                     <label class="form-label">Họ và tên</label>
-                                    <input class="form-control" type="text" th:value="${user.name}"/>
+                                    <input class="form-control" type="text" th:value="${user.name}"
+                                           readonly="readonly"/>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-3" style="margin-right: 20px">
                                 <div class="form-group">
                                     <label class="form-label">Địa chỉ Email</label>
-                                    <input class="form-control" type="email" th:value="${user.email}"/>
+                                    <input class="form-control" type="email" th:value="${user.email}"
+                                           readonly="readonly"/>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-3">
                                 <div class="form-group">
                                     <label class="form-label">Ngày tạo tài khoản</label>
-                                    <input class="form-control" type="date" th:value="${user.registerDate}"/>
+                                    <input class="form-control" type="date" th:value="${user.registerDate}"
+                                           readonly="readonly"/>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +134,6 @@
                     <div class="account-title">
                         <h4>Lịch sử đăng tải tài liệu</h4>
                     </div>
-
                     <section class="inner-section checkout-part">
                         <div class="container">
                             <div class="row">
@@ -139,7 +141,16 @@
                                     <div class="account-card">
                                         <div class="account-content">
                                             <div class="table-scroll">
-                                                <table class="table-list">
+                                                <div th:if="${totalDocumentUpload == 0}" class="text-center">
+                                                    <th:block th:if="${user.email != null}">
+                                                        <h3 style="color: #119744" class="mt-5">Hiện tại bạn chưa đăng
+                                                            tài liệu nào!</h3>
+                                                        <h4 style="color: #119744">Hãy thêm các tài liệu bạn muốn
+                                                            nào!</h4>
+                                                        <a th:href="@{/list-documents}" style="text-decoration: underline;">Click tại đây!</a>
+                                                    </th:block>
+                                                </div>
+                                                <table class="table-list" th:if="${totalDocumentUpload != 0}">
                                                     <thead>
                                                     <tr>
                                                         <th scope="col">Mã tài liệu</th>
@@ -216,7 +227,7 @@
 </script>
 <!-- Modal -->
 <section class="news-part"
-         style="background: url(images/book-5.jpg) no-repeat center">
+         style="background: url(/images/book-5.jpg) no-repeat center">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-md-5 col-lg-6 col-xl-7">

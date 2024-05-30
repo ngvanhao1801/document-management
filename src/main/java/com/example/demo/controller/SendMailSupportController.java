@@ -60,4 +60,19 @@ public class SendMailSupportController {
     return new ModelAndView("web/send-mail-success", model);
   }
 
+  @PostMapping(value = "/sendEmailRegister")
+  public ModelAndView sendEmailRegister(@RequestParam("email") String email, ModelMap model) {
+
+    String adminEmail = "ngohao181102@gmail.com";
+    String emailSubject = "Yêu cầu hỗ trợ đăng ký tài khoản từ người dùng";
+    String emailBody = "Email người dùng: " + email;
+
+    MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
+    sendMailService.queue(mailInfo);
+
+    model.addAttribute("email", email);
+
+    return new ModelAndView("web/send-mail-success", model);
+  }
+
 }
