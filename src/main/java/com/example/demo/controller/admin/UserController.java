@@ -2,6 +2,7 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
+import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,8 +22,11 @@ public class UserController {
 
 	private final UserRepository userRepository;
 
-	public UserController(UserRepository userRepository) {
+	private final FavoriteRepository favoriteRepository;
+
+	public UserController(UserRepository userRepository, FavoriteRepository favoriteRepository) {
 		this.userRepository = userRepository;
+		this.favoriteRepository = favoriteRepository;
 	}
 
 	@GetMapping(value = "/admin/users")
@@ -75,6 +79,8 @@ public class UserController {
 
 	@GetMapping(value = "/admin/users/delete/{userId}")
 	public String deleteUser(@PathVariable("userId") Long userId) {
+		favoriteRepository.deleteByUser_UserId(userId);
+
 		userRepository.deleteById(userId);
 
 		return "redirect:/admin/users";

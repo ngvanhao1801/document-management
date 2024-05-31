@@ -246,43 +246,6 @@
 
 </script>
 
-<!--<script>-->
-<!--    // Hàm xóa người dùng-->
-<!--    function showConfigModalDialog(userId, userName) {-->
-<!--        document.getElementById('deleteConfirmationText').innerText = `Bạn có chắc chắn muốn xóa người dùng ${userName} (ID: ${userId})?`;-->
-<!--        $('#confirmDeleteModal').modal('show');-->
-<!--        $('#confirmDeleteModal .btn-primary').attr('data-id', userId);-->
-<!--    }-->
-<!--    function deleteUser(userId) {-->
-<!--        if (!userId || isNaN(userId)) {-->
-<!--            console.error('Invalid userId:', userId);-->
-<!--            alert('Đã xảy ra lỗi khi xóa người dùng. Vui lòng thử lại sau.');-->
-<!--            return;-->
-<!--        }-->
-
-<!--        fetch(`/admin/users/delete/${userId}`, {-->
-<!--            method: 'DELETE',-->
-<!--            headers: {-->
-<!--                'Content-Type': 'application/json'-->
-<!--            }-->
-<!--        })-->
-<!--            .then(response => response.json())-->
-<!--            .then(data => {-->
-<!--                if (data.success) {-->
-<!--                    alert('Người dùng đã được xóa.');-->
-<!--                    $('#confirmDeleteModal').modal('hide');-->
-<!--                    window.location.href = "/admin/users";-->
-<!--                } else {-->
-<!--                    alert('Đã xảy ra lỗi khi xóa người dùng.');-->
-<!--                }-->
-<!--            })-->
-<!--            .catch(error => {-->
-<!--                console.error('Error:', error);-->
-<!--                alert('Đã xảy ra lỗi khi xóa người dùng.');-->
-<!--            });-->
-<!--    }-->
-<!--</script>-->
-
 <!--   Core JS Files   -->
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="/assets/js/core/popper.min.js"></script>

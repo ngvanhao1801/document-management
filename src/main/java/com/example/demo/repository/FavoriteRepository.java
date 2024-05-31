@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
-	// favorite
 	@Query(value = "SELECT f.* FROM favorites f " +
 			"inner join document d on f.document_id = d.id " +
 			"where d.status_id = 3 " +
@@ -31,5 +30,8 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
 	@Transactional
 	void deleteByDocumentId(Long documentId);
+
+	@Transactional
+	void deleteByUser_UserId(Long userId);
 
 }
