@@ -21,6 +21,7 @@ import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Controller
@@ -95,7 +96,7 @@ public class DocumentByUserController {
 			try {
 				String nameFile = file.getOriginalFilename();
 				String filePath = null;
-				switch (file.getContentType()) {
+				switch (Objects.requireNonNull(file.getContentType())) {
 					case "image/jpeg":
 					case "image/png":
 					case "image/gif":

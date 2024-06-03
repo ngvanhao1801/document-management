@@ -265,15 +265,13 @@
                     </div>
                 </div>
             </div>
-            <div class="chat-icon" onclick="toggleChatBox()">
-                <i class="fa fa-comment"></i> <!-- Sử dụng Font Awesome để thêm biểu tượng chat -->
-            </div>
-            <div class="chat-box" id="chatBox">
-                <iframe
-                        allow="microphone;"
-                        src="https://console.dialogflow.com/api-client/demo/embedded/974899ae-eb96-4830-bb1d-b3bba7256d9a">
-                </iframe>
-            </div>
+            <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+            <df-messenger
+                    intent="WELCOME"
+                    chat-title="Document Management Chat"
+                    agent-id="974899ae-eb96-4830-bb1d-b3bba7256d9a"
+                    language-code="vi"
+            ></df-messenger>
         </div>
     </div>
 </section>

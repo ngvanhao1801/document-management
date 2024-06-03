@@ -29,11 +29,12 @@ public class Feedback implements Serializable {
   @JoinColumn(name = "userId")
   private User userId;
 
+  @Column(name = "comment",columnDefinition = "TEXT")
   private String comment;
 
   private String rate;
 
-  @Temporal(TemporalType.DATE)
+  @Temporal(TemporalType.TIMESTAMP)
   private Date createdAt;
 
 }
