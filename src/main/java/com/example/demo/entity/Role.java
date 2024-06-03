@@ -1,22 +1,21 @@
 package com.example.demo.entity;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "role")
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
-
-	public Role() {
-
-	}
 
 	public Role(String name) {
 		super();

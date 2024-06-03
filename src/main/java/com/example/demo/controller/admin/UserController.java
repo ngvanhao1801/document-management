@@ -4,6 +4,7 @@ import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.repository.FavoriteRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.UsersRolesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,10 +26,15 @@ public class UserController {
 
 	private final FavoriteRepository favoriteRepository;
 
-	public UserController(UserRepository userRepository, FavoriteRepository favoriteRepository) {
+	private final UsersRolesRepository usersRolesRepository;
+
+	public UserController(UserRepository userRepository,
+												FavoriteRepository favoriteRepository,
+												UsersRolesRepository usersRolesRepository) {
 		this.userRepository = userRepository;
 		this.favoriteRepository = favoriteRepository;
-	}
+    this.usersRolesRepository = usersRolesRepository;
+  }
 
 	@GetMapping(value = "/admin/users")
 	public String customer(Model model, Principal principal) {
@@ -77,9 +84,12 @@ public class UserController {
 		}
 	}
 
+	@Transactional
 	@GetMapping(value = "/admin/users/delete/{userId}")
 	public String deleteUser(@PathVariable("userId") Long userId) {
 		favoriteRepository.deleteByUser_UserId(userId);
+
+		usersRolesRepository.deleteByUserId(userId);
 
 		userRepository.deleteById(userId);
 

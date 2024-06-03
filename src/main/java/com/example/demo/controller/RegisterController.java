@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Role;
 import com.example.demo.entity.User;
+import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.SendMailService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,15 +33,18 @@ public class RegisterController {
 
 	private final HttpSession session;
 
+  private final RoleRepository roleRepository;
+
 	public RegisterController(UserRepository userRepository,
-	                          SendMailService sendMailService,
-	                          BCryptPasswordEncoder bCryptPasswordEncoder,
-	                          HttpSession session) {
+                            SendMailService sendMailService,
+                            BCryptPasswordEncoder bCryptPasswordEncoder,
+                            HttpSession session, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
 		this.sendMailService = sendMailService;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.session = session;
-	}
+    this.roleRepository = roleRepository;
+  }
 
 	@GetMapping("/register")
 	public ModelAndView registerForm(ModelMap model) {
@@ -84,8 +88,24 @@ public class RegisterController {
 			dto.setRegisterDate(new Date());
 			dto.setStatus(true);
 			dto.setAvatar("user.png");
-			dto.setRoles(Arrays.asList(new Role("ROLE_USER")));
-			userRepository.save(dto);
+
+			// Kiểm tra và lấy ROLE_USER từ cơ sở dữ liệu
+			Role userRole = roleRepository.findByName("ROLE_USER");
+			if (userRole == null) {
+				userRole = new Role("ROLE_USER");
+				roleRepository.save(userRole);
+			}
+
+			// Kiểm tra và lấy ROLE_ADMIN từ cơ sở dữ liệu
+			Role adminRole = roleRepository.findByName("ROLE_ADMIN");
+			if (adminRole == null) {
+				adminRole = new Role("ROLE_ADMIN");
+				roleRepository.save(adminRole);
+			}
+
+      dto.setRoles(List.of(userRole));
+
+      userRepository.save(dto);
 
 			session.removeAttribute("otp");
 			model.addAttribute("message", "Đăng kí thành công");
