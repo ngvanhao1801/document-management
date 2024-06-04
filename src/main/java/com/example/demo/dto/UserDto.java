@@ -15,17 +15,17 @@ import java.util.Date;
 @NoArgsConstructor
 public class UserDto {
 
-  private Long userId;
+	private Long userId;
 
-  private String name;
+	private String name;
 
-  private String email;
+	private String email;
 
-  @Temporal(TemporalType.DATE)
-  private Date registerDate;
+	@Temporal(TemporalType.DATE)
+	private Date registerDate;
 
-  private boolean status;
+	private boolean status;
 
-  private String roleName;
+	private String roleName;
 
 }

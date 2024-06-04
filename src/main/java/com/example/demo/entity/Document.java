@@ -42,46 +42,46 @@ import java.util.List;
 @Table(name = "document")
 public class Document implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  private String documentName;
+	private String documentName;
 
-  @Column(name = "description",columnDefinition = "TEXT")
-  private String description;
+	@Column(name = "description", columnDefinition = "TEXT")
+	private String description;
 
-  @ManyToOne
-  @JoinColumn(name = "userId")
-  private User user;
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User user;
 
-  @Temporal(TemporalType.DATE)
-  private Date uploadDate;
+	@Temporal(TemporalType.DATE)
+	private Date uploadDate;
 
-  @ManyToOne
-  @JoinColumn(name = "folderId")
-  private Folder folder;
+	@ManyToOne
+	@JoinColumn(name = "folderId")
+	private Folder folder;
 
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "statusId")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "statusId")
   private DocumentStatus documentStatus;
 
-  private String documentImage;
+	private String documentImage;
 
-  private String documentFile;
+	private String documentFile;
 
-  private String mediaType;
+	private String mediaType;
 
-  private int favorites;
+	private int favorites;
 
-  @Transient
-  public boolean favorite;
+	@Transient
+	public boolean favorite;
 
-  private int version;
+	private int version;
 
-  private int views;
+	private int views;
 
-  @OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Feedback> feedbacks = new ArrayList<>();
+	@OneToMany(mappedBy = "document", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Feedback> feedbacks = new ArrayList<>();
 
 }

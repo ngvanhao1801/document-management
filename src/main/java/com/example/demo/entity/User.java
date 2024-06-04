@@ -1,6 +1,9 @@
 package com.example.demo.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,28 +18,28 @@ import java.util.Date;
 @NoArgsConstructor
 public class User implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long userId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long userId;
 
-  private String name;
+	private String name;
 
-  private String email;
+	private String email;
 
-  private String password;
+	private String password;
 
-  private String avatar;
+	private String avatar;
 
-  @Temporal(TemporalType.DATE)
-  private Date registerDate;
+	@Temporal(TemporalType.DATE)
+	private Date registerDate;
 
-  private boolean status;
+	private boolean status;
 
-  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-  @JoinTable(name = "users_roles",
-      joinColumns = @JoinColumn(name = "user_id",
-          referencedColumnName = "userId"),
-      inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-  private Collection<Role> roles;
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@JoinTable(name = "users_roles",
+			joinColumns = @JoinColumn(name = "user_id",
+					referencedColumnName = "userId"),
+			inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+	private Collection<Role> roles;
 
 }

@@ -61,9 +61,11 @@ public class AccountController {
 				model.addAttribute("email", email);
 				model.addAttribute("message", "Mã xác thực OTP đã được gửi tới Email: " + user.getEmail() + ", hãy kiểm tra " +
 						"Email của bạn!");
+
 				return new ModelAndView("/web/confirmOtpForgotPassword", model);
 			}
 		}
+
 		model.addAttribute("error", "Email này chưa đăng ký!");
 		return new ModelAndView("web/forgotPassword", model);
 	}
@@ -75,8 +77,10 @@ public class AccountController {
 			model.addAttribute("newPassword", "");
 			model.addAttribute("confirmPassword", "");
 			model.addAttribute("changePassword", new ChangePassword());
+
 			return new ModelAndView("web/changePassword", model);
 		}
+
 		model.addAttribute("error", "Mã xác thực OTP không đúng, thử lại!");
 		return new ModelAndView("web/confirmOtpForgotPassword", model);
 	}

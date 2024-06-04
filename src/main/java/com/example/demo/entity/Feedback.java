@@ -17,24 +17,24 @@ import java.util.Date;
 @Table(name = "feedback")
 public class Feedback implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private int id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
 
-  @ManyToOne
-  @JoinColumn(name = "documentId")
-  private Document document;
+	@ManyToOne
+	@JoinColumn(name = "documentId")
+	private Document document;
 
-  @ManyToOne
-  @JoinColumn(name = "userId")
-  private User userId;
+	@ManyToOne
+	@JoinColumn(name = "userId")
+	private User userId;
 
-  @Column(name = "comment",columnDefinition = "TEXT")
-  private String comment;
+	@Column(name = "comment", columnDefinition = "TEXT")
+	private String comment;
 
-  private String rate;
+	private String rate;
 
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date createdAt;
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date createdAt;
 
 }

@@ -22,8 +22,9 @@ public class FavoriteController extends CommomController {
 
 	private final CommomDataService commomDataService;
 
-	public FavoriteController(DocumentRepository documentRepository, FavoriteRepository favoriteRepository,
-                            CommomDataService commomDataService) {
+	public FavoriteController(DocumentRepository documentRepository,
+	                          FavoriteRepository favoriteRepository,
+	                          CommomDataService commomDataService) {
 		this.documentRepository = documentRepository;
 		this.favoriteRepository = favoriteRepository;
 		this.commomDataService = commomDataService;

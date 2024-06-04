@@ -124,7 +124,6 @@ public class ShopController extends CommomController {
 		return "web/shop";
 	}
 
-	// search product
 	public Page<Document> findPaginatSearch(Pageable pageable,
 	                                        @RequestParam("keyword") String keyword) {
 		List<Document> documentPage = documentRepository.searchDocument(keyword);
@@ -144,7 +143,6 @@ public class ShopController extends CommomController {
 		return new PageImpl<Document>(list, PageRequest.of(currentPage, pageSize), documentPage.size());
 	}
 
-	// list books by category
 	@GetMapping(value = "/documentByFolder")
 	public String listDocumentId(Model model, @RequestParam("folderId") Long folderId, User user) {
 		List<Document> documents = documentRepository.listDocumentByFolder(folderId);

@@ -1,7 +1,10 @@
 package com.example.demo.entity;
 
 import com.example.demo.dto.ChartDTO;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,8 +16,8 @@ import java.io.Serializable;
 						classes = @ConstructorResult(
 								targetClass = ChartDTO.class,
 								columns = {
-										@ColumnResult(name = "label",type = String.class),
-										@ColumnResult(name = "value",type = Integer.class)
+										@ColumnResult(name = "label", type = String.class),
+										@ColumnResult(name = "value", type = Integer.class)
 								}
 						)
 				)
@@ -37,7 +40,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Table(name = "categories")
-public class Category implements Serializable{
+public class Category implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

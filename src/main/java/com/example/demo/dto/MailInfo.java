@@ -11,20 +11,20 @@ import lombok.Setter;
 @Setter
 public class MailInfo {
 
-  String from;
+	String from;
 
-  String to;
+	String to;
 
-  String subject;
+	String subject;
 
-  String body;
+	String body;
 
-  String attachments;
+	String attachments;
 
-  public MailInfo(String to, String subject, String body) {
-    this.from = "Document Management <support@gmail.com>";
-    this.to = to;
-    this.subject = subject;
-    this.body = body;
-  }
+	public MailInfo(String to, String subject, String body) {
+		this.from = "Document Management <support@gmail.com>";
+		this.to = to;
+		this.subject = subject;
+		this.body = body;
+	}
 }

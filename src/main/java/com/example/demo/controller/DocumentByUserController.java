@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -47,8 +46,7 @@ public class DocumentByUserController {
 	                                PendingDocumentRepository pendingDocumentRepository,
 	                                FolderRepository folderRepository,
 	                                UserRepository userRepository,
-	                                DocumentStatusRepository documentStatusRepository,
-	                                HttpSession httpSession) {
+	                                DocumentStatusRepository documentStatusRepository) {
 		this.documentRepository = documentRepository;
 		this.pendingDocumentRepository = pendingDocumentRepository;
 		this.folderRepository = folderRepository;

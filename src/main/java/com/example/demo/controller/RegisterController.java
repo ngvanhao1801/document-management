@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 
 @Controller
 public class RegisterController {
@@ -33,18 +31,18 @@ public class RegisterController {
 
 	private final HttpSession session;
 
-  private final RoleRepository roleRepository;
+	private final RoleRepository roleRepository;
 
 	public RegisterController(UserRepository userRepository,
-                            SendMailService sendMailService,
-                            BCryptPasswordEncoder bCryptPasswordEncoder,
-                            HttpSession session, RoleRepository roleRepository) {
+	                          SendMailService sendMailService,
+	                          BCryptPasswordEncoder bCryptPasswordEncoder,
+	                          HttpSession session, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
 		this.sendMailService = sendMailService;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.session = session;
-    this.roleRepository = roleRepository;
-  }
+		this.roleRepository = roleRepository;
+	}
 
 	@GetMapping("/register")
 	public ModelAndView registerForm(ModelMap model) {
@@ -103,9 +101,9 @@ public class RegisterController {
 				roleRepository.save(adminRole);
 			}
 
-      dto.setRoles(List.of(userRole));
+			dto.setRoles(List.of(userRole));
 
-      userRepository.save(dto);
+			userRepository.save(dto);
 
 			session.removeAttribute("otp");
 			model.addAttribute("message", "Đăng kí thành công");

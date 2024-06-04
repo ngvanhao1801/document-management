@@ -15,44 +15,28 @@ import java.util.List;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
 	@Query(value = "SELECT * FROM document AS d WHERE d.folder_id = ? AND d.status_id = 3", nativeQuery = true)
-	public List<Document> listDocumentByFolder(Long folderId);
+	List<Document> listDocumentByFolder(Long folderId);
 
 	// Top 10 product by category
 	@Query(value = "SELECT * FROM document AS b WHERE b.status_id = 3 and b.folder_id = ?;", nativeQuery = true)
 	List<Document> listDocumentByFolder10(Long folderId);
 
 	// List product new
-	@Query(value = "SELECT * FROM document d where d.status_id = 3 ORDER BY d.upload_date DESC limit 10;", nativeQuery = true)
-	public List<Document> listDocumentNew();
+	@Query(value = "SELECT * FROM document d where d.status_id = 3 ORDER BY d.upload_date DESC limit 10;",
+			nativeQuery = true)
+	List<Document> listDocumentNew();
 
 	// Search Product
 	@Query(value = "SELECT * FROM document d WHERE d.status_id = 3 and d.document_name LIKE %?1%", nativeQuery = true)
-	public List<Document> searchDocument(String documentName);
+	List<Document> searchDocument(String documentName);
 
 	@Query(value = "SELECT f.folder_id, f.folder_name, " +
 			"COUNT(*) AS SoLuong " +
 			"FROM document d " +
 			"JOIN folder f ON d.folder_id = f.folder_id " +
 			"WHERE d.status_id = 3 " +
-			"GROUP BY f.folder_name;" , nativeQuery = true)
+			"GROUP BY f.folder_name;", nativeQuery = true)
 	List<Object[]> listFolderByDocumentName();
-
-	// count quantity by product
-	@Query(value = "SELECT f.folder_id,f.folder_name,\r\n"
-			+ "COUNT(*) AS SoLuong\r\n"
-			+ "FROM document d\r\n"
-			+ "JOIN folder f ON d.folder_id = f.folder_id\r\n"
-			+ "GROUP BY f.folder_name;", nativeQuery = true)
-	List<Object[]> listFolderByFolderName();
-
-	// Top 20 product best sale
-	@Query(value = "SELECT p.product_id,\n"
-			+ "COUNT(*) AS SoLuong\r\n"
-			+ "FROM order_details p\r\n"
-			+ "JOIN products c ON p.product_id = c.product_id\r\n"
-			+ "GROUP BY p.product_id\r\n"
-			+ "ORDER by SoLuong DESC limit 20;", nativeQuery = true)
-	public List<Object[]> bestSaleDocument20();
 
 	@Query(name = "getDocumentFavourite", nativeQuery = true)
 	List<ChartDTO> getDocumentByFavorite();

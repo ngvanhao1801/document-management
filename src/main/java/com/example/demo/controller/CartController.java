@@ -7,11 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import javax.transaction.Transactional;
 import java.security.Principal;
 
 @Controller
@@ -44,25 +40,6 @@ public class CartController {
 		commomDataService.commonData(model, user);
 
 		return "/web/shoppingCart-checkout";
-	}
-
-	// submit checkout
-	@PostMapping(value = "/checkout")
-	@Transactional
-	public String checkedOut(Model model, HttpServletRequest request, User user) throws MessagingException {
-
-		request.getParameter("checkOut");
-
-		return "redirect:/checkout_success";
-	}
-
-	// done checkout ship cod
-	@GetMapping(value = "/checkout_success")
-	public String checkoutSuccess(Model model, User user) {
-		commomDataService.commonData(model, user);
-
-		return "web/checkout_success";
-
 	}
 
 }

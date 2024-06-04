@@ -52,6 +52,7 @@ public class HomeController extends CommomController {
 
 		model.addAttribute("documentNew", documentList);
 		commomDataService.commonData(model, user);
+
 		return documentList;
 	}
 

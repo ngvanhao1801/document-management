@@ -47,9 +47,12 @@ public class DocumentDetailController extends CommomController {
 	@ModelAttribute("/document")
 	public Document document(Model model, Document document) {
 		Document foundDocument = documentRepository.findById(document.getId()).orElse(null);
+
 		String categoryName = categoryRepository.findCategoryNameByDocumentId(document.getId());
+
 		model.addAttribute("document", foundDocument);
 		model.addAttribute("categoryName", categoryName);
+
 		return foundDocument;
 	}
 

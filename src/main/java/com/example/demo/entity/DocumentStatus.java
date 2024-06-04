@@ -16,10 +16,10 @@ import java.io.Serializable;
 @Table(name = "document_status")
 public class DocumentStatus implements Serializable {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long statusId;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long statusId;
 
-  private String statusName;
+	private String statusName;
 
 }
