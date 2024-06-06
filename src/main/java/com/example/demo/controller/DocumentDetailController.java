@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.commom.CommomDataService;
 import com.example.demo.entity.Document;
 import com.example.demo.entity.Favorite;
 import com.example.demo.entity.User;
@@ -23,17 +24,22 @@ public class DocumentDetailController extends CommomController {
 
 	private final FavoriteRepository favoriteRepository;
 
+	private final CommomDataService commomDataService;
+
 	public DocumentDetailController(CategoryRepository categoryRepository,
 	                                DocumentRepository documentRepository,
-	                                FavoriteRepository favoriteRepository) {
+	                                FavoriteRepository favoriteRepository,
+	                                CommomDataService commomDataService) {
 		this.categoryRepository = categoryRepository;
 		this.documentRepository = documentRepository;
 		this.favoriteRepository = favoriteRepository;
+		this.commomDataService = commomDataService;
 	}
 
 	@GetMapping(value = "/documentDetails")
 	public String documentDetail(@RequestParam("id") Long id, Model model, User user) {
 
+		commomDataService.commonData(model, user);
 		documentRepository.incrementViews(id);
 		Document document = documentRepository.findById(id).orElse(null);
 		model.addAttribute("document", document);

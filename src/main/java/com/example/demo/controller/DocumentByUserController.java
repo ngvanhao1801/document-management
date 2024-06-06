@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.commom.CommomDataService;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +37,8 @@ public class DocumentByUserController {
 
 	private final DocumentStatusRepository documentStatusRepository;
 
+	private final CommomDataService commomDataService;
+
 	@Value("${upload.path}")
 	private String pathUploadImage;
 
@@ -46,12 +49,13 @@ public class DocumentByUserController {
 	                                PendingDocumentRepository pendingDocumentRepository,
 	                                FolderRepository folderRepository,
 	                                UserRepository userRepository,
-	                                DocumentStatusRepository documentStatusRepository) {
+	                                DocumentStatusRepository documentStatusRepository, CommomDataService commomDataService) {
 		this.documentRepository = documentRepository;
 		this.pendingDocumentRepository = pendingDocumentRepository;
 		this.folderRepository = folderRepository;
 		this.userRepository = userRepository;
 		this.documentStatusRepository = documentStatusRepository;
+		this.commomDataService = commomDataService;
 	}
 
 	@ModelAttribute(value = "user")
@@ -69,11 +73,10 @@ public class DocumentByUserController {
 	@GetMapping(value = "/list-documents")
 	public String documents(Model model, User user) {
 
-		int totalDocumentUpload = documentRepository.countDocumentUploadByUser(user.getUserId());
+		commomDataService.commonData(model, user);
 
 		List<Document> documents = documentRepository.getListDocumentUpload(user.getUserId());
 		model.addAttribute("documents", documents);
-		model.addAttribute("totalDocumentUpload", totalDocumentUpload);
 		model.addAttribute("document", new Document());
 
 		return "web/add_document_by_user";
@@ -200,6 +203,8 @@ public class DocumentByUserController {
 		if (document == null) {
 			return "web/notFound";
 		}
+
+		pendingDocumentRepository.deleteByDocumentId(id);
 
 		model.addAttribute("editDocument", document);
 		model.addAttribute("folderList", folderRepository.findAll());

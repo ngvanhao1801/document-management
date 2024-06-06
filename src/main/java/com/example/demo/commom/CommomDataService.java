@@ -24,9 +24,13 @@ public class CommomDataService {
 	public void commonData(Model model, User user) {
 		listFolderByDocumentName(model);
 		Integer totalSave = 0;
+		int totalDocumentUpload = 0;
 		if (user != null) {
 			totalSave = favoriteRepository.selectCountSave(user.getUserId());
+
+			totalDocumentUpload = documentRepository.countDocumentUploadByUser(user.getUserId());
 		}
+		model.addAttribute("totalDocumentUpload", totalDocumentUpload);
 
 		model.addAttribute("totalSave", totalSave);
 

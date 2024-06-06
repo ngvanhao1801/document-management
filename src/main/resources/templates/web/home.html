@@ -188,10 +188,15 @@
                                 </th:block>
                             </th:block>
 
-                            <a title="Chi tiết tài liệu"
-                               th:href="@{/documentDetails(id=${item.id})}"
-                               class="fas fa-eye">
-                            </a>
+                            <th:block href="/login" th:if="${user.email == null}">
+                                <a title="Hãy đăng nhập" th:href="@{/login}" class="fas fa-eye"></a>
+                            </th:block>
+                            <th:block th:if="${user.email != null}">
+                                <a title="Chi tiết tài liệu"
+                                   th:href="@{/documentDetails(id=${item.id})}"
+                                   class="fas fa-eye">
+                                </a>
+                            </th:block>
                         </div>
                     </div>
                     <div class="product-content">

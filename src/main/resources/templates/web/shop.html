@@ -88,7 +88,7 @@
                         </div>
                     </div>
 
-                    <!-- item product -->
+                    <!-- item document -->
                     <div class="row row-cols-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4" style="margin-top: -30px;">
                         <div class="col" style="margin-right: 50px" th:each="item : ${documents}">
                             <div class="product-card" style="margin-left: 50px;">
@@ -135,10 +135,15 @@
                                             </th:block>
                                         </th:block>
 
+                                        <th:block href="/login" th:if="${user.email == null}">
+                                            <a title="Hãy đăng nhập" th:href="@{/login}" class="fas fa-eye"></a>
+                                        </th:block>
+                                        <th:block th:if="${user.email != null}">
                                         <a title="Chi tiết tài liệu"
                                            th:href="@{/documentDetails(id=${item.id})}"
                                            class="fas fa-eye">
                                         </a>
+                                        </th:block>
                                     </div>
                                 </div>
                                 <div class="product-content">
