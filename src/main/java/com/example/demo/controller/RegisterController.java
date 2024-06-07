@@ -58,10 +58,18 @@ public class RegisterController {
 		if (result.hasErrors()) {
 			return "web/register";
 		}
+
+		// Kiểm tra email có phải email trường không
+		if (!dto.getEmail().endsWith("@hunre.edu.vn")) {
+			model.addAttribute("error", "Bạn phải sử dụng email của trường để đăng ký!");
+			return "web/register";
+		}
+
 		if (!checkEmail(dto.getEmail())) {
 			model.addAttribute("error", "Email này đã được sử dụng!");
 			return "web/register";
 		}
+
 		session.removeAttribute("otp");
 		int random_otp = (int) Math.floor(Math.random() * (999999 - 100000 + 1) + 100000);
 		session.setAttribute("otp", random_otp);
