@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.Role;
+import com.example.demo.entity.StudentInformation;
 import com.example.demo.entity.User;
 import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.StudentInformationRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.SendMailService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,15 +35,19 @@ public class RegisterController {
 
 	private final RoleRepository roleRepository;
 
+	private final StudentInformationRepository studentInformationRepository;
+
 	public RegisterController(UserRepository userRepository,
 	                          SendMailService sendMailService,
 	                          BCryptPasswordEncoder bCryptPasswordEncoder,
-	                          HttpSession session, RoleRepository roleRepository) {
+	                          HttpSession session, RoleRepository roleRepository,
+	                          StudentInformationRepository studentInformationRepository) {
 		this.userRepository = userRepository;
 		this.sendMailService = sendMailService;
 		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 		this.session = session;
 		this.roleRepository = roleRepository;
+		this.studentInformationRepository = studentInformationRepository;
 	}
 
 	@GetMapping("/register")
@@ -53,8 +59,7 @@ public class RegisterController {
 	@PostMapping("/register")
 	public String register(ModelMap model,
 	                       @Validated @ModelAttribute("user") User dto,
-	                       BindingResult result,
-	                       @RequestParam("password") String password) {
+	                       BindingResult result) {
 		if (result.hasErrors()) {
 			return "web/register";
 		}
@@ -67,6 +72,13 @@ public class RegisterController {
 
 		if (!checkEmail(dto.getEmail())) {
 			model.addAttribute("error", "Email này đã được sử dụng!");
+			return "web/register";
+		}
+
+		boolean studentFound = studentInformationRepository.existsByStudentCode(dto.getStudentCode());
+
+		if (!studentFound) {
+			model.addAttribute("errors", "Mã sinh viên của bạn không đúng!");
 			return "web/register";
 		}
 
@@ -100,13 +112,9 @@ public class RegisterController {
 			if (userRole == null) {
 				userRole = new Role("ROLE_USER");
 				roleRepository.save(userRole);
-			}
-
-			// Kiểm tra và lấy ROLE_ADMIN từ cơ sở dữ liệu
-			Role adminRole = roleRepository.findByName("ROLE_ADMIN");
-			if (adminRole == null) {
-				adminRole = new Role("ROLE_ADMIN");
-				roleRepository.save(adminRole);
+				dto.setStudentCode(dto.getStudentCode());
+			} else {
+				dto.setStudentCode(null);
 			}
 
 			dto.setRoles(List.of(userRole));
