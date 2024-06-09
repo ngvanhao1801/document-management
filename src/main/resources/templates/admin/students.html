@@ -46,7 +46,7 @@
         <div class="content">
             <div class="page-inner">
                 <div class="page-header">
-                    <h4 class="page-title">Quản lý thư mục</h4>
+                    <h4 class="page-title">Danh sách sinh viên</h4>
                     <ul class="breadcrumbs">
                         <li class="nav-home">
                             <a href="javascript:void(0);">
@@ -63,7 +63,7 @@
                             <i class="flaticon-right-arrow"></i>
                         </li>
                         <li class="nav-item">
-                            <a href="javascript:void(0);">Quản lý thư mục</a>
+                            <a href="javascript:void(0);">Danh sách sinh viên</a>
                         </li>
                     </ul>
                 </div>
@@ -71,11 +71,11 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title" style="text-decoration: underline;">Quản lý thư mục</h4>
+                                <h4 class="card-title" style="text-decoration: underline;">Danh sách sinh viên</h4>
                                 <button class="btn btn-primary btn-round ml-auto" data-toggle="modal"
                                         data-target="#addRowModal">
                                     <i class="fa fa-plus"></i>
-                                    Thêm mới
+                                    Import New Student
                                 </button>
                             </div>
                         </div>
@@ -88,56 +88,16 @@
                                             <h5 class="modal-title">
 													<span class="fw-mediumbold"
                                                           style="text-decoration: underline; color: black;">
-													Thêm mới thư mục</span>
+													Thêm sinh viên mới</span>
                                             </h5>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                            <form th:action="@{/admin/addFolder}" th:object="${folder}"
-                                                  method="post">
-                                                <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <div class="form-group form-group-default">
-                                                                <label>Tên thư mục</label>
-                                                                <input th:field="*{folderName}" id="folderName"
-                                                                       type="text" class="form-control"
-                                                                       placeholder="Tên thư mục"
-                                                                       required="required">
-                                                            </div>
-                                                            <div class="form-group form-group-default">
-                                                                <label>Danh mục <span
-                                                                        style="color: red">*</span></label>
-                                                                <select class="form-control" name="category"
-                                                                        th:field="*{category.categoryId}"
-                                                                        id="categoryId">
-                                                                    <option th:each="item : ${categoryList}"
-                                                                            th:value="${item.categoryId}"
-                                                                            th:text="${item.categoryName}">
-                                                                        Category Name
-                                                                    </option>
-                                                                </select>
-                                                            </div>
-                                                            <div class="form-group form-group-default"
-                                                                 style="height: 150px;">
-                                                                <label>Mô tả thư mục <span style="color: red">*</span></label>
-                                                                <textarea th:field="*{description}" id="description"
-                                                                          class="form-control"
-                                                                          placeholder="Mô tả thư mục..."></textarea>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer no-bd">
-                                                    <button type="submit" id="" class="btn btn-primary"><i
-                                                            class="fa fa-plus"></i> Thêm mới
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><i
-                                                            class="fa fa-times"></i> Hủy
-                                                    </button>
-                                                </div>
+                                            <form action="/admin/students/import" method="post" enctype="multipart/form-data">
+                                                <input type="file" name="file" accept=".csv, .xlsx" required>
+                                                <button type="submit">Import</button>
                                             </form>
                                         </div>
                                     </div>
@@ -152,28 +112,36 @@
                                     <thead>
                                     <tr>
                                         <th>ID</th>
-                                        <th>Tên thư mục</th>
-                                        <th>Tên danh mục</th>
-                                        <th>Mô tả thư mục</th>
-                                        <th style="width: 10%">Action</th>
+                                        <th>Tên sinh viên</th>
+                                        <th>Mã sinh viên</th>
+                                        <th>Email</th>
+                                        <th>Lớp học</th>
+                                        <th>Ngành học</th>
+                                        <th>Năm nhập học</th>
+                                        <th>Trạng thái</th>
+                                        <th>Action</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="item : ${folders}">
-                                        <td>[[${item.folderId}]]</td>
-                                        <td>[[${item.folderName}]]</td>
-                                        <td>[[${item.category.categoryName}]]</td>
-                                        <td>[[${item.description}]]</td>
+                                    <tr th:each="item : ${studentInformations}">
+                                        <td>[[${item.id}]]</td>
+                                        <td>[[${item.name}]]</td>
+                                        <td>[[${item.studentCode}]]</td>
+                                        <td>[[${item.email}]]</td>
+                                        <td>[[${item.classroom}]]</td>
+                                        <td>[[${item.majors}]]</td>
+                                        <td>[[${item.yearOfAdmission}]]</td>
+                                        <td>[[${item.statusStudent}]]</td>
                                         <td>
                                             <div class="form-button-action">
-                                                <a th:href="@{/admin/editFolder/{folderId}(folderId=${item.folderId})}"
+                                                <a th:href="@{/admin/editStudent/{id}(id=${item.id})}"
                                                    type="button" data-toggle="tooltip" title=""
                                                    class="btn btn-link btn-primary btn-lg"
                                                    data-original-title="Chỉnh sửa">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <button th:data-id="${item.folderId}"
-                                                        th:data-name="${item.folderName}"
+                                                <button th:data-id="${item.id}"
+                                                        th:data-name="${item.name}"
                                                         onclick="showConfigModalDialog(this.getAttribute('data-id'), this.getAttribute('data-name'))"
                                                         type="button" data-toggle="tooltip" title=""
                                                         class="btn btn-link btn-danger" data-original-title="Xóa">
@@ -188,7 +156,7 @@
                                 <script>
                                     function showConfigModalDialog(id, name) {
                                         $('#name').text(name);
-                                        $('#yesOption').attr('href', '/admin/deleteFolder/' + id);
+                                        $('#yesOption').attr('href', '/admin/deleteStudent/' + id);
                                         $('#configmationId').modal('show');
                                     }
                                 </script>
@@ -205,7 +173,7 @@
                                                 </button>
                                             </div>
                                             <div class="modal-body">
-                                                <p style="color: black">Bạn có muốn xóa thư mục này không?</p>
+                                                <p style="color: black">Bạn có muốn xóa sinh viên này không?</p>
                                             </div>
                                             <div class="modal-footer">
                                                 <a id="yesOption" type="button" class="btn btn-primary">Có</a>

@@ -7,38 +7,39 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Year;
 import java.util.Date;
 
 @Entity
-@Table(name = "student_infomation", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "student_information", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class StudentInformation implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-	private Long studentCode;
+  private Long studentCode;
 
-	private String name;
+  private String name;
 
-	private String email;
+  private String email;
 
-	private Year birthday;
+  @Temporal(TemporalType.DATE)
+  private Date birthday;
 
-	private String gender;
+  private String gender;
 
-	private String classroom;
+  private String classroom;
 
-	private String majors;
+  private String majors;
 
-	@Temporal(TemporalType.DATE)
-	private Date yearOfAdmission;
+  private Integer yearOfAdmission;
 
-	private String address;
+  private String address;
+
+  private String statusStudent;
 
 }
