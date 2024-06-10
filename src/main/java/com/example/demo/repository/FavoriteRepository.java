@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.entity.Favorite;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,10 @@ public interface FavoriteRepository extends JpaRepository<Favorite, Long> {
 
 	@Transactional
 	void deleteByUser_UserId(Long userId);
+
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM favorites WHERE document_id IN (SELECT document_id FROM document WHERE folder_id IN (SELECT folder_id FROM folder WHERE category_id = ?1))", nativeQuery = true)
+	void deleteByDocument_CategoryId(Long categoryId);
 
 }

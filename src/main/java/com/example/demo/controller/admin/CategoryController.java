@@ -2,8 +2,7 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.entity.Category;
 import com.example.demo.entity.User;
-import com.example.demo.repository.CategoryRepository;
-import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,11 +19,23 @@ public class CategoryController {
 
 	private final CategoryRepository categoryRepository;
 
+	private final FolderRepository folderRepository;
+
+	private final DocumentRepository documentRepository;
+
+	private final FavoriteRepository favoriteRepository;
+
+	private final PendingDocumentRepository pendingDocumentRepository;
+
 	private final UserRepository userRepository;
 
-	public CategoryController(CategoryRepository categoryRepository, UserRepository userRepository) {
+	public CategoryController(CategoryRepository categoryRepository, FolderRepository folderRepository, DocumentRepository documentRepository, FavoriteRepository favoriteRepository, PendingDocumentRepository pendingDocumentRepository, UserRepository userRepository) {
 		this.categoryRepository = categoryRepository;
-		this.userRepository = userRepository;
+    this.folderRepository = folderRepository;
+    this.documentRepository = documentRepository;
+    this.favoriteRepository = favoriteRepository;
+    this.pendingDocumentRepository = pendingDocumentRepository;
+    this.userRepository = userRepository;
 	}
 
 	@ModelAttribute(value = "user")
@@ -86,6 +97,10 @@ public class CategoryController {
 	// delete category
 	@GetMapping("/delete/{id}")
 	public String delCategory(@PathVariable("id") Long id, Model model) {
+		pendingDocumentRepository.deleteByDocument_CategoryId(id);
+		favoriteRepository.deleteByDocument_CategoryId(id);
+		documentRepository.deleteByFolder_CategoryId(id);
+		folderRepository.deleteByCategory_CategoryId(id);
 		categoryRepository.deleteById(id);
 
 		model.addAttribute("message", "Delete successful!");

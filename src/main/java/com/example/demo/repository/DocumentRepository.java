@@ -276,4 +276,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 			"    RegisterDate DESC;", nativeQuery = true)
 	List<Object[]> listReportCustomerCommon();
 
+	@Transactional
+	@Modifying
+	@Query(value = "DELETE FROM document WHERE folder_id IN (SELECT folder_id FROM folder WHERE category_id = ?1)", nativeQuery = true)
+	void deleteByFolder_CategoryId(Long categoryId);
+
 }

@@ -158,6 +158,7 @@ public class DocumentController {
 		} else {
 			document.setVersion(1);
 		}
+		document.setUploadDate(new Date());
 
 		Document savedDocument = documentRepository.save(document);
 
