@@ -8,6 +8,7 @@ import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.DocumentStatusRepository;
 import com.example.demo.repository.PendingDocumentRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.service.SendMailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -34,15 +35,18 @@ public class OrderController {
 
 	private final DocumentRepository documentRepository;
 
+	private final SendMailService sendMailService;
+
 	public OrderController(UserRepository userRepository,
-	                       PendingDocumentRepository pendingDocumentRepository,
-	                       DocumentStatusRepository documentStatusRepository,
-	                       DocumentRepository documentRepository) {
+                         PendingDocumentRepository pendingDocumentRepository,
+                         DocumentStatusRepository documentStatusRepository,
+                         DocumentRepository documentRepository, SendMailService sendMailService) {
 		this.userRepository = userRepository;
 		this.pendingDocumentRepository = pendingDocumentRepository;
 		this.documentStatusRepository = documentStatusRepository;
 		this.documentRepository = documentRepository;
-	}
+    this.sendMailService = sendMailService;
+  }
 
 	@ModelAttribute(value = "user")
 	public User user(Model model, Principal principal, User user) {
@@ -96,6 +100,14 @@ public class OrderController {
 		pendingDocument.setDocumentStatus(documentStatus);
 		pendingDocumentRepository.save(pendingDocument);
 
+		String body = "<div>"
+				+ "<h3>Tài liệu của bạn vừa đăng tải đã bị hủy.</h3>"
+				+ "<div>"
+				+ "<p>Tên tài liệu: " + document.getDocumentName() + "</p>"
+				+ "<p>Ngày đăng tải: " + document.getUploadDate() + "</p>"
+				+ "</div>";
+		sendMailService.queue(document.getUser().getEmail(), "Phản hồi về đăng tải tài liệu", body);
+
 		return new ModelAndView("forward:/admin/orders");
 	}
 
@@ -123,8 +135,15 @@ public class OrderController {
 		documentRepository.save(document);
 
 		pendingDocument.setDocumentStatus(documentStatus);
-
 		pendingDocumentRepository.save(pendingDocument);
+
+		String body = "<div>"
+				+ "<h3>Tài liệu của bạn vừa đăng tải đã được xét duyệt thành công.</h3>"
+				+ "<div>"
+				+ "<p>Tên tài liệu: " + document.getDocumentName() + "</p>"
+				+ "<p>Ngày đăng tải: " + document.getUploadDate() + "</p>"
+				+ "</div>";
+		sendMailService.queue(document.getUser().getEmail(), "Phản hồi về đăng tải tài liệu", body);
 
 		return new ModelAndView("forward:/admin/orders", model);
 	}

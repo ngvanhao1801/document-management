@@ -180,8 +180,10 @@ public class DocumentByUserController {
 
 		String adminEmail = "ngohao181102@gmail.com";
 		String emailSubject = "Yêu cầu xác nhận đăng tải tài liệu từ người dùng " + user.getName();
-		String emailBody = "Người dùng: " + user.getName() + " vừa đăng tải tài liệu mới có tên là: " + document.getDocumentName() + "<div>\r\n"
-				+ "Email người dùng: " + user.getEmail();
+		String emailBody = "<div>"
+				+ "<p>Người dùng " + user.getName() + " vừa đăng tải tài liệu mới có tên là: " + document.getDocumentName() + "</p>"
+				+ "<p>Email người dùng: " + user.getEmail() + "</p>"
+				+ "</div>";
 
 		MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
 		sendMailService.queue(mailInfo);

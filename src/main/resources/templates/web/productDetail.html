@@ -31,6 +31,7 @@
             border: none;
             border-radius: 10px;
         }
+
         .btn {
             display: inline-block;
             padding: 10px 20px;
@@ -52,7 +53,7 @@
         }
 
         .action-button {
-            background-color: rgba(167,231,209,0.45);
+            background-color: rgba(167, 231, 209, 0.45);
         }
 
         .action-button i {
@@ -189,25 +190,7 @@
                             <i class="fas fa-file"></i>
                             <span style="color: #0c0303">Xem tài liệu</span>
                         </a>
-                        <!--                        <a href="javascript:void(0);"-->
-<!--                           class="action-button"-->
-<!--                           style="background-color: rgba(167,231,209,0.45)"-->
-<!--                           onclick="showCommentPopup()">-->
-<!--                            <i class="fas fa-comment"></i>-->
-<!--                            <span style="color: #0c0303">Bình luận</span>-->
-<!--                        </a>-->
                     </div>
-<!--                    <div id="commentPopup" class="popup">-->
-<!--                        <div class="popup-content">-->
-<!--                            <span class="close" onclick="closeCommentPopup()">&times;</span>-->
-<!--                            <h2>Viết bình luận</h2>-->
-<!--                            <textarea id="commentText" rows="4" cols="50"></textarea>-->
-<!--                            <div class="popup-buttons">-->
-<!--                                <button onclick="submitComment()">Thêm</button>-->
-<!--                                <button onclick="closeCommentPopup()">Hủy</button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
                 </div>
             </div>
         </div>
@@ -248,7 +231,7 @@
                                 </th:block>
 
                                 <a class="product-image" href="javascript:void(0);">
-                                    <img th:src="@{'/loadImage?imageName='+${item.documentImage}}" alt="product"/>
+                                    <img th:src="@{'/loadImage?imageName='+${item.documentImage}}" alt="document" />
                                 </a>
                                 <h6 class="product-name">
                                     <a href="javascript:void(0);" th:href="@{/documentDetails(id=${item.id})}"
@@ -326,7 +309,8 @@
             </div>
             <div class="col-md-7 col-lg-6 col-xl-5">
                 <form class="news-form" method="post" action="/sendEmailRegister">
-                    <input class="form-control" id="email" type="email" name="email" placeholder="Nhập Địa Chỉ Email Của Bạn" required>
+                    <input class="form-control" id="email" type="email" name="email"
+                           placeholder="Nhập Địa Chỉ Email Của Bạn" required>
                     <button type="submit">
                         <span><i class="icofont-email"></i>Gửi</span>
                     </button>
