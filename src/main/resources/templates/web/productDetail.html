@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <meta http-equiv="content-type" content="text/html;charset=utf-8"/>
 <head>
     <meta charset="UTF-8"/>
@@ -64,11 +64,8 @@
         }
 
         .document-image {
-            display: block;
-            width: 100%; /* Chiều rộng của ảnh sẽ bằng với chiều rộng của phần tử cha */
-            max-width: 200px; /* Đặt chiều rộng tối đa nếu cần */
-            aspect-ratio: 1; /* Đặt tỷ lệ khung hình 1:1 nếu muốn hình vuông */
-            overflow: hidden;
+            max-width: 100%;
+            max-height: 100%;
         }
 
     </style>
@@ -101,7 +98,7 @@
                 <div class="details-gallery">
                     <ul class="details-preview">
                         <li>
-                            <img th:src="@{'/loadImage?imageName='+${document.documentImage}}" alt="document"/>
+                            <img th:src="@{'/loadImage?imageName='+${document.documentImage}}" alt="document" class="document-image"/>
                         </li>
                     </ul>
                 </div>
@@ -272,8 +269,9 @@
                                            overflow: hidden;">[[${item.documentName}]]
                                         </a>
                                     </h6>
-                                    <p>Total Favorites: [[${item.favorites}]]</p>
-                                    <p>Total Views: [[${item.views}]]</p>
+                                    <p class="fa fa-thumbs-up"> [[${item.favorites}]]</p>
+                                    <br>
+                                    <p class="fas fa-eye"> [[${item.views}]]</p>
                                 </div>
                                 <div class="product-widget">
                                     <th:block href="/login" th:if="${user.email == null}">
@@ -327,9 +325,9 @@
                 </div>
             </div>
             <div class="col-md-7 col-lg-6 col-xl-5">
-                <form class="news-form">
-                    <input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn"/>
-                    <button>
+                <form class="news-form" method="post" action="/sendEmailRegister">
+                    <input class="form-control" id="email" type="email" name="email" placeholder="Nhập Địa Chỉ Email Của Bạn" required>
+                    <button type="submit">
                         <span><i class="icofont-email"></i>Gửi</span>
                     </button>
                 </form>

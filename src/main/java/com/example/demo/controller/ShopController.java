@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.commom.CommomDataService;
 import com.example.demo.entity.Document;
 import com.example.demo.entity.Favorite;
+import com.example.demo.entity.Folder;
 import com.example.demo.entity.User;
 import com.example.demo.repository.DocumentRepository;
 import com.example.demo.repository.FavoriteRepository;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;

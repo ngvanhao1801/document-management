@@ -2,9 +2,7 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
-import com.example.demo.repository.FavoriteRepository;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.repository.UsersRolesRepository;
+import com.example.demo.repository.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,13 +26,19 @@ public class UserController {
 
 	private final UsersRolesRepository usersRolesRepository;
 
+	private final PendingDocumentRepository pendingDocumentRepository;
+
+	private final DocumentRepository documentRepository;
+
 	public UserController(UserRepository userRepository,
-												FavoriteRepository favoriteRepository,
-												UsersRolesRepository usersRolesRepository) {
+	                      FavoriteRepository favoriteRepository,
+	                      UsersRolesRepository usersRolesRepository, PendingDocumentRepository pendingDocumentRepository, DocumentRepository documentRepository) {
 		this.userRepository = userRepository;
 		this.favoriteRepository = favoriteRepository;
     this.usersRolesRepository = usersRolesRepository;
-  }
+		this.pendingDocumentRepository = pendingDocumentRepository;
+		this.documentRepository = documentRepository;
+	}
 
 	@GetMapping(value = "/admin/users")
 	public String customer(Model model, Principal principal) {
@@ -89,11 +93,17 @@ public class UserController {
 	public String deleteUser(@PathVariable("userId") Long userId) {
 		favoriteRepository.deleteByUser_UserId(userId);
 
+		pendingDocumentRepository.deleteByUser_UserId(userId);
+
 		usersRolesRepository.deleteByUserId(userId);
+
+		documentRepository.deleteByUserId(userId);
 
 		userRepository.deleteById(userId);
 
 		return "redirect:/admin/users";
 	}
+
+
 
 }

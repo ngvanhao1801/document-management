@@ -167,10 +167,10 @@ $(document).on('keyup', function (e) {
 
 
 $('.search-button').click(function() {
-    searchProductByKeyword();
+    searchDocumentByKeyword();
 })
 
-function searchProductByKeyword() {
+function searchDocumentByKeyword() {
     let keyword = $('.search-input').val();
     if (keyword.length == 0) {
         toastr.warning("Vui lòng nhập từ khóa tìm kiếm");

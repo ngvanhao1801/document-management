@@ -1,8 +1,10 @@
 package com.example.demo.controller;
 
 import com.example.demo.commom.CommomDataService;
+import com.example.demo.dto.MailInfo;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
+import com.example.demo.service.SendMailService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
@@ -39,6 +41,8 @@ public class DocumentByUserController {
 
 	private final CommomDataService commomDataService;
 
+	private final SendMailService sendMailService;
+
 	@Value("${upload.path}")
 	private String pathUploadImage;
 
@@ -49,13 +53,16 @@ public class DocumentByUserController {
 	                                PendingDocumentRepository pendingDocumentRepository,
 	                                FolderRepository folderRepository,
 	                                UserRepository userRepository,
-	                                DocumentStatusRepository documentStatusRepository, CommomDataService commomDataService) {
+	                                DocumentStatusRepository documentStatusRepository,
+	                                CommomDataService commomDataService,
+	                                SendMailService sendMailService) {
 		this.documentRepository = documentRepository;
 		this.pendingDocumentRepository = pendingDocumentRepository;
 		this.folderRepository = folderRepository;
 		this.userRepository = userRepository;
 		this.documentStatusRepository = documentStatusRepository;
 		this.commomDataService = commomDataService;
+		this.sendMailService = sendMailService;
 	}
 
 	@ModelAttribute(value = "user")
@@ -87,7 +94,7 @@ public class DocumentByUserController {
 	                          ModelMap model,
 	                          @RequestParam("file") MultipartFile[] files,
 	                          HttpServletRequest httpServletRequest,
-	                          BindingResult result) {
+	                          BindingResult result, User user) {
 
 		if (result.hasErrors()) {
 			return "web/add_document_by_user";
@@ -170,6 +177,15 @@ public class DocumentByUserController {
 			model.addAttribute("message", "Update failure");
 			model.addAttribute("document", document);
 		}
+
+		String adminEmail = "ngohao181102@gmail.com";
+		String emailSubject = "Yêu cầu xác nhận đăng tải tài liệu từ người dùng " + user.getName();
+		String emailBody = "Người dùng: " + user.getName() + " vừa đăng tải tài liệu mới có tên là: " + document.getDocumentName() + "<div>\r\n"
+				+ "Email người dùng: " + user.getEmail();
+
+		MailInfo mailInfo = new MailInfo(adminEmail, emailSubject, emailBody);
+		sendMailService.queue(mailInfo);
+
 		return "redirect:/list-documents";
 	}
 

@@ -281,4 +281,9 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 	@Query(value = "DELETE FROM document WHERE folder_id IN (SELECT folder_id FROM folder WHERE category_id = ?1)", nativeQuery = true)
 	void deleteByFolder_CategoryId(Long categoryId);
 
+	@Transactional
+	@Modifying
+	@Query(value = "UPDATE document d SET d.user_id = 1 WHERE d.user_id = ?1", nativeQuery = true)
+	void deleteByUserId(@Param("userId") Long userId);
+
 }

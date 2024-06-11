@@ -88,9 +88,9 @@
                 </div>
             </div>
             <div class="col-md-7 col-lg-6 col-xl-5">
-                <form class="news-form">
-                    <input type="text" placeholder="Nhập Địa Chỉ Email Của Bạn"/>
-                    <button>
+                <form class="news-form" method="post" action="/sendEmailRegister">
+                    <input class="form-control" id="email" type="email" name="email" placeholder="Nhập Địa Chỉ Email Của Bạn" required>
+                    <button type="submit">
                         <span><i class="icofont-email"></i>Gửi</span>
                     </button>
                 </form>
